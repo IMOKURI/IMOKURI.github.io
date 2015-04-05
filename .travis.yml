@@ -3,15 +3,22 @@ ghc: 7.8.4
 branches:
   only:
   - source
+env:
+  global:
+  secure: "Out0HbfTJleSik/+84ZOkXux//EUNG0AykQm4BXb4FlIDQnyYb793yUJ6odwHvuoXAM2Dn9nXHKdQnhzELflwNN/1h7WYo8Hj9ok0UiFKXG8sMDJXURSL8MPHC1yV0TUBCSN9HrBPgrOhu3YlKzmo3FqlOGAIP+wrAVRioWFYNc="
+  secure: "SX+tUm02utIBt/GS4i8R0A8YyIZeXrFB75JpnFmiDwa7jKBCyUH+QKLNaE/B4cUA1W6tWAGLQer7oUGzJraPn8FQCFaiA0Z6J0tFLI7WSf/NPpNDA8wgiCte6qwPhrz8FqFkvR1ON+mqUJdy5TmTGGN+70qu6R7zDKri986p6nc="
+  secure: "I3tMnvRPsp4XEcEKo+XAFwu5TQT00yMNohpq0/oOnkogR6br4RpdSppfdSwIoZijPRIgCsF+XfQkxkfSRrzS+/KneA76GON7/73nENIJ/pcZd2H2urkOLDXoOH5m0oKwiTgkDYeEROxiTX6AyRFqKz+fSXJOg43cMaRBNIlUwZs="
 before_install:
-- git submodule foreach --recursive 'git checkout master; git ls-files | grep -v README | grep -v CNAME | xargs -r git rm'
+- git submodule foreach --recursive 'git checkout master; git ls-files | grep -v README
+  | grep -v CNAME | xargs -r git rm'
 install:
 - cabal sandbox init
 - cabal install -j --disable-documentation hakyll
-- cabal configure --disable-library-profiling --disable-tests --disable-library-coverage --disable-benchmarks --disable-split-objs
+- cabal configure --disable-library-profiling --disable-tests --disable-library-coverage
+  --disable-benchmarks --disable-split-objs
 before_script:
-- git config --global user.email "$GIT_EMAIL"
-- git config --global user.name "$GIT_NAME"
+- git config --global user.name "$GH_NAME"
+- git config --global user.email "$GH_EMAIL"
 script: cabal run -j build
 after_script:
 - cd _site
@@ -21,5 +28,3 @@ after_script:
 - git status
 - git commit -m "Built by Travis ( build $TRAVIS_BUILD_NUMBER )"
 - git push github master:master | grep -v http
-GH_NAME=Travis on behalf of IMOKURI:
-  secure: kFJu+cG33vcu7qmBgRwOtwlvoV/ZURjeLHLri3Rcfpgo8xKTD865rAAlGsb6EPoiAZLMf6G7W4NTJfcnnoLYDtYUKlGnzasQxb8+HFX7cbZBc4FJ9NUvDQ7yeUkWHn/KRNVZw3nU9AAKAgG0Vw40rUr2AlV0/04+g51zR4J3d4E=
