@@ -1,0 +1,26 @@
+language: haskell
+branches:
+  only:
+  - source
+before_install:
+- git submodule foreach --recursive 'git checkout master; git ls-files | grep -v README
+  | grep -v CNAME | xargs -r git rm'
+install:
+- curl http://bin.begriffs.com/hakyll/cabal-sandbox.tar.xz | tar xJ
+- cabal sandbox init
+- cabal configure --disable-library-profiling --disable-tests --disable-library-coverage
+  --disable-benchmarks --disable-split-objs
+before_script:
+- git config --global user.email "$GIT_EMAIL"
+- git config --global user.name "$GIT_NAME"
+script: cabal run -j build
+after_script:
+- cd _site
+- export REMOTE=$(git config remote.origin.url | sed 's/.*:\/\///')
+- git remote add github https://${GH_TOKEN}@${REMOTE}
+- git add --all
+- git status
+- git commit -m "Built by Travis ( build $TRAVIS_BUILD_NUMBER )"
+- git push github master:master | grep -v http
+GH_NAME=Travis on behalf of IMOKURI:
+  secure: kFJu+cG33vcu7qmBgRwOtwlvoV/ZURjeLHLri3Rcfpgo8xKTD865rAAlGsb6EPoiAZLMf6G7W4NTJfcnnoLYDtYUKlGnzasQxb8+HFX7cbZBc4FJ9NUvDQ7yeUkWHn/KRNVZw3nU9AAKAgG0Vw40rUr2AlV0/04+g51zR4J3d4E=
