@@ -4,13 +4,11 @@ branches:
   only:
   - source
 before_install:
-- git submodule foreach --recursive 'git checkout master; git ls-files | grep -v README
-  | grep -v CNAME | xargs -r git rm'
+- git submodule foreach --recursive 'git checkout master; git ls-files | grep -v README | grep -v CNAME | xargs -r git rm'
 install:
-- curl http://bin.begriffs.com/hakyll/cabal-sandbox.tar.xz | tar xJ
 - cabal sandbox init
-- cabal configure --disable-library-profiling --disable-tests --disable-library-coverage
-  --disable-benchmarks --disable-split-objs
+- cabal install -j --disable-documentation hakyll
+- cabal configure --disable-library-profiling --disable-tests --disable-coverage --disable-benchmarks --disable-split-objs
 before_script:
 - git config --global user.email "$GIT_EMAIL"
 - git config --global user.name "$GIT_NAME"
