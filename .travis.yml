@@ -1,21 +1,18 @@
 language: haskell
-ghc: 7.8.4
 branches:
   only:
   - source
 env:
   global:
-  secure: "Out0HbfTJleSik/+84ZOkXux//EUNG0AykQm4BXb4FlIDQnyYb793yUJ6odwHvuoXAM2Dn9nXHKdQnhzELflwNN/1h7WYo8Hj9ok0UiFKXG8sMDJXURSL8MPHC1yV0TUBCSN9HrBPgrOhu3YlKzmo3FqlOGAIP+wrAVRioWFYNc="
-  secure: "SX+tUm02utIBt/GS4i8R0A8YyIZeXrFB75JpnFmiDwa7jKBCyUH+QKLNaE/B4cUA1W6tWAGLQer7oUGzJraPn8FQCFaiA0Z6J0tFLI7WSf/NPpNDA8wgiCte6qwPhrz8FqFkvR1ON+mqUJdy5TmTGGN+70qu6R7zDKri986p6nc="
-  secure: "I3tMnvRPsp4XEcEKo+XAFwu5TQT00yMNohpq0/oOnkogR6br4RpdSppfdSwIoZijPRIgCsF+XfQkxkfSRrzS+/KneA76GON7/73nENIJ/pcZd2H2urkOLDXoOH5m0oKwiTgkDYeEROxiTX6AyRFqKz+fSXJOg43cMaRBNIlUwZs="
+  - GH_NAME="Travis on behalf of IMOKURI"
+  - secure: "iw7zkk4s3JZoZ9rqL9Fe43TcnGVJ4eTURgIxS2f0swsdpo/zZ9i5tiZ/QrZtRioOLjwwe3TNrJehWQrEv2oMy+By5a4c9NI4gMmCRlps3IGvW8SEFEoelaMqM4HZB/eXPZkhKyqf7LpGz3oC2HAH65u6Z9UfPchjsKJ8QmGTW4w="
+  - secure: "UcdolluKcyzCv1QpcLTM0fCvWxiLu1rh/4BefeHHWxh4S2nqsOByYa12ZWWyr/rCRxhpz8lvF3DqmZKPDC1JmdK17RyMRsYzMKGbLwzAOm/X2HSBMxPMr8utEm/+TmG3ZOgCNTAqjkODG+Q7YdvGNiDo4ULuf383uWjhAQcnMjs="
 before_install:
-- git submodule foreach --recursive 'git checkout master; git ls-files | grep -v README
-  | grep -v CNAME | xargs -r git rm'
+- git submodule foreach --recursive 'git checkout master; git ls-files | grep -v README | grep -v CNAME | xargs -r git rm'
 install:
 - cabal sandbox init
 - cabal install -j --disable-documentation hakyll
-- cabal configure --disable-library-profiling --disable-tests --disable-library-coverage
-  --disable-benchmarks --disable-split-objs
+- cabal configure --disable-library-profiling --disable-tests --disable-library-coverage --disable-benchmarks --disable-split-objs
 before_script:
 - git config --global user.name "$GH_NAME"
 - git config --global user.email "$GH_EMAIL"
