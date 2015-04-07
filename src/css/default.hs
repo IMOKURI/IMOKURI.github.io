@@ -10,13 +10,13 @@ defaultStyle = do
   body ? do
     color       black
     fontSize    (px 16)
-    sym2 margin (px 0) auto
+    sym2 margin nil auto
     width       (px 600)
 
   div # "#header" ? do
     borderBottom solid (px 2) black
     marginBottom (px 30)
-    sym2 padding (px 12) (px 0)
+    sym2 padding (px 12) nil
 
   div # "#header" ** "#navigation" ? do
     textAlign (alignSide sideRight)
@@ -52,7 +52,7 @@ defaultStyle = do
     color        "#555"
     fontSize     (px 12)
     marginTop    (px 30)
-    sym2 padding (px 12) (px 0)
+    sym2 padding (px 12) nil
     textAlign    (alignSide sideRight)
 
 
