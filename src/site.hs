@@ -1,6 +1,6 @@
 --------------------------------------------------------------------------------
 {-# LANGUAGE OverloadedStrings #-}
-import           Data.Monoid (mappend)
+import           Data.Monoid ((<>))
 import           Hakyll
 
 
@@ -11,9 +11,10 @@ main = hakyll $ do
         route   idRoute
         compile copyFileCompiler
 
-    match "css/*" $ do
-        route   idRoute
-        compile compressCssCompiler
+    match "src/css/*.hs" $ do
+        route   $ gsubRoute "src/" (const "") `composeRoutes` setExtension "css"
+        compile $ getResourceString
+            >>= withItemBody (unixFilter "cabal" ["exec", "runghc"])
 
     match (fromList ["about.markdown", "contact.markdown"]) $ do
         route   $ setExtension "html"
@@ -32,10 +33,9 @@ main = hakyll $ do
         route idRoute
         compile $ do
             posts <- recentFirst =<< loadAll "posts/*"
-            let blogCtx =
-                    listField "posts" postCtx (return posts) `mappend`
-                    constField "title" "Blog"                `mappend`
-                    defaultContext
+            let blogCtx = listField "posts" postCtx (return posts)
+                       <> constField "title" "Blog"
+                       <> defaultContext
 
             makeItem ""
                 >>= loadAndApplyTemplate "templates/blog.html"    blogCtx
@@ -47,10 +47,9 @@ main = hakyll $ do
         route idRoute
         compile $ do
             posts <- recentFirst =<< loadAll "posts/*"
-            let indexCtx =
-                    listField "posts" postCtx (return posts) `mappend`
-                    constField "title" "Home"                `mappend`
-                    defaultContext
+            let indexCtx = listField "posts" postCtx (return posts)
+                        <> constField "title" "Home"
+                        <> defaultContext
 
             getResourceBody
                 >>= applyAsTemplate indexCtx
@@ -62,6 +61,6 @@ main = hakyll $ do
 
 --------------------------------------------------------------------------------
 postCtx :: Context String
-postCtx =
-    dateField "date" "%B %e, %Y" `mappend`
-    defaultContext
+postCtx = dateField "date" "%B %e, %Y"
+       <> defaultContext
+
