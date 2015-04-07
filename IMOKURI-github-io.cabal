@@ -1,7 +1,7 @@
 name:               IMOKURI-github-io
 version:            0.1.0.0
 build-type:         Simple
-cabal-version:      >= 1.10
+cabal-version:      >= 1.20
 author:             IMOKURI
 license:            MIT
 license-file:       LICENSE

@@ -12,13 +12,12 @@ before_install:
 - git submodule foreach --recursive 'git checkout master; git ls-files | grep -v README | grep -v CNAME | xargs -r git rm'
 install:
 - cabal sandbox init
-- cabal install --only-dependencies --disable-documentation
-#- cabal configure --disable-library-profiling --disable-tests --disable-library-coverage --disable-benchmarks --disable-split-objs
-- cabal configure
+- cabal install -j --only-dependencies --disable-documentation
+- cabal configure --disable-library-profiling --disable-tests --disable-library-coverage --disable-benchmarks --disable-split-objs
 before_script:
 - git config --global user.name "$GH_NAME"
 - git config --global user.email "$GH_EMAIL"
-script: cabal run build
+script: cabal run -j build
 after_script:
 - cd _site
 - export REMOTE=$(git config remote.origin.url | sed 's/.*:\/\///')
