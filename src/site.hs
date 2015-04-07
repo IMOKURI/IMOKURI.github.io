@@ -15,6 +15,7 @@ main = hakyll $ do
         route   $ gsubRoute "src/" (const "") `composeRoutes` setExtension "css"
         compile $ getResourceString
             >>= withItemBody (unixFilter "cabal" ["exec", "runghc"])
+            >>= return . fmap compressCss
 
     match (fromList ["about.markdown", "contact.markdown"]) $ do
         route   $ setExtension "html"
