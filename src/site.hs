@@ -1,5 +1,8 @@
 --------------------------------------------------------------------------------
 {-# LANGUAGE OverloadedStrings #-}
+
+module Main where
+
 import           Data.Monoid ((<>))
 import           Hakyll
 
