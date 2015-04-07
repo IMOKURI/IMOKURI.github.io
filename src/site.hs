@@ -8,8 +8,8 @@ import           Hakyll
 --------------------------------------------------------------------------------
 main :: IO ()
 main = hakyll $ do
-    -- match "contents/images/*" $ do
-    --     route   $ gsubRoute "contents/" (const "")
+    -- match "images/*" $ do
+    --     route   idRoute
     --     compile copyFileCompiler
 
     match "src/css/*.hs" $ do
@@ -21,14 +21,14 @@ main = hakyll $ do
             >>= withItemBody (unixFilter "runghc" ["-package-db=.cabal-sandbox/x86_64-linux-ghc-7.8.4-packages.conf.d"])
             >>= return . fmap compressCss
 
-    match (fromList ["contents/about.markdown", "contents/contact.markdown"]) $ do
-        route   $ setExtension "html" `composeRoutes` gsubRoute "contents/" (const "")
+    match (fromList ["about.markdown"]) $ do
+        route   $ setExtension "html"
         compile $ pandocCompiler
             >>= loadAndApplyTemplate "templates/default.html" defaultContext
             >>= relativizeUrls
 
-    match "contents/posts/*" $ do
-        route   $ setExtension "html" `composeRoutes` gsubRoute "contents/" (const "")
+    match "posts/*" $ do
+        route   $ setExtension "html"
         compile $ pandocCompiler
             >>= loadAndApplyTemplate "templates/post.html"    postCtx
             >>= loadAndApplyTemplate "templates/default.html" postCtx
@@ -48,8 +48,8 @@ main = hakyll $ do
                 >>= relativizeUrls
 
 
-    match "contents/index.html" $ do
-        route   $ gsubRoute "contents/" (const "")
+    match "index.html" $ do
+        route   idRoute
         compile $ do
             posts <- recentFirst =<< loadAll "posts/*"
             let indexCtx = listField "posts" postCtx (return posts)
