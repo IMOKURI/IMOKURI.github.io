@@ -24,6 +24,8 @@ defaultStyle = do
     width       (px 600)
     bg
 
+  importArticles
+
   div # "#header" ? do
     borderBottom solid (px 2) black
     marginBottom (px 30)
@@ -40,25 +42,12 @@ defaultStyle = do
     uiFont
     float          floatLeft
 
-  h1 ? do
-    fontSize (px 24)
-
-  h2 ? do
-    fontSize (px 20)
-
-  div # ".info" ? do
-    color    "#555"
-    fontSize  (px 14)
-    fontStyle italic
-
   div # "#footer" ? do
     borderTop      solid (px 2) black
-    color          "#555"
-    fontSize       (px 12)
+    smallFont
     marginTop      (px 30)
     sym2 padding   (px 12) nil
     textAlign      (alignSide sideRight)
-    textTransform  uppercase
 
 -------------------------------------------------------
 
@@ -141,10 +130,48 @@ uiFont = do
   kokuGo
   fontSize       (px 18)
   lineHeight     u1
-  textTransform  uppercase
   textDecoration none
   color          txtC
   fontWeight     bold
 
+smallFont :: Css
+smallFont =
+  do kokuGo
+     fontSize (pct 85)
+     color    (setA 120 txtC)
+
+codeBlocks :: Css
+codeBlocks =
+  do bgBorder 20
+     rictyDiminished
+     syntax
+
+syntax :: Css
+syntax =
+  do color (rgb 0 60 100)
+     ".kw" ? fontWeight bold
+     ".kw" ? color (rgb   0   0   0)
+     ".dt" ? color (rgb  20  60 180)
+     ".dv" ? color (rgb 100   0 200)
+     ".st" ? color (rgb 200  80 100)
+     ".ot" ? color (rgb 160  80  80)
+     ".fu" ? color (rgb   0 160 120)
+     ".co" ? color (rgb 160 160 160)
+
 -------------------------------------------------------
+
+importArticles :: Css
+importArticles = article ? do
+  contentFont
+  marginBottom u1
+
+  ".info" ? do
+    smallFont
+    fontStyle italic
+
+  h1 ? do
+    fontSize (px 24)
+
+  h2 ? do
+    fontSize (px 20)
 
