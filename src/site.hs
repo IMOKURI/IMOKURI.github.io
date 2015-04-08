@@ -17,8 +17,8 @@ main = hakyll $ do
         compile $ getResourceString
             -- If you can use cabal-install 1.20 or higher, you should use "cabal exec".
             -- Travis CI uses cabal-install 1.18 as of April, 2015... So this source uses "runghc".
-            -- >>= withItemBody (unixFilter "cabal" ["exec", "runghc"])
-            >>= withItemBody (unixFilter "runghc" ["-package-db=.cabal-sandbox/x86_64-linux-ghc-7.8.4-packages.conf.d"])
+            >>= withItemBody (unixFilter "cabal" ["exec", "runghc"])
+            -- >>= withItemBody (unixFilter "runghc" ["-package-db=.cabal-sandbox/x86_64-linux-ghc-7.8.4-packages.conf.d"])
             >>= return . fmap compressCss
 
     match (fromList ["about.markdown"]) $ do
