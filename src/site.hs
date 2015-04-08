@@ -8,17 +8,14 @@ import           Hakyll
 --------------------------------------------------------------------------------
 main :: IO ()
 main = hakyll $ do
-    -- match "images/*" $ do
-    --     route   idRoute
-    --     compile copyFileCompiler
+    match "images/*" $ do
+        route   idRoute
+        compile copyFileCompiler
 
     match "src/css/*.hs" $ do
         route   $ setExtension "css" `composeRoutes` gsubRoute "src/" (const "")
         compile $ getResourceString
-            -- If you can use cabal-install 1.20 or higher, you should use "cabal exec".
-            -- Travis CI uses cabal-install 1.18 as of April, 2015... So this source uses "runghc".
             >>= withItemBody (unixFilter "cabal" ["exec", "runghc"])
-            -- >>= withItemBody (unixFilter "runghc" ["-package-db=.cabal-sandbox/x86_64-linux-ghc-7.8.4-packages.conf.d"])
             >>= return . fmap compressCss
 
     match (fromList ["about.markdown"]) $ do
@@ -46,7 +43,6 @@ main = hakyll $ do
                 >>= loadAndApplyTemplate "templates/blog.html"    blogCtx
                 >>= loadAndApplyTemplate "templates/default.html" blogCtx
                 >>= relativizeUrls
-
 
     match "index.html" $ do
         route   idRoute

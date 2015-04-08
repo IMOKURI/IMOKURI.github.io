@@ -2,6 +2,8 @@
 {-# LANGUAGE OverloadedStrings #-}
 
 import Prelude hiding (all, div, (**))
+import Data.Monoid
+import Data.Text (Text)
 import Clay
 
 import qualified Clay.Media as M
@@ -15,10 +17,11 @@ defaultStyle :: Css
 defaultStyle = do
 
   body ? do
-    color       black
+    color       txtC
     fontSize    (px 16)
     sym2 margin nil auto
     width       (px 600)
+    bg
 
   div # "#header" ? do
     borderBottom solid (px 2) black
@@ -29,7 +32,7 @@ defaultStyle = do
     textAlign (alignSide sideRight)
 
   div # "#header" ** "#navigation" ** a ? do
-    color          black
+    color          txtC
     fontSize       (px 18)
     fontWeight     bold
     marginLeft     (px 12)
@@ -37,7 +40,7 @@ defaultStyle = do
     textTransform  uppercase
 
   div # "#logo" ** a ? do
-    color          black
+    color          txtC
     float          floatLeft
     fontSize       (px 18)
     fontWeight     bold
@@ -65,6 +68,14 @@ defaultStyle = do
 
 -------------------------------------------------------
 
+bgC, txtC, emC, linkC :: Color
+bgC   = rgb 246 246 246
+txtC  = rgb   0  20  40
+emC   = rgb  40  20   0
+linkC = rgb   0 100 180
+
+-------------------------------------------------------
+
 unit, half :: Integer -> Size Abs
 unit = px . (* 24)
 half = px . (* 12)
@@ -85,4 +96,16 @@ wide :: Css -> Css
 wide = query all [M.minWidth pageWidth]
 
 -------------------------------------------------------
+
+gif :: Text -> BackgroundImage
+gif im = url ("../images/" <> im <> ".gif")
+
+bg :: Css
+bg = background (gif "bg", bgC)
+
+bgBorder :: Integer -> Css
+bgBorder o = outline solid (px 1) (setA o black)
+
+-------------------------------------------------------
+
 
