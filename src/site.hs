@@ -16,7 +16,7 @@ main = hakyll $ do
         route   idRoute
         compile copyFileCompiler
 
-    match "src/css/*.hs" $ do
+    match "src/css/main.hs" $ do
         route   $ setExtension "css" `composeRoutes` gsubRoute "src/" (const "")
         compile $ getResourceString
             >>= withItemBody (unixFilter "cabal" ["exec", "runghc"])

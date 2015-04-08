@@ -1,12 +1,16 @@
 
 {-# LANGUAGE OverloadedStrings #-}
 
+module Main where
+
 import Prelude hiding (all, div, (**))
 import Data.Monoid
 import Data.Text (Text)
 import Clay
 
 import qualified Clay.Media as M
+
+import Font
 
 
 main :: IO ()
@@ -25,15 +29,15 @@ defaultStyle = do
 
   importArticles
 
-  div # "#header" ? do
+  header ? do
     borderBottom solid (px 2) black
     marginBottom (px 30)
     sym2 padding (px 12) nil
 
-  div # "#header" ** "#navigation" ? do
+  header ** nav ? do
     textAlign (alignSide sideRight)
 
-  div # "#header" ** "#navigation" ** a ? do
+  header ** nav ** a ? do
     uiFont
     marginLeft     (px 12)
 
@@ -41,7 +45,7 @@ defaultStyle = do
     uiFont
     float          floatLeft
 
-  div # "#footer" ? do
+  footer ? do
     borderTop      solid (px 2) black
     smallFont
     marginTop      (px 30)
@@ -87,33 +91,6 @@ bg = background (gif "bg", bgC)
 
 bgBorder :: Integer -> Css
 bgBorder o = outline solid (px 1) (setA o black)
-
--------------------------------------------------------
-
-importFonts :: Css
-importFonts = do
-
-  fontFace $ do
-    fontFamily ["Koku Mincho"] []
-    fontFaceSrc [FontFaceSrcUrl "fonts/font_1_kokumr_1.00_rls.ttf" (Just TrueType)]
-
-  fontFace $ do
-    fontFamily ["Koku Gothic"] []
-    fontFaceSrc [FontFaceSrcUrl "fonts/font_1_kokugl_1.15_rls.ttf" (Just TrueType)]
-
-  fontFace $ do
-    fontFamily ["Ricty Diminished"] []
-    fontFaceSrc [FontFaceSrcUrl "fonts/RictyDiminished-Regular.ttf" (Just TrueType)]
-
-
-kokuMin :: Css
-kokuMin = fontFamily ["Koku Mincho"] [serif]
-
-kokuGo :: Css
-kokuGo = fontFamily ["Koku Gothic"] [sansSerif]
-
-rictyDiminished :: Css
-rictyDiminished = fontFamily ["Ricty Diminished"] [monospace]
 
 -------------------------------------------------------
 
@@ -169,7 +146,7 @@ importArticles = article ? do
     fontStyle italic
 
   h1 ? do
-    fontSize (px 24)
+    fontSize (px 22)
 
   h2 ? do
     fontSize (px 20)
