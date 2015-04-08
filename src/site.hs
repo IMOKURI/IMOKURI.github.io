@@ -22,8 +22,8 @@ main = hakyll $ do
             >>= withItemBody (unixFilter "cabal" ["exec", "runghc"])
             >>= return . fmap compressCss
 
-    match "about.markdown" $ do
-        route   $ setExtension "html"
+    match "pages/about.markdown" $ do
+        route   $ setExtension "html" `composeRoutes` gsubRoute "pages/" (const "")
         compile $ pandocCompiler
             >>= loadAndApplyTemplate "templates/default.html" defaultContext
             >>= relativizeUrls
@@ -48,8 +48,8 @@ main = hakyll $ do
                 >>= loadAndApplyTemplate "templates/default.html" blogCtx
                 >>= relativizeUrls
 
-    match "index.html" $ do
-        route   idRoute
+    match "pages/index.html" $ do
+        route   $ gsubRoute "pages/" (const "")
         compile $ do
             posts <- recentFirst =<< loadAll "posts/*"
             let indexCtx = listField "posts" postCtx (return posts)
@@ -60,6 +60,10 @@ main = hakyll $ do
                 >>= applyAsTemplate indexCtx
                 >>= loadAndApplyTemplate "templates/default.html" indexCtx
                 >>= relativizeUrls
+
+    match "pages/robots.txt" $ do
+        route   $ gsubRoute "pages/" (const "")
+        compile copyFileCompiler
 
     match "templates/*" $ compile templateCompiler
 

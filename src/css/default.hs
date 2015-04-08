@@ -16,12 +16,10 @@ main = putCss defaultStyle
 defaultStyle :: Css
 defaultStyle = do
 
-  importKokuFont
+  importFonts
 
   body ? do
-    color       txtC
-    kokuGo
-    fontSize    (px 16)
+    contentFont
     sym2 margin nil auto
     width       (px 600)
     bg
@@ -35,19 +33,12 @@ defaultStyle = do
     textAlign (alignSide sideRight)
 
   div # "#header" ** "#navigation" ** a ? do
-    color          txtC
-    fontSize       (px 18)
-    fontWeight     bold
+    uiFont
     marginLeft     (px 12)
-    textDecoration none
-    textTransform  uppercase
 
   div # "#logo" ** a ? do
-    color          txtC
+    uiFont
     float          floatLeft
-    fontSize       (px 18)
-    fontWeight     bold
-    textDecoration none
 
   h1 ? do
     fontSize (px 24)
@@ -111,20 +102,49 @@ bgBorder o = outline solid (px 1) (setA o black)
 
 -------------------------------------------------------
 
-importKokuFont :: Css
-importKokuFont = do
+importFonts :: Css
+importFonts = do
+
   fontFace $ do
     fontFamily ["Koku Mincho"] []
     fontFaceSrc [FontFaceSrcUrl "fonts/font_1_kokumr_1.00_rls.ttf" (Just TrueType)]
+
   fontFace $ do
     fontFamily ["Koku Gothic"] []
     fontFaceSrc [FontFaceSrcUrl "fonts/font_1_kokugl_1.15_rls.ttf" (Just TrueType)]
+
+  fontFace $ do
+    fontFamily ["Ricty Diminished"] []
+    fontFaceSrc [FontFaceSrcUrl "fonts/RictyDiminished-Regular.ttf" (Just TrueType)]
+
 
 kokuMin :: Css
 kokuMin = fontFamily ["Koku Mincho"] [serif]
 
 kokuGo :: Css
 kokuGo = fontFamily ["Koku Gothic"] [sansSerif]
+
+rictyDiminished :: Css
+rictyDiminished = fontFamily ["Ricty Diminished"] [monospace]
+
+-------------------------------------------------------
+
+contentFont :: Css
+contentFont = do
+  kokuMin
+  fontSize    (px 16)
+  lineHeight  u1
+  color       txtC
+
+uiFont :: Css
+uiFont = do
+  kokuGo
+  fontSize       (px 18)
+  lineHeight     u1
+  textTransform  uppercase
+  textDecoration none
+  color          txtC
+  fontWeight     bold
 
 -------------------------------------------------------
 
