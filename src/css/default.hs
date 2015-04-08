@@ -19,7 +19,6 @@ defaultStyle = do
   importFonts
 
   body ? do
-    contentFont
     sym2 margin nil auto
     width       (px 600)
     bg
