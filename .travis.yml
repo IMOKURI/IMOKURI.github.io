@@ -14,7 +14,7 @@ env:
 
   matrix:
     - CABALVER=1.20 GHCVER=7.8.3
-    - CABALVER=1.22 GHCVER=7.10.1
+#    - CABALVER=1.22 GHCVER=7.10.1
 #    - CABALVER=head GHCVER=head
 
 before_install:
