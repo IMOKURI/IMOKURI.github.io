@@ -16,8 +16,11 @@ main = putCss defaultStyle
 defaultStyle :: Css
 defaultStyle = do
 
+  importKokuFont
+
   body ? do
     color       txtC
+    kokuGo
     fontSize    (px 16)
     sym2 margin nil auto
     width       (px 600)
@@ -108,4 +111,20 @@ bgBorder o = outline solid (px 1) (setA o black)
 
 -------------------------------------------------------
 
+importKokuFont :: Css
+importKokuFont = do
+  fontFace $ do
+    fontFamily ["Koku Mincho"] []
+    fontFaceSrc [FontFaceSrcUrl "fonts/font_1_kokumr_1.00_rls.ttf" (Just TrueType)]
+  fontFace $ do
+    fontFamily ["Koku Gothic"] []
+    fontFaceSrc [FontFaceSrcUrl "fonts/font_1_kokugl_1.15_rls.ttf" (Just TrueType)]
+
+kokuMin :: Css
+kokuMin = fontFamily ["Koku Mincho"] [serif]
+
+kokuGo :: Css
+kokuGo = fontFamily ["Koku Gothic"] [sansSerif]
+
+-------------------------------------------------------
 

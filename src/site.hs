@@ -12,13 +12,17 @@ main = hakyll $ do
         route   idRoute
         compile copyFileCompiler
 
+    match "fonts/*" $ do
+        route   idRoute
+        compile copyFileCompiler
+
     match "src/css/*.hs" $ do
         route   $ setExtension "css" `composeRoutes` gsubRoute "src/" (const "")
         compile $ getResourceString
             >>= withItemBody (unixFilter "cabal" ["exec", "runghc"])
             >>= return . fmap compressCss
 
-    match (fromList ["about.markdown"]) $ do
+    match "about.markdown" $ do
         route   $ setExtension "html"
         compile $ pandocCompiler
             >>= loadAndApplyTemplate "templates/default.html" defaultContext
