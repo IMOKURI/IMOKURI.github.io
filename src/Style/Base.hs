@@ -11,7 +11,6 @@ import qualified Data.Text as T (Text)
 import qualified Data.Text.Lazy as TL (unpack)
 
 import Clay
-import qualified Clay.Media as M
 
 import Style.Font
 
@@ -53,32 +52,17 @@ defaultStyle = TL.unpack $ render $ do
 
 -------------------------------------------------------
 
-bgC, txtC, emC, linkC :: Color
+bgC, txtC :: Color
 bgC   = rgb 246 246 246
 txtC  = rgb   0  20  40
-emC   = rgb  40  20   0
-linkC = rgb   0 100 180
 
 -------------------------------------------------------
 
-unit, half :: Integer -> Size Abs
+unit :: Integer -> Size Abs
 unit = px . (* 24)
-half = px . (* 12)
 
-u1, u2, u3, u4 :: Size Abs
+u1 :: Size Abs
 u1 = unit 1
-u2 = unit 2
-u3 = unit 3
-u4 = unit 4
-
-pageWidth :: Size Abs
-pageWidth = unit 25
-
-narrow :: Css -> Css
-narrow = query all [M.maxWidth pageWidth]
-
-wide :: Css -> Css
-wide = query all [M.minWidth pageWidth]
 
 -------------------------------------------------------
 
@@ -88,8 +72,8 @@ gif im = url ("../images/" <> im <> ".gif")
 bg :: Css
 bg = background (gif "bg", bgC)
 
-bgBorder :: Integer -> Css
-bgBorder o = outline solid (px 1) (setA o black)
+-- bgBorder :: Integer -> Css
+-- bgBorder o = outline solid (px 1) (setA o black)
 
 -------------------------------------------------------
 
@@ -115,23 +99,23 @@ smallFont =
      fontSize (pct 85)
      color    (setA 120 txtC)
 
-codeBlocks :: Css
-codeBlocks =
-  do bgBorder 20
-     rictyDiminished
-     syntax
+-- codeBlocks :: Css
+-- codeBlocks =
+--   do bgBorder 20
+--      rictyDiminished
+--      syntax
 
-syntax :: Css
-syntax =
-  do color (rgb 0 60 100)
-     ".kw" ? fontWeight bold
-     ".kw" ? color (rgb   0   0   0)
-     ".dt" ? color (rgb  20  60 180)
-     ".dv" ? color (rgb 100   0 200)
-     ".st" ? color (rgb 200  80 100)
-     ".ot" ? color (rgb 160  80  80)
-     ".fu" ? color (rgb   0 160 120)
-     ".co" ? color (rgb 160 160 160)
+-- syntax :: Css
+-- syntax =
+--   do color (rgb 0 60 100)
+--      ".kw" ? fontWeight bold
+--      ".kw" ? color (rgb   0   0   0)
+--      ".dt" ? color (rgb  20  60 180)
+--      ".dv" ? color (rgb 100   0 200)
+--      ".st" ? color (rgb 200  80 100)
+--      ".ot" ? color (rgb 160  80  80)
+--      ".fu" ? color (rgb   0 160 120)
+--      ".co" ? color (rgb 160 160 160)
 
 -------------------------------------------------------
 
