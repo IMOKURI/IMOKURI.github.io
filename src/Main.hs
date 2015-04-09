@@ -1,9 +1,12 @@
 --------------------------------------------------------------------------------
 {-# LANGUAGE OverloadedStrings #-}
 
+module Main where
+
 import           Data.Monoid ((<>))
 import           Hakyll
 
+import           Style.Base
 
 --------------------------------------------------------------------------------
 main :: IO ()
@@ -16,11 +19,9 @@ main = hakyll $ do
         route   idRoute
         compile copyFileCompiler
 
-    match "src/css/main.hs" $ do
-        route   $ setExtension "css" `composeRoutes` gsubRoute "src/" (const "")
-        compile $ getResourceString
-            >>= withItemBody (unixFilter "cabal" ["exec", "runghc"])
-            >>= return . fmap compressCss
+    create ["css/default.css"] $ do
+        route   idRoute
+        compile $ makeItem $ compressCss defaultStyle
 
     match "pages/about.markdown" $ do
         route   $ setExtension "html" `composeRoutes` gsubRoute "pages/" (const "")

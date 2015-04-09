@@ -1,7 +1,7 @@
 
 {-# LANGUAGE OverloadedStrings #-}
 
-module Sub.Font
+module Style.Font
 ( importFonts
 , kokuMin
 , kokuGo

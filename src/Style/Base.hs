@@ -1,24 +1,23 @@
 
 {-# LANGUAGE OverloadedStrings #-}
 
-module Main where
+module Style.Base
+( defaultStyle
+) where
 
 import Prelude hiding (all, div, (**))
 import Data.Monoid
-import Data.Text (Text)
-import Clay
+import qualified Data.Text as T (Text)
+import qualified Data.Text.Lazy as TL (unpack)
 
+import Clay
 import qualified Clay.Media as M
 
-import Font
+import Style.Font
 
 
-main :: IO ()
-main = putCss defaultStyle
-
-
-defaultStyle :: Css
-defaultStyle = do
+defaultStyle :: String
+defaultStyle = TL.unpack $ render $ do
 
   importFonts
 
@@ -83,7 +82,7 @@ wide = query all [M.minWidth pageWidth]
 
 -------------------------------------------------------
 
-gif :: Text -> BackgroundImage
+gif :: T.Text -> BackgroundImage
 gif im = url ("../images/" <> im <> ".gif")
 
 bg :: Css
