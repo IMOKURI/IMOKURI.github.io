@@ -5,6 +5,7 @@
 branches:
   only:
     - source
+    - develop
 
 env:
   global:
@@ -38,12 +39,14 @@ before_script:
 script:
   - cabal run -j build
 
-after_script:
-  - cd _site
-  - export REMOTE=$(git config remote.origin.url | sed 's/.*:\/\///')
-  - git remote add github https://${GH_TOKEN}@${REMOTE}
-  - git add --all
-  - git status
-  - git commit -m "Built by Travis ( build $TRAVIS_BUILD_NUMBER )"
-  - git push github master:master | grep -v http
+after_success:
+  - if [[ "$TRAVIS_BRANCH" == "source" ]]; then
+    cd _site;
+    export REMOTE=$(git config remote.origin.url | sed 's/.*:\/\///');
+    git remote add github https://${GH_TOKEN}@${REMOTE};
+    git add --all;
+    git status;
+    git commit -m "Built by Travis ( build $TRAVIS_BUILD_NUMBER )";
+    git push github master:master | grep -v http;
+    fi
 
