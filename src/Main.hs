@@ -23,12 +23,6 @@ main = hakyll $ do
         route   idRoute
         compile $ makeItem $ compressCss defaultStyle
 
-    match "pages/about.markdown" $ do
-        route   $ setExtension "html" `composeRoutes` gsubRoute "pages/" (const "")
-        compile $ pandocCompiler
-            >>= loadAndApplyTemplate "templates/default.html" defaultContext
-            >>= relativizeUrls
-
     match "posts/*" $ do
         route   $ setExtension "html"
         compile $ pandocCompiler
@@ -49,6 +43,12 @@ main = hakyll $ do
                 >>= loadAndApplyTemplate "templates/default.html" blogCtx
                 >>= relativizeUrls
 
+    match "pages/about.markdown" $ do
+        route   $ setExtension "html" `composeRoutes` gsubRoute "pages/" (const "")
+        compile $ pandocCompiler
+            >>= loadAndApplyTemplate "templates/default.html" defaultContext
+            >>= relativizeUrls
+
     match "pages/index.html" $ do
         route   $ gsubRoute "pages/" (const "")
         compile $ do
@@ -62,8 +62,12 @@ main = hakyll $ do
                 >>= loadAndApplyTemplate "templates/default.html" indexCtx
                 >>= relativizeUrls
 
-    match "pages/robots.txt" $ do
-        route   $ gsubRoute "pages/" (const "")
+    match "etc/*" $ do
+        route   $ gsubRoute "etc/" (const "")
+        compile copyFileCompiler
+
+    match "README.md" $ do
+        route   idRoute
         compile copyFileCompiler
 
     match "templates/*" $ compile templateCompiler
