@@ -6,22 +6,20 @@ module Main where
 import           Data.Monoid ((<>))
 import           Hakyll
 
-import           Style.Base
-
 --------------------------------------------------------------------------------
 main :: IO ()
 main = hakyll $ do
-    match "images/*" $ do
+    -- match "images/*" $ do
+    --     route   idRoute
+    --     compile copyFileCompiler
+
+    -- match "fonts/*" $ do
+    --     route   idRoute
+    --     compile copyFileCompiler
+
+    match "css/*" $ do
         route   idRoute
         compile copyFileCompiler
-
-    match "fonts/*" $ do
-        route   idRoute
-        compile copyFileCompiler
-
-    create ["css/default.css"] $ do
-        route   idRoute
-        compile $ makeItem $ compressCss defaultStyle
 
     match "posts/*" $ do
         route   $ setExtension "html"
