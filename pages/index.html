@@ -12,7 +12,14 @@ title: Home
 <p>最近の投稿はこちら。</p>
 
 <h2>Blog</h2>
-$partial("templates/post-list.html")$
+
+<ul>
+    $for(posts)$
+        <li>
+            <a href="$url$">$title$</a> - $date$
+        </li>
+    $endfor$
+</ul>
 
 <p><a href="/blog.html">続きはこちら。</a></p>
 
