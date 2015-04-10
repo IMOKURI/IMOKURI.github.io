@@ -6,8 +6,8 @@ module Style.Base
 ) where
 
 import Prelude hiding (all, div, (**))
-import Data.Monoid
-import qualified Data.Text as T (Text)
+-- import Data.Monoid
+-- import qualified Data.Text as T (Text)
 import qualified Data.Text.Lazy as TL (unpack)
 
 import Clay
@@ -28,7 +28,7 @@ defaultStyle = TL.unpack $ render $ do
     display        inlineBlock
     letterSpacing  normal
     wordSpacing    normal
-    verticalAlign  (alignSide sideTop)
+    verticalAlign  vAlignTop
     textRendering  auto
 
 -----
@@ -38,20 +38,20 @@ defaultStyle = TL.unpack $ render $ do
 -----
 
   header ? do
-    width       (pct 100)
-    top         auto
-    textAlign   (alignSide sideCenter)
-    sym2 margin (em 3) auto
+    width        (pct 100)
+    top          auto
+    textAlign    (alignSide sideCenter)
+    sym2 margin  (em 3) auto
     background   bgHeaderC
     color        font1HeaderC
 
     wide $ do
-      width (pct 25)
+      width       (pct 25)
       textAlign   (alignSide sideRight)
-      sym3 margin (pct 80) (em 2) nil
-      position   fixed
-      top        nil
-      bottom     nil
+      sym3 margin (pct 80) (pct 5) nil
+      position    fixed
+      top         nil
+      bottom      nil
 
   ".logo" ? do
     sym margin     nil
@@ -78,11 +78,13 @@ defaultStyle = TL.unpack $ render $ do
 -----
 
   ".content" ? do
-    width (pct 100)
+    width        (pct 100)
+    sym3 padding (em 2) (em 1) nil
 
     wide $ do
-      width (pct 75)
-
+      width        (pct 75)
+      sym3 padding (em 2) (em 3) nil
+      marginLeft   (pct 25)
 
 
 -------------------------------------------------------
@@ -92,8 +94,9 @@ bgHeaderC    = rgb  22 147 165
 font1HeaderC = rgb 255 255 255
 font2HeaderC = rgb   0 205 172
 
-fontContentC :: Color
-fontContentC = rgb 170 170 170
+font1ContentC, font2ContentC :: Color
+font1ContentC = rgb   0  20  40
+font2ContentC = rgb 170 170 170
 
 -------------------------------------------------------
 
@@ -101,31 +104,29 @@ pageWidth :: Size Abs
 pageWidth = em 48
 
 wide :: Css -> Css
-wide = query screen [M.minWidth pageWidth]
+wide = query M.screen [M.minWidth pageWidth]
 
 -------------------------------------------------------
 
 contentFont :: Css
 contentFont = do
   kokuMin
-  fontSize    (px 16)
-  lineHeight  u1
-  color       txtC
+--   fontSize    (px 16)
+  color       font1ContentC
 
 uiFont :: Css
 uiFont = do
   kokuGo
-  fontSize       (px 18)
-  lineHeight     u1
+--   fontSize       (px 18)
   textDecoration none
-  color          txtC
-  fontWeight     bold
-
+  color          font1ContentC
+--   fontWeight     bold
+-- 
 smallFont :: Css
-smallFont =
-  do kokuGo
-     fontSize (pct 85)
-     color    (setA 120 txtC)
+smallFont = do
+  kokuGo
+--      fontSize (pct 85)
+  color    font2ContentC
 
 -- codeBlocks :: Css
 -- codeBlocks =
