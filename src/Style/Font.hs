@@ -26,10 +26,6 @@ importFonts = do
     fontFamily ["Ricty Diminished"] []
     fontFaceSrc [FontFaceSrcUrl "fonts/RictyDiminished-Regular.ttf" (Just TrueType)]
 
-  h1 ? do
-    fontSize    (em 2)
-    sym2 margin (em 0.67) nil
-
 
 kokuMin :: Css
 kokuMin = fontFamily ["Koku Mincho"] [serif]
