@@ -11,6 +11,7 @@ import qualified Data.Text as T (Text)
 import qualified Data.Text.Lazy as TL (unpack)
 
 import Clay
+import qualified Clay.Media as M
 
 import Style.Font
 
@@ -18,62 +19,89 @@ import Style.Font
 defaultStyle :: String
 defaultStyle = TL.unpack $ render $ do
 
-  importFonts
+  star ? do
+    boxSizing   borderBox
 
   body ? do
-    sym2 margin nil auto
-    width       (px 600)
-    bg
+    sym margin     nil
+    sym padding    nil
+    display        inlineBlock
+    letterSpacing  normal
+    wordSpacing    normal
+    verticalAlign  (alignSide sideTop)
+    textRendering  auto
 
-  importArticles
+-----
+
+  importFonts
+
+-----
 
   header ? do
-    borderBottom solid (px 2) black
-    marginBottom (px 30)
-    sym2 padding (px 12) nil
+    width       (pct 100)
+    top         auto
+    textAlign   (alignSide sideCenter)
+    sym2 margin (em 3) auto
+    background   bgHeaderC
+    color        font1HeaderC
 
-  header ** nav ? do
-    textAlign (alignSide sideRight)
+    wide $ do
+      width (pct 25)
+      textAlign   (alignSide sideRight)
+      sym3 margin (pct 80) (em 2) nil
+      position   fixed
+      top        nil
+      bottom     nil
 
-  header ** nav ** a ? do
-    uiFont
-    marginLeft     (px 12)
+  ".logo" ? do
+    sym margin     nil
+    textDecoration none
 
-  div # "#logo" ** a ? do
-    uiFont
-    float          floatLeft
+  ".tagline" ? do
+    sym margin nil
+    fontWeight (weight 300)
+    color      font2HeaderC
 
-  footer ? do
-    borderTop      solid (px 2) black
-    smallFont
-    marginTop      (px 30)
-    sym2 padding   (px 12) nil
-    textAlign      (alignSide sideRight)
+  nav ? do
+    sym margin     nil
+    sym padding    nil
+    display        inlineBlock
+    background     transparent
+    border         solid (px 2) font2HeaderC
+    color          font1HeaderC
+    marginTop      (em 1)
+    letterSpacing  (em 0.05)
+    textTransform  uppercase
+    textDecoration none
+    fontSize       (pct 85)
+
+-----
+
+  ".content" ? do
+    width (pct 100)
+
+    wide $ do
+      width (pct 75)
+
+
 
 -------------------------------------------------------
 
-bgC, txtC :: Color
-bgC   = rgb 246 246 246
-txtC  = rgb   0  20  40
+bgHeaderC, font1HeaderC, font2HeaderC :: Color
+bgHeaderC    = rgb  22 147 165
+font1HeaderC = rgb 255 255 255
+font2HeaderC = rgb   0 205 172
+
+fontContentC :: Color
+fontContentC = rgb 170 170 170
 
 -------------------------------------------------------
 
-unit :: Integer -> Size Abs
-unit = px . (* 24)
+pageWidth :: Size Abs
+pageWidth = em 48
 
-u1 :: Size Abs
-u1 = unit 1
-
--------------------------------------------------------
-
-gif :: T.Text -> BackgroundImage
-gif im = url ("../images/" <> im <> ".gif")
-
-bg :: Css
-bg = background (gif "bg", bgC)
-
--- bgBorder :: Integer -> Css
--- bgBorder o = outline solid (px 1) (setA o black)
+wide :: Css -> Css
+wide = query screen [M.minWidth pageWidth]
 
 -------------------------------------------------------
 
@@ -118,19 +146,4 @@ smallFont =
 --      ".co" ? color (rgb 160 160 160)
 
 -------------------------------------------------------
-
-importArticles :: Css
-importArticles = article ? do
-  contentFont
-  marginBottom u1
-
-  ".info" ? do
-    smallFont
-    fontStyle italic
-
-  h1 ? do
-    fontSize (px 22)
-
-  h2 ? do
-    fontSize (px 20)
 
