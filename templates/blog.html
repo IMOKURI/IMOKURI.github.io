@@ -1,7 +1,19 @@
 <article>
-<h1>$title$</h1>
+<h3>$title$</h3>
 
 ごゆるりお楽しみください。
-$partial("templates/post-list.html")$
+
+<ul>
+    $for(posts)$
+        <li>
+            <a href="$url$">$title$</a> - $date$
+            $if(teaser)$
+                $teaser$
+                ...<a href="$url$">(read more)</a>
+            $endif$
+        </li>
+    $endfor$
+</ul>
+
 </article>
 

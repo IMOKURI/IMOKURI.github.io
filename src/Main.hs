@@ -6,8 +6,6 @@ module Main where
 import           Data.Monoid ((<>))
 import           Hakyll
 
-import           Style.Base
-
 --------------------------------------------------------------------------------
 main :: IO ()
 main = hakyll $ do
@@ -19,13 +17,14 @@ main = hakyll $ do
         route   idRoute
         compile copyFileCompiler
 
-    create ["css/default.css"] $ do
+    match "css/*" $ do
         route   idRoute
-        compile $ makeItem $ compressCss defaultStyle
+        compile copyFileCompiler
 
     match "posts/*" $ do
         route   $ setExtension "html"
         compile $ pandocCompiler
+            >>= saveSnapshot "content"
             >>= loadAndApplyTemplate "templates/post.html"    postCtx
             >>= loadAndApplyTemplate "templates/default.html" postCtx
             >>= relativizeUrls
@@ -76,5 +75,6 @@ main = hakyll $ do
 --------------------------------------------------------------------------------
 postCtx :: Context String
 postCtx = dateField "date" "%B %e, %Y"
+       <> teaserField "teaser" "content"
        <> defaultContext
 
