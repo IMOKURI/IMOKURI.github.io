@@ -62,6 +62,12 @@ main = hakyll $ do
                 >>= loadAndApplyTemplate "templates/default.html" indexCtx
                 >>= relativizeUrls
 
+    match "pages/404.markdown" $ do
+        route   $ setExtension "html" `composeRoutes` gsubRoute "pages/" (const "")
+        compile $ pandocCompiler
+            >>= loadAndApplyTemplate "templates/default.html" defaultContext
+            >>= relativizeUrls
+
     match "etc/*" $ do
         route   $ gsubRoute "etc/" (const "")
         compile copyFileCompiler
