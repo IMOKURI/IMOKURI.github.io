@@ -5,7 +5,7 @@
 branches:
   only:
     - source
-    - develop
+#    - develop
 
 env:
   global:
