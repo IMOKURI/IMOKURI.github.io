@@ -5,6 +5,7 @@ module Main where
 
 import           Data.Monoid ((<>))
 import           Hakyll
+import           System.FilePath
 
 --------------------------------------------------------------------------------
 main :: IO ()
@@ -21,8 +22,8 @@ main = hakyll $ do
         route   idRoute
         compile copyFileCompiler
 
-    match "posts/*" $ do
-        route   $ setExtension "html"
+    match "posts/*/*/*" $ do
+        route   $ setExtension "html" `composeRoutes` gsubRoute "posts/" (const "blog/")
         compile $ pandocCompiler
             >>= saveSnapshot "content"
             >>= loadAndApplyTemplate "templates/post.html"    postCtx
@@ -30,9 +31,9 @@ main = hakyll $ do
             >>= relativizeUrls
 
     create ["blog.html"] $ do
-        route idRoute
+        route $ customRoute directoryIndex
         compile $ do
-            posts <- recentFirst =<< loadAll "posts/*"
+            posts <- recentFirst =<< loadAll "posts/*/*/*"
             let blogCtx = listField "posts" postCtx (return posts)
                        <> constField "title" "Blog"
                        <> defaultContext
@@ -43,7 +44,7 @@ main = hakyll $ do
                 >>= relativizeUrls
 
     match "pages/about.markdown" $ do
-        route   $ setExtension "html" `composeRoutes` gsubRoute "pages/" (const "")
+        route   $ customRoute directoryIndex
         compile $ pandocCompiler
             >>= loadAndApplyTemplate "templates/default.html" defaultContext
             >>= relativizeUrls
@@ -51,7 +52,7 @@ main = hakyll $ do
     match "pages/index.html" $ do
         route   $ gsubRoute "pages/" (const "")
         compile $ do
-            posts <- recentFirst =<< loadAll "posts/*"
+            posts <- recentFirst =<< loadAll "posts/*/*/*"
             let indexCtx = listField "posts" postCtx (return posts)
                         <> constField "title" "Home"
                         <> defaultContext
@@ -77,4 +78,7 @@ postCtx :: Context String
 postCtx = dateField "date" "%B %e, %Y"
        <> teaserField "teaser" "content"
        <> defaultContext
+
+directoryIndex :: Identifier -> FilePath
+directoryIndex = (</> "index.html") . dropExtension . takeFileName . toFilePath
 
