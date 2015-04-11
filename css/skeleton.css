@@ -25,6 +25,10 @@
 - Media Queries
 */
 
+.section.header,
+.section.footer {
+  text-align: center;
+}
 
 /* Grid
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
@@ -32,7 +36,7 @@
   position: relative;
   width: 100%;
   max-width: 960px;
-  margin: 0 auto;
+  margin: 2em auto;
   padding: 0 20px;
   box-sizing: border-box; }
 .column,
