@@ -41,6 +41,13 @@ main = hakyll $ do
                 >>= loadAndApplyTemplate "templates/default.html" blogCtx
                 >>= relativizeUrls
 
+    -- blog <- buildPaginateWith
+    --   (sortRecentFirst >=> return . paginateEvery 10)
+    --   "posts/*/*/*"
+    --   (\n -> if n == 1
+    --          then fromFilePath "blog/"
+    --          else fromFilePath $ "blog/" ++ show n ++ "/")
+
     match "pages/index.html" $ do
         route   $ gsubRoute "pages/" (const "")
         compile $ do
