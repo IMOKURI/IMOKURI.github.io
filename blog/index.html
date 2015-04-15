@@ -27,27 +27,101 @@
         <article>
 <h3>Blog</h3>
 
-ごゆるりお楽しみください。
+<p>ごゆるりお楽しみください。</p>
 
 <ul>
     
         <li>
-            <a href="../blog/2015/04/test1.html">テスト　その1</a> - April  6, 2015
+
+            <h4><a href="../blog/2015/04/test1.html">テスト　その1</a></h4>
+            April  6, 2015
+
             
                 <p>テストメッセージです。</p>
-
-                ...<a href="../blog/2015/04/test1.html">(read more)</a>
+...<a href="../blog/2015/04/test1.html">(続きを読む)</a>
             
+
         </li>
+
     
         <li>
-            <a href="../blog/2015/04/test2.html">テスト　その2</a> - April  3, 2015
+
+            <h4><a href="../blog/2015/04/create-github-pages-with-hakyll.html">Hakyllを使ってGitHub Pagesを作成して、そのソースも管理して、Travis CIで自動デプロイする。</a></h4>
+            April  5, 2015
+
+            
+                <p><a href="https://pages.github.com/">GitHub Pages</a>は、レポジトリに配置されたファイルにそって、Webページが生成されます。そのため、<code>index.html</code> などは、レポジトリのルートに配置されている必要があります。</p>
+<p>一方、<a href="http://jaspervdj.be/hakyll/">Hakyll</a>は、公開用の <code>index.html</code> などのファイルが、ルートディレクトリではなく、 <code>_site</code> というディレクトリ配下に生成されます。</p>
+<p>そのため、HakyllのソースのルートディレクトリからGithub Pagesのレポジトリにソースをアップロードしてしまうと、正しくWebページが表示されません。</p>
+<p>そこで、レポジトリのmasterブランチでは、公開用にHakyllで生成したファイル( <code>_site</code> 配下の <code>index.html</code> など)が配置され、sourceブランチに、Webページ生成元となるソースを含めたファイルを配置するようにレポジトリを作成したいと思います。</p>
+<p>その際、sourceブランチを修正、プッシュしたら、自動でmasterブランチが更新されるよう、<a href="https://travis-ci.org/">Travis CI</a>を使用して自動化したいと思います。</p>
+...<a href="../blog/2015/04/create-github-pages-with-hakyll.html">(続きを読む)</a>
+            
+
+        </li>
+
+    
+        <li>
+
+            <h4><a href="../blog/2015/04/test2.html">テスト　その2</a></h4>
+            April  3, 2015
+
             
                 <p>テストメッセージです。<br />ここまではプレビュー。</p>
-
-                ...<a href="../blog/2015/04/test2.html">(read more)</a>
+...<a href="../blog/2015/04/test2.html">(続きを読む)</a>
             
+
         </li>
+
+    
+        <li>
+
+            <h4><a href="../blog/2014/10/docker-use-case-snmp-agent.html">Docker ユースケース【監視対象としてのSNMP Agent】</a></h4>
+            October 19, 2014
+
+            
+                <p>物理サーバでも、仮想マシンでもない、Dockerを始めとしたコンテナ型の仮想化が有効なユースケースがあります。</p>
+<p>それは、SNMP Agentとしてです。</p>
+<p>具体的には、SNMP Agentを監視するSNMP Managerの試験などの用途として、大量のSNMP Agentが必要な場合、に効果的だと思います。</p>
+...<a href="../blog/2014/10/docker-use-case-snmp-agent.html">(続きを読む)</a>
+            
+
+        </li>
+
+    
+        <li>
+
+            <h4><a href="../blog/2014/06/send-snmptrap-using-haskell.html">HaskellでSNMP Trapを投げる</a></h4>
+            June 29, 2014
+
+            
+                <p>Haskellには、SNMP Trapを送信するライブラリがないですかね。</p>
+<p>ということで、簡単なものだけ作ってみました。</p>
+<p>目指したものとしては、</p>
+<ol style="list-style-type: decimal">
+<li><p>送信したいSNMP Trapを複数定義した設定ファイルを読み込む</p></li>
+<li><p>SNMP Trapの定義ごとにSNMP Trapのパケットを組み立てる</p></li>
+<li><p>SNMP Trapの定義ごとにスレッドを立てて、SNMP Trapを送信する（指定した間隔で投げ続ける）</p></li>
+</ol>
+<p>と言った感じです。</p>
+...<a href="../blog/2014/06/send-snmptrap-using-haskell.html">(続きを読む)</a>
+            
+
+        </li>
+
+    
+        <li>
+
+            <h4><a href="../blog/2014/05/how-to-create-good-outcomes-when-negotiating.html">交渉で良い結果を得る方法7つ</a></h4>
+            May  8, 2014
+
+            
+                <p>交渉でのミスを避けるための7つのポイントが、参考になったので、まとめます。</p>
+...<a href="../blog/2014/05/how-to-create-good-outcomes-when-negotiating.html">(続きを読む)</a>
+            
+
+        </li>
+
     
 </ul>
 

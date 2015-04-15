@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="ja">
+    <head>
+        <meta charset="utf-8" />
+        <title>Wake up! Good night* - HaskellでSNMP Trapを投げる</title>
+        <meta name="description" content="Personal blog" />
+        <meta name="keywords" content="blog,haskell" />
+        <meta name="author" content="IMOKURI" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link rel="stylesheet" href="../../../css/normalize.css">
+        <link rel="stylesheet" href="../../../css/skeleton.css">
+        <link rel="shortcut icon" href="../../../images/favicon.ico">
+    </head>
+    <body>
+
+<div class="section header">
+    <div class="container">
+        <img class="u-max-full-width" src="../../../images/title.png">
+        <a class="button" href="../../../">Home</a>
+        <a class="button" href="../../../about/">About</a>
+        <a class="button" href="../../../blog/">Blog</a>
+    </div>
+</div>
+
+<div class="section body">
+    <div class="container">
+        <article>
+<h3>HaskellでSNMP Trapを投げる</h3>
+
+<div class="info">
+    Posted on June 29, 2014
+    
+</div>
+
+<p>Haskellには、SNMP Trapを送信するライブラリがないですかね。</p>
+<p>ということで、簡単なものだけ作ってみました。</p>
+<p>目指したものとしては、</p>
+<ol style="list-style-type: decimal">
+<li><p>送信したいSNMP Trapを複数定義した設定ファイルを読み込む</p></li>
+<li><p>SNMP Trapの定義ごとにSNMP Trapのパケットを組み立てる</p></li>
+<li><p>SNMP Trapの定義ごとにスレッドを立てて、SNMP Trapを送信する（指定した間隔で投げ続ける）</p></li>
+</ol>
+<p>と言った感じです。</p>
+<!--more-->
+<p>＋＋＋</p>
+<p><strong>1. 送信したいSNMP Trapを複数定義した設定ファイルを読み込む</strong></p>
+<p>設定ファイルは iniファイル の形式で、作成します。</p>
+<p>ライブラリは <a href="https://hackage.haskell.org/package/ConfigFile">ConfigFile</a> を使用していきます。</p>
+<pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="ot">readConfig ::</span> <span class="dt">IO</span> <span class="dt">ConfigParser</span>
+readConfig <span class="fu">=</span>
+  getCurrentDirectory
+  <span class="fu">&gt;&gt;=</span> getDirectoryContents
+  <span class="fu">&gt;&gt;=</span> return <span class="fu">.</span> head <span class="fu">.</span> filter (<span class="st">&quot;config.ini&quot;</span> <span class="ot">`isSuffixOf`</span>)
+  <span class="fu">&gt;&gt;=</span> readfile emptyCP
+  <span class="fu">&gt;&gt;=</span> return <span class="fu">.</span> either (const emptyCP) id</code></pre>
+<p>ツールの実行ディレクトリと同じフォルダにある iniファイル を読み込んで、ConfigParserを返します。</p>
+<p>今後、必要な変数などはこのConfigParserから取得していきます。</p>
+<p>＋＋＋</p>
+<p><strong>2. SNMP Trapの定義ごとにSNMP Trapのパケットを組み立てる</strong></p>
+<p>SNMP TrapはASN1という規格でエンコードされます。</p>
+<p>このエンコードには、<a href="http://hackage.haskell.org/package/asn1-encoding">asn1-encoding</a> を使っていきます。</p>
+<p>今回は、簡単に、ということで、v1のトラップで、bind変数もstringを1つだけ、、ということでやっていきます・・・（＞＿＜；）</p>
+<pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="ot">makeASN1TrapMsgs ::</span> <span class="dt">ConfigParser</span> <span class="ot">-&gt;</span> [<span class="dt">SectionSpec</span>] <span class="ot">-&gt;</span> [<span class="dt">B.ByteString</span>]
+makeASN1TrapMsgs _ [] <span class="fu">=</span> []
+makeASN1TrapMsgs cp (s<span class="fu">:</span>ss) <span class="fu">=</span> (B.concat <span class="fu">$</span> BL.toChunks <span class="fu">$</span> encodeASN1 <span class="dt">DER</span> (makeASN1TrapData cp s)) <span class="fu">:</span> makeASN1TrapMsgs cp ss</code></pre>
+<p>複数のSNMP Trapを定義するということで、iniファイルのセクションごとに、SNMP Trapを定義して、セクションごとにSNMP Trapのメッセージを組み立てていきます。</p>
+<p>encodeASN1は遅延評価されますが、後の送信処理のところでは正格評価されるので、ここで変換しておきます。</p>
+<pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="ot">makeASN1TrapData ::</span> <span class="dt">ConfigParser</span> <span class="ot">-&gt;</span> <span class="dt">SectionSpec</span> <span class="ot">-&gt;</span> [<span class="dt">ASN1</span>]
+makeASN1TrapData cp sec <span class="fu">|</span> version <span class="fu">==</span> <span class="st">&quot;1&quot;</span> <span class="fu">=</span> asn1Trap1Data cp sec
+                        <span class="fu">|</span> otherwise <span class="fu">=</span> [<span class="dt">Null</span>]
+  <span class="kw">where</span> version <span class="fu">=</span> forceEither <span class="fu">$</span> get cp sec <span class="st">&quot;snmp_version&quot;</span></code></pre>
+<p>今回は、v1のみ対応ということで。。</p>
+<p>設定値は、forceEitherで取っていきます。iniファイルの設定はちゃんと出来ているということで。。</p>
+<pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="ot">asn1Trap1Data ::</span> <span class="dt">ConfigParser</span> <span class="ot">-&gt;</span> <span class="dt">SectionSpec</span> <span class="ot">-&gt;</span> [<span class="dt">ASN1</span>]
+asn1Trap1Data cp sec <span class="fu">=</span> [ <span class="dt">Start</span> <span class="dt">Sequence</span>                   <span class="co">-- SNMP packet start</span>
+                       , <span class="dt">IntVal</span> <span class="dv">0</span>                         <span class="co">-- SNMP version: version-1</span>
+                       , <span class="dt">OctetString</span> community            <span class="co">-- SNMP community</span>
+                       , <span class="dt">Start</span> (<span class="dt">Container</span> <span class="dt">Context</span> <span class="dv">4</span>)      <span class="co">-- SNMP trap pdu v1 start</span>
+                       , <span class="dt">OID</span> enterpriseId                 <span class="co">-- Enterprise OID</span>
+                       , <span class="dt">Other</span> <span class="dt">Application</span> <span class="dv">0</span> agentAddress <span class="co">-- Agent Address</span>
+                       , <span class="dt">IntVal</span> genericTrap               <span class="co">-- Generic trap</span>
+                       , <span class="dt">IntVal</span> specificTrap              <span class="co">-- Specific trap</span>
+                       , <span class="dt">Other</span> <span class="dt">Application</span> <span class="dv">3</span> timeTicks    <span class="co">-- Time ticks</span>
+                       , <span class="dt">Start</span> <span class="dt">Sequence</span>                   <span class="co">-- Variable binding list start</span>
+                       , <span class="dt">Start</span> <span class="dt">Sequence</span>                   <span class="co">-- 1st variable binding start</span>
+                       , <span class="dt">OID</span> varbindOid                   <span class="co">-- Object name</span>
+                       , <span class="dt">OctetString</span> varbindMsg           <span class="co">-- Value</span>
+                       , <span class="dt">End</span> <span class="dt">Sequence</span>                     <span class="co">-- 1st variable binding end</span>
+                       , <span class="dt">End</span> <span class="dt">Sequence</span>                     <span class="co">-- Variable binding list end</span>
+                       , <span class="dt">End</span> (<span class="dt">Container</span> <span class="dt">Context</span> <span class="dv">4</span>)        <span class="co">-- SNMP trap pdu v1 end</span>
+                       , <span class="dt">End</span> <span class="dt">Sequence</span>                     <span class="co">-- SNMP Packaet end</span>
+                       ]
+  <span class="kw">where</span> community <span class="fu">=</span> C.pack <span class="fu">$</span> forceEither <span class="fu">$</span> get cp sec <span class="st">&quot;snmp_community&quot;</span>
+        enterpriseId <span class="fu">=</span> map (\s <span class="ot">-&gt;</span> read<span class="ot"> s ::</span> <span class="dt">Integer</span>) <span class="fu">$</span> dropWhile (<span class="fu">==</span><span class="st">&quot;&quot;</span>) <span class="fu">$</span> splitOn <span class="st">&quot;.&quot;</span> <span class="fu">$</span> forceEither <span class="fu">$</span> get cp sec <span class="st">&quot;enterprise_oid&quot;</span>
+        agentAddress <span class="fu">=</span> B.pack <span class="fu">$</span> map (\s <span class="ot">-&gt;</span> read<span class="ot"> s ::</span> <span class="dt">Word8</span>) <span class="fu">$</span> splitOn <span class="st">&quot;.&quot;</span> <span class="fu">$</span> forceEither <span class="fu">$</span> get cp sec <span class="st">&quot;agent_ip_address&quot;</span>
+        genericTrap <span class="fu">=</span> read (forceEither <span class="fu">$</span> get cp sec <span class="st">&quot;generic_trap&quot;</span>)<span class="ot"> ::</span> <span class="dt">Integer</span>
+        specificTrap <span class="fu">=</span> read (forceEither <span class="fu">$</span> get cp sec <span class="st">&quot;specific_trap&quot;</span>)<span class="ot"> ::</span> <span class="dt">Integer</span>
+        timeTicks' <span class="fu">=</span> read (forceEither <span class="fu">$</span> get cp sec <span class="st">&quot;time_stamp&quot;</span>)<span class="ot"> ::</span> <span class="dt">Integer</span>
+        timeTicks <span class="fu">=</span> <span class="kw">case</span> timeTicks' <span class="kw">of</span>
+          <span class="dv">0</span> <span class="ot">-&gt;</span> B.pack [<span class="dv">0</span>]
+          _ <span class="ot">-&gt;</span> B.dropWhile (<span class="fu">==</span><span class="dv">0</span>) <span class="fu">$</span> encode timeTicks'
+        varbindOid <span class="fu">=</span> map (\s <span class="ot">-&gt;</span> read<span class="ot"> s ::</span> <span class="dt">Integer</span>) <span class="fu">$</span> dropWhile (<span class="fu">==</span><span class="st">&quot;&quot;</span>) <span class="fu">$</span> splitOn <span class="st">&quot;.&quot;</span> <span class="fu">$</span> forceEither <span class="fu">$</span> get cp sec <span class="st">&quot;varbind_oid&quot;</span>
+        varbindMsg <span class="fu">=</span> C.pack <span class="fu">$</span> forceEither <span class="fu">$</span> get cp sec <span class="st">&quot;varbind_msg&quot;</span></code></pre>
+<p>SNMP Trapのパケットを組み立てていきます。</p>
+<p>SNMP Trapのパケットの構造は、RFCや、パケットキャプチャを参照いただくとして、その構造に合わせて、ASN1のリストを作っていきます。</p>
+<p>ASN1は、＜データの型＞、＜データの長さ＞、＜データ本体＞の形式でエンコードされます。そのため、複数のデータをまとめる型の場合、その開始と終了を明示する必要があります。</p>
+<p>各設定値は、ConfigParserからゴリゴリ読み込んでいきます。</p>
+<p>＋＋＋</p>
+<p><strong>3. SNMP Trapの定義ごとにスレッドを立てて、SNMP Trapを送信する</strong></p>
+<p>SNMP Trapの送信は <a href="http://hackage.haskell.org/package/network">network</a> を使っていきます。</p>
+<p>また、SNMP Trapの定義ごとに別スレッドを立てていくのには、<a href="https://hackage.haskell.org/package/base-4.7.0.0/docs/Control-Concurrent.html">Control.Concurrent</a> を使います。</p>
+<pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="ot">sendTrap ::</span> <span class="dt">ConfigParser</span> <span class="ot">-&gt;</span> [<span class="dt">B.ByteString</span>] <span class="ot">-&gt;</span> [<span class="dt">ThreadId</span>] <span class="ot">-&gt;</span> <span class="dt">IO</span> [<span class="dt">ThreadId</span>]
+sendTrap _ [] ts <span class="fu">=</span> return ts
+sendTrap cp (msg<span class="fu">:</span>msgs) ts <span class="fu">=</span> <span class="kw">do</span>
+  thread <span class="ot">&lt;-</span> forkIO <span class="fu">$</span> sendTrapBy intval server msg
+  sendTrap cp msgs (thread<span class="fu">:</span>ts)
+  <span class="kw">where</span> intval <span class="fu">=</span> read (forceEither <span class="fu">$</span> get cp <span class="st">&quot;DEFAULT&quot;</span> <span class="st">&quot;trap_send_interval&quot;</span>)<span class="ot"> ::</span> <span class="dt">Int</span>
+        server <span class="fu">=</span> forceEither <span class="fu">$</span> get cp <span class="st">&quot;DEFAULT&quot;</span> <span class="st">&quot;server_ip_address&quot;</span></code></pre>
+<p>Control.ConcurrentのforkIOを使ってSNMP Trapの定義ごとにスレッドを起動してきます。</p>
+<pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="ot">sendTrapBy ::</span> <span class="dt">Int</span> <span class="ot">-&gt;</span> <span class="dt">String</span> <span class="ot">-&gt;</span> <span class="dt">B.ByteString</span> <span class="ot">-&gt;</span> <span class="dt">IO</span> ()
+sendTrapBy intval server trap <span class="fu">=</span> <span class="kw">do</span>
+  sendTrapTo server trap
+  threadDelay (intval <span class="fu">*</span> <span class="dv">1000</span>)
+  sendTrapBy intval server trap</code></pre>
+<p>threadDelayを使って、SNMP Trapを定期的な間隔で送信していきます。</p>
+<pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="ot">sendTrapTo ::</span> <span class="dt">String</span> <span class="ot">-&gt;</span> <span class="dt">B.ByteString</span> <span class="ot">-&gt;</span> <span class="dt">IO</span> ()
+sendTrapTo server trap <span class="fu">=</span> withSocketsDo <span class="fu">$</span> <span class="kw">do</span>
+  addrs <span class="ot">&lt;-</span> getAddrInfo <span class="dt">Nothing</span> (<span class="dt">Just</span> server) (<span class="dt">Just</span> <span class="st">&quot;snmptrap&quot;</span>)
+  <span class="kw">let</span> addr <span class="fu">=</span> head addrs
+  sock <span class="ot">&lt;-</span> socket <span class="dt">AF_INET</span> <span class="dt">Datagram</span> defaultProtocol
+  bind sock (<span class="dt">SockAddrInet</span> aNY_PORT iNADDR_ANY)
+  connect sock (addrAddress addr)
+  sendAll sock trap
+  close sock</code></pre>
+<p>送信処理は、送信先サーバの情報を設定から取得し、UDPで接続するソケットを作成します。</p>
+<p>送信元IPとポートは自動で割り当てにして、接続したら、組み立てたパケットを送信して、ソケットクローズです。</p>
+<pre class="sourceCode haskell"><code class="sourceCode haskell">waitLoadTime <span class="ot">&lt;-</span> loadTime cp
+when waitLoadTime <span class="fu">$</span> mapM_ killThread sendTrapThreads</code></pre>
+<p>SNMP Trapの送信処理は、指定した時間経過したら終了するようにするため、</p>
+<p>killThreadで停止していきます。</p>
+<p>＋＋＋</p>
+<p>SNMP Trapを送信するには、いろいろ決めないと行けないので、設定情報を作るのも結構面倒ですね。</p>
+<p>ただ、監視の仕組みを導入するときは、性能などを確認するために、負荷ツールが必要になってくるので、どうやったら、楽になるかなぁと考えつつ、改良してみようかなと思います。</p>
+<hr />
+<p>追記:</p>
+<p>ソースは<a href="https://github.com/IMOKURI/snmptrapper">こちら</a>にあります。</p>
+
+</article>
+
+    </div>
+</div>
+
+<div class="section footer">
+    <div class="container">
+        Site proudly generated by <a href="http://jaspervdj.be/hakyll">Hakyll</a>
+        and <a href="http://getskeleton.com/">Skeleton</a>
+    </div>
+</div>
+
+    </body>
+</html>
