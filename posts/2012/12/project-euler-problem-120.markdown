@@ -12,27 +12,27 @@ categories: Programming
 
 [問題はこちら](http://projecteuler.net/problem=120)。
 
-<!-- more -->
+<!--more-->
 
-まずは [math](a-1)^{n}+(a+1)^{n}[/math] を展開していきます。
+まずは  $(a-1)^{n}+(a+1)^{n}$ を展開していきます。
 
 展開すると以下のとおり偶数番目の項は相殺されます。
 
-[math](a-1)^{n}+(a+1)^{n}=2a^{n}+2_{n}C_{2}a^{n-2}+\cdots[/math]
+$$(a-1)^{n}+(a+1)^{n}=2a^{n}+2_{n}C_{2}a^{n-2}+\cdots$$
 
-さらに、最後の項以外は、[math]a^{2}[/math]を項に含むため、
+さらに、最後の項以外は、$a^{2}$を項に含むため、
 
-[math]a^{2}[/math]を法とした剰余は最後の項だけ考えれば良いことになります。
+$a^{2}$を法とした剰余は最後の項だけ考えれば良いことになります。
 
 最後の項は、nが偶数の時は、常に2。nが奇数の時は、最後の項は2naとなるため、
 
-[math]a^{2}[/math]を法とした2naの最大値が[math]r_{max}[/math]となります。
+$a^{2}$ を法とした2naの最大値が $r_{max}$ となります。
 
 と言った感じで考えて行きまして。
 
 Haskellで書いてみたソースは以下のようになりました。
 
-[hs]
+```haskell
 listA :: [Int]
 listA = [3..1000]
 
@@ -43,7 +43,7 @@ makeResult :: [Int] -> Int
 makeResult = foldr (\a acc -> (make2N a)*a + acc) 0
 
 main = print $ makeResult listA
-[/hs]
+```
 
 プログラマではないので、イケてないかもですが、、そこはご容赦を。。
 
