@@ -25,7 +25,7 @@ tags: github,github pages,hakyll,haskell,travis ci
 
 
 
-<!-- more -->
+<!--more-->
 
 
 
@@ -170,14 +170,13 @@ sourceブランチを作成し、 `_site` ディレクトリをサブモジュ�
 
 
 
-    
-    <code>.cabal-sandbox
-    cabal.sandbox.config
-    dist/
-    _cache
-    _site
-    </code>
-
+```    
+.cabal-sandbox
+cabal.sandbox.config
+dist/
+_cache
+_site
+```
 
 
 
@@ -305,39 +304,59 @@ Travis CIとの連携を `.travis.yml` に記載します。
 
 
 
+```yaml
+# NB: don't set `language: haskell` here
 
+# See also https://github.com/hvr/multi-ghc-travis for more information
+
+branches:
+  only:
+    - source
+
+env:
+  global:
+    - GH_NAME="Travis on behalf of IMOKURI"
+    - secure: "<text that encrypts your email address>"
+    - secure: "<text that encrypts github token>"
+
+  matrix:
+    - CABALVER=1.20 GHCVER=7.8.3
+#    - CABALVER=1.22 GHCVER=7.10.1
+#    - CABALVER=head GHCVER=head
+
+before_install:
+  - travis_retry sudo add-apt-repository -y ppa:hvr/ghc
+  - travis_retry sudo apt-get update
+  - travis_retry sudo apt-get install cabal-install-$CABALVER ghc-$GHCVER
+  - export PATH=/opt/ghc/$GHCVER/bin:/opt/cabal/$CABALVER/bin:$PATH
+
+  - git submodule foreach --recursive 'git checkout master; git ls-files | grep -v README | grep -v CNAME | xargs -r git rm'
+
+install:
+  - travis_retry cabal update
+  - cabal sandbox init
+  - cabal install --only-dependencies --disable-documentation
+  - cabal configure --disable-library-profiling --disable-tests --disable-library-coverage --disable-benchmarks --disable-split-objs
+
+before_script:
+  - git config --global user.name "$GH_NAME"
+  - git config --global user.email "$GH_EMAIL"
+
+script:
+  - cabal run -j build
+
+after_success:
+  - if [[ "$TRAVIS_BRANCH" == "source" ]]; then
+    cd _site;
+    export REMOTE=$(git config remote.origin.url | sed 's/.*:\/\///');
+    git remote add github https://${GH_TOKEN}@${REMOTE};
+    git add --all;
+    git status;
+    git commit -m "Built by Travis ( build $TRAVIS_BUILD_NUMBER )";
+    git push github master:master | grep -v http;
+    fi
+```
     
-    <code>language: haskell
-    ghc: 7.8.4
-    branches:
-      only:
-      - source
-    env:
-      global:
-      - GH_NAME="Travis CI on behalf of <your name>"
-      - secure: "<text that encrypts your email address>"
-      - secure: "<text that encrypts github token>"
-    before_install:
-    - git submodule foreach --recursive 'git checkout master; git ls-files | grep -v README | grep -v CNAME | xargs -r git rm'
-    install:
-    - cabal sandbox init
-    - cabal install -j --only-dependencies --disable-documentation
-    - cabal configure --disable-library-profiling --disable-tests --disable-library-coverage --disable-benchmarks --disable-split-objs
-    before_script:
-    - git config --global user.name "$GH_NAME"
-    - git config --global user.email "$GH_EMAIL"
-    script: cabal run -j build
-    after_script:
-    - cd _site
-    - export REMOTE=$(git config remote.origin.url | sed 's/.*:\/\///')
-    - git remote add github https://${GH_TOKEN}@${REMOTE}
-    - git add --all
-    - git status
-    - git commit -m "Built by Travis ( build $TRAVIS_BUILD_NUMBER )"
-    - git push github master:master | grep -v http
-    </code>
-
-
 
 
 
@@ -378,11 +397,6 @@ Travis CIとの連携を `.travis.yml` に記載します。
 
 * * *
 
-
-
-
-
-* * *
 
 
 

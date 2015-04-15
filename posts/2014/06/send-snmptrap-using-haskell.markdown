@@ -29,7 +29,7 @@ Haskellには、SNMP Trapを送信するライブラリがないですかね。
 
 と言った感じです。
 
-<!-- more -->
+<!--more-->
 
 ＋＋＋
 
@@ -39,8 +39,8 @@ Haskellには、SNMP Trapを送信するライブラリがないですかね。
 
 ライブラリは [ConfigFile](https://hackage.haskell.org/package/ConfigFile) を使用していきます。
 
-[hs]
 
+```haskell
 readConfig :: IO ConfigParser
 readConfig =
   getCurrentDirectory
@@ -48,8 +48,8 @@ readConfig =
   >>= return . head . filter ("config.ini" `isSuffixOf`)
   >>= readfile emptyCP
   >>= return . either (const emptyCP) id
+```
 
-[/hs]
 
 ツールの実行ディレクトリと同じフォルダにある iniファイル を読み込んで、ConfigParserを返します。
 
@@ -57,7 +57,7 @@ readConfig =
 
 ＋＋＋
 
-**2. SNMP Trapの定義ごとにSNMP Trapのパケットを組み立てる**
+**2. SNMP Trapの定義ごとにSNMP Trapのパケットを組み立てる**
 
 SNMP TrapはASN1という規格でエンコードされます。
 
@@ -65,32 +65,28 @@ SNMP TrapはASN1という規格でエンコードされます。
 
 今回は、簡単に、ということで、v1のトラップで、bind変数もstringを1つだけ、、ということでやっていきます・・・（＞＿＜；）
 
-[hs]
-
+```haskell
 makeASN1TrapMsgs :: ConfigParser -> [SectionSpec] -> [B.ByteString]
 makeASN1TrapMsgs _ [] = []
 makeASN1TrapMsgs cp (s:ss) = (B.concat $ BL.toChunks $ encodeASN1 DER (makeASN1TrapData cp s)) : makeASN1TrapMsgs cp ss
-
-[/hs]
+```
 
 複数のSNMP Trapを定義するということで、iniファイルのセクションごとに、SNMP Trapを定義して、セクションごとにSNMP Trapのメッセージを組み立てていきます。
 
 encodeASN1は遅延評価されますが、後の送信処理のところでは正格評価されるので、ここで変換しておきます。
 
-[hs]
-
+```haskell
 makeASN1TrapData :: ConfigParser -> SectionSpec -> [ASN1]
 makeASN1TrapData cp sec | version == "1" = asn1Trap1Data cp sec
                         | otherwise = [Null]
   where version = forceEither $ get cp sec "snmp_version"
-
-[/hs]
+```
 
 今回は、v1のみ対応ということで。。
 
 設定値は、forceEitherで取っていきます。iniファイルの設定はちゃんと出来ているということで。。
 
-[hs]
+```haskell
 asn1Trap1Data :: ConfigParser -> SectionSpec -> [ASN1]
 asn1Trap1Data cp sec = [ Start Sequence                   -- SNMP packet start
                        , IntVal 0                         -- SNMP version: version-1
@@ -121,8 +117,7 @@ asn1Trap1Data cp sec = [ Start Sequence                   -- SNMP packet start
           _ -> B.dropWhile (==0) $ encode timeTicks'
         varbindOid = map (\s -> read s :: Integer) $ dropWhile (=="") $ splitOn "." $ forceEither $ get cp sec "varbind_oid"
         varbindMsg = C.pack $ forceEither $ get cp sec "varbind_msg"
-
-[/hs]
+```
 
 SNMP Trapのパケットを組み立てていきます。
 
@@ -134,14 +129,13 @@ ASN1は、＜データの型＞、＜データの長さ＞、＜データ本体�
 
 ＋＋＋
 
-**3. SNMP Trapの定義ごとにスレッドを立てて、SNMP Trapを送信する**
+**3. SNMP Trapの定義ごとにスレッドを立てて、SNMP Trapを送信する**
 
 SNMP Trapの送信は [network](http://hackage.haskell.org/package/network) を使っていきます。
 
 また、SNMP Trapの定義ごとに別スレッドを立てていくのには、[Control.Concurrent](https://hackage.haskell.org/package/base-4.7.0.0/docs/Control-Concurrent.html) を使います。
 
-[hs]
-
+```haskell
 sendTrap :: ConfigParser -> [B.ByteString] -> [ThreadId] -> IO [ThreadId]
 sendTrap _ [] ts = return ts
 sendTrap cp (msg:msgs) ts = do
@@ -149,25 +143,21 @@ sendTrap cp (msg:msgs) ts = do
   sendTrap cp msgs (thread:ts)
   where intval = read (forceEither $ get cp "DEFAULT" "trap_send_interval") :: Int
         server = forceEither $ get cp "DEFAULT" "server_ip_address"
-
-[/hs]
+```
 
 Control.ConcurrentのforkIOを使ってSNMP Trapの定義ごとにスレッドを起動してきます。
 
-[hs]
-
+```haskell
 sendTrapBy :: Int -> String -> B.ByteString -> IO ()
 sendTrapBy intval server trap = do
   sendTrapTo server trap
   threadDelay (intval * 1000)
   sendTrapBy intval server trap
-
-[/hs]
+```
 
 threadDelayを使って、SNMP Trapを定期的な間隔で送信していきます。
 
-[hs]
-
+```haskell
 sendTrapTo :: String -> B.ByteString -> IO ()
 sendTrapTo server trap = withSocketsDo $ do
   addrs <- getAddrInfo Nothing (Just server) (Just "snmptrap")
@@ -177,19 +167,16 @@ sendTrapTo server trap = withSocketsDo $ do
   connect sock (addrAddress addr)
   sendAll sock trap
   close sock
-
-[/hs]
+```
 
 送信処理は、送信先サーバの情報を設定から取得し、UDPで接続するソケットを作成します。
 
 送信元IPとポートは自動で割り当てにして、接続したら、組み立てたパケットを送信して、ソケットクローズです。
 
-[hs]
-
+```haskell
 waitLoadTime <- loadTime cp
 when waitLoadTime $ mapM_ killThread sendTrapThreads
-
-[/hs]
+```
 
 SNMP Trapの送信処理は、指定した時間経過したら終了するようにするため、
 
@@ -200,3 +187,10 @@ killThreadで停止していきます。
 SNMP Trapを送信するには、いろいろ決めないと行けないので、設定情報を作るのも結構面倒ですね。
 
 ただ、監視の仕組みを導入するときは、性能などを確認するために、負荷ツールが必要になってくるので、どうやったら、楽になるかなぁと考えつつ、改良してみようかなと思います。
+
+***
+
+追記:  
+
+ソースは[こちら](https://github.com/IMOKURI/snmptrapper)にあります。
+

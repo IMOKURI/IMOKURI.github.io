@@ -1,17 +1,21 @@
 <article>
 <h3>$title$</h3>
 
-ごゆるりお楽しみください。
+<p>ごゆるりお楽しみください。</p>
 
 <ul>
     $for(posts)$
         <li>
-            <a href="$url$">$title$</a> - $date$
+
+            <h4><a href="$url$">$title$</a></h4>
+            $date$
+
             $if(teaser)$
-                $teaser$
-                ...<a href="$url$">(read more)</a>
+                $teaser$...<a href="$url$">(続きを読む)</a>
             $endif$
+
         </li>
+
     $endfor$
 </ul>
 

@@ -30,6 +30,10 @@
   text-align: center;
 }
 
+.info {
+  color: #555;
+}
+
 /* Grid
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
 .container {
@@ -305,7 +309,7 @@ ol ul {
   margin: 1.5rem 0 1.5rem 3rem;
   font-size: 90%; }
 li {
-  margin-bottom: 1rem; }
+  margin-bottom: 1.5rem; }
 
 
 /* Code
