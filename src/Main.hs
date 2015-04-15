@@ -10,22 +10,20 @@ import           System.FilePath
 --------------------------------------------------------------------------------
 main :: IO ()
 main = hakyll $ do
-    match "images/*" $ do
-        route   idRoute
-        compile copyFileCompiler
-
-    match "fonts/*" $ do
+    match ( "images/*"
+       .||. "fonts/*"
+       .||. "README.md" ) $ do
         route   idRoute
         compile copyFileCompiler
 
     match "css/*" $ do
         route   idRoute
-        compile copyFileCompiler
+        compile compressCssCompiler
 
     match "posts/*/*/*" $ do
         route   $ setExtension "html" `composeRoutes` gsubRoute "posts/" (const "blog/")
         compile $ pandocCompiler
-            >>= saveSnapshot "content"
+            >>= saveSnapshot "posts"
             >>= loadAndApplyTemplate "templates/post.html"    postCtx
             >>= loadAndApplyTemplate "templates/default.html" postCtx
             >>= relativizeUrls
@@ -43,16 +41,10 @@ main = hakyll $ do
                 >>= loadAndApplyTemplate "templates/default.html" blogCtx
                 >>= relativizeUrls
 
-    match "pages/about.markdown" $ do
-        route   $ customRoute directoryIndex
-        compile $ pandocCompiler
-            >>= loadAndApplyTemplate "templates/default.html" defaultContext
-            >>= relativizeUrls
-
     match "pages/index.html" $ do
         route   $ gsubRoute "pages/" (const "")
         compile $ do
-            posts <- recentFirst =<< loadAll "posts/*/*/*"
+            posts <- fmap (take 5) . recentFirst =<< loadAll "posts/*/*/*"
             let indexCtx = listField "posts" postCtx (return posts)
                         <> constField "title" "Home"
                         <> defaultContext
@@ -61,6 +53,12 @@ main = hakyll $ do
                 >>= applyAsTemplate indexCtx
                 >>= loadAndApplyTemplate "templates/default.html" indexCtx
                 >>= relativizeUrls
+
+    match "pages/about.markdown" $ do
+        route   $ customRoute directoryIndex
+        compile $ pandocCompiler
+            >>= loadAndApplyTemplate "templates/default.html" defaultContext
+            >>= relativizeUrls
 
     match "pages/404.markdown" $ do
         route   $ setExtension "html" `composeRoutes` gsubRoute "pages/" (const "")
@@ -72,17 +70,13 @@ main = hakyll $ do
         route   $ gsubRoute "etc/" (const "")
         compile copyFileCompiler
 
-    match "README.md" $ do
-        route   idRoute
-        compile copyFileCompiler
-
     match "templates/*" $ compile templateCompiler
 
 
 --------------------------------------------------------------------------------
 postCtx :: Context String
 postCtx = dateField "date" "%B %e, %Y"
-       <> teaserField "teaser" "content"
+       <> teaserField "teaser" "posts"
        <> defaultContext
 
 directoryIndex :: Identifier -> FilePath
