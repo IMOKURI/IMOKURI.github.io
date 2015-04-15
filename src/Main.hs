@@ -3,6 +3,7 @@
 
 module Main where
 
+import           Control.Monad
 import           Data.Monoid ((<>))
 import           Hakyll
 import           System.FilePath
@@ -28,25 +29,27 @@ main = hakyll $ do
             >>= loadAndApplyTemplate "templates/default.html" postCtx
             >>= relativizeUrls
 
-    create ["blog.html"] $ do
-        route $ customRoute directoryIndex
+    blog <- buildPaginateWith
+        (sortRecentFirst >=> return . paginateEvery 10)
+        "posts/*/*/*"
+        (\n -> if n == 1
+               then fromFilePath "blog/index.html"
+               else fromFilePath $ "blog/" ++ show n ++ "/index.html")
+
+    paginateRules blog $ \pageNum pattern -> do
+        route   idRoute
         compile $ do
-            posts <- recentFirst =<< loadAll "posts/*/*/*"
-            let blogCtx = listField "posts" postCtx (return posts)
-                       <> constField "title" "Blog"
+            posts <- recentFirst =<< loadAll pattern
+            let pageCtx = paginateContext blog pageNum
+                blogCtx = constField "title" "Blog"
+                       <> listField "posts" (pageCtx <> postCtx) (return posts)
+                       <> pageCtx
                        <> defaultContext
 
             makeItem ""
-                >>= loadAndApplyTemplate "templates/blog.html"    blogCtx
+                >>= loadAndApplyTemplate "templates/blog.html" blogCtx
                 >>= loadAndApplyTemplate "templates/default.html" blogCtx
                 >>= relativizeUrls
-
-    -- blog <- buildPaginateWith
-    --   (sortRecentFirst >=> return . paginateEvery 10)
-    --   "posts/*/*/*"
-    --   (\n -> if n == 1
-    --          then fromFilePath "blog/"
-    --          else fromFilePath $ "blog/" ++ show n ++ "/")
 
     match "pages/index.html" $ do
         route   $ gsubRoute "pages/" (const "")

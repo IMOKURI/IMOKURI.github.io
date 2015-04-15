@@ -21,3 +21,31 @@
 
 </article>
 
+<div class="pagination">
+    <div class="container">
+        $if(firstPageUrl)$
+            <a class="button" href="$firstPageUrl$">First</a>
+        $else$
+            <button>First</button>
+        $endif$
+        $if(previousPageUrl)$
+            <a class="button" href="$previousPageUrl$">Previous</a>
+        $else$
+            <button>Previous</button>
+        $endif$
+        &mdash;
+        $currentPageNum$ of $numPages$
+        &mdash;
+        $if(nextPageUrl)$
+            <a class="button" href="$nextPageUrl$">Next</a>
+        $else$
+            <button>Next</button>
+        $endif$
+        $if(lastPageUrl)$
+            <a class="button" href="$lastPageUrl$">Last</a>
+        $else$
+            <button>Next</button>
+        $endif$
+    </div>
+</div>
+

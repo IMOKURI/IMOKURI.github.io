@@ -26,7 +26,8 @@
 */
 
 .section.header,
-.section.footer {
+.section.footer,
+.pagination {
   text-align: center;
 }
 
