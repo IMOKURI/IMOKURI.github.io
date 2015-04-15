@@ -14,7 +14,7 @@ categories: Network
 
 今回は「IPV6-MIB」をロードすることを例に、おさらいしていきます。
 
-<!-- more -->
+<!--more-->
 
 まず、MIB定義ファイルの中では、
 

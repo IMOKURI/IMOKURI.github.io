@@ -14,12 +14,8 @@ Preziというプレゼンテーションツールがあります。
 
 面白そうなので、前回のブログの内容をPreziを使って書いてみました。
 
-<!-- more -->
+<!--more-->
 
-こちらです。
+[こちら](http://prezi.com/nssayzsvapk0/spec-cpu-benchmark/)です。
 
-[prezi id='http://prezi.com/nssayzsvapk0/spec-cpu-benchmark/']
 
-ちょっと小さいかな。。？
-
-という方はオリジナルのページをご参照くださいm(_ _)m
