@@ -73,7 +73,6 @@ main = hakyll $ do
         route   $ setExtension "html" `composeRoutes` gsubRoute "pages/" (const "")
         compile $ pandocCompiler
             >>= loadAndApplyTemplate "templates/default.html" defaultContext
-            >>= relativizeUrls
 
     match "etc/*" $ do
         route   $ gsubRoute "etc/" (const "")
@@ -83,8 +82,7 @@ main = hakyll $ do
         route   idRoute
         compile $ do
             posts <- recentFirst =<< loadAll "posts/*/*/*"
-            let postCtx' = postCtx <> constField "host" (feedRoot feedConfig)
-                sitemapCtx = listField "posts" postCtx' (return posts)
+            let sitemapCtx = listField "posts" postCtx (return posts)
                           <> defaultContext
 
             makeItem ""
@@ -111,6 +109,7 @@ main = hakyll $ do
 postCtx :: Context String
 postCtx = dateField "date" "%B %e, %Y"
        <> teaserField "teaser" "contents"
+       <> constField "host" (feedRoot feedConfig)
        <> defaultContext
 
 rootDirIndex :: Identifier -> FilePath
