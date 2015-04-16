@@ -110,7 +110,7 @@ main = hakyll $ do
 --------------------------------------------------------------------------------
 postCtx :: Context String
 postCtx = dateField "date" "%B %e, %Y"
-       <> teaserField "teaser" "posts"
+       <> teaserField "teaser" "contents"
        <> defaultContext
 
 rootDirIndex :: Identifier -> FilePath
