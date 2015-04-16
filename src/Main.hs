@@ -24,7 +24,7 @@ main = hakyll $ do
     match "posts/*/*/*" $ do
         route   $ setExtension "html" `composeRoutes` gsubRoute "posts/" (const "blog/")
         compile $ pandocCompiler
-            >>= saveSnapshot "posts"
+            >>= saveSnapshot "contents"
             >>= loadAndApplyTemplate "templates/post.html"    postCtx
             >>= loadAndApplyTemplate "templates/default.html" postCtx
             >>= relativizeUrls
@@ -40,10 +40,9 @@ main = hakyll $ do
         route   idRoute
         compile $ do
             posts <- recentFirst =<< loadAll pattern
-            let pageCtx = paginateContext blog pageNum
-                blogCtx = constField "title" "Blog"
-                       <> listField "posts" (pageCtx <> postCtx) (return posts)
-                       <> pageCtx
+            let blogCtx = constField "title" "Blog"
+                       <> listField "posts" postCtx (return posts)
+                       <> paginateContext blog pageNum
                        <> defaultContext
 
             makeItem ""
@@ -65,7 +64,7 @@ main = hakyll $ do
                 >>= relativizeUrls
 
     match "pages/about.markdown" $ do
-        route   $ customRoute directoryIndex
+        route   $ customRoute rootDirIndex
         compile $ pandocCompiler
             >>= loadAndApplyTemplate "templates/default.html" defaultContext
             >>= relativizeUrls
@@ -80,6 +79,31 @@ main = hakyll $ do
         route   $ gsubRoute "etc/" (const "")
         compile copyFileCompiler
 
+    create ["sitemap.xml"] $ do
+        route   idRoute
+        compile $ do
+            posts <- recentFirst =<< loadAll "posts/*/*/*"
+            let postCtx' = postCtx <> constField "host" (feedRoot feedConfig)
+                sitemapCtx = listField "posts" postCtx' (return posts)
+                          <> defaultContext
+
+            makeItem ""
+                >>= loadAndApplyTemplate "templates/sitemap.xml" sitemapCtx
+
+    create ["feed/rss.xml"] $ do
+        route   idRoute
+        compile $ do
+            let feedCtx = postCtx <> bodyField "description"
+            posts <- fmap (take 10) . recentFirst =<< loadAllSnapshots "posts/*/*/*" "contents"
+            renderRss feedConfig feedCtx posts
+
+    create ["feed/atom.xml"] $ do
+        route   idRoute
+        compile $ do
+            let feedCtx = postCtx <> bodyField "description"
+            posts <- fmap (take 10) . recentFirst =<< loadAllSnapshots "posts/*/*/*" "contents"
+            renderAtom feedConfig feedCtx posts
+
     match "templates/*" $ compile templateCompiler
 
 
@@ -89,6 +113,15 @@ postCtx = dateField "date" "%B %e, %Y"
        <> teaserField "teaser" "posts"
        <> defaultContext
 
-directoryIndex :: Identifier -> FilePath
-directoryIndex = (</> "index.html") . dropExtension . takeFileName . toFilePath
+rootDirIndex :: Identifier -> FilePath
+rootDirIndex = (</> "index.html") . dropExtension . takeFileName . toFilePath
+
+feedConfig :: FeedConfiguration
+feedConfig = FeedConfiguration
+    { feedTitle       = "Wake up! Good night* - 最近の投稿"
+    , feedDescription = "インフラ系SEのまとめノート"
+    , feedAuthorName  = "IMOKURI"
+    , feedAuthorEmail = ""
+    , feedRoot        = "http://www.imokuri123.com"
+    }
 
