@@ -122,6 +122,6 @@ feedConfig = FeedConfiguration
     , feedDescription = "インフラ系SEのまとめノート"
     , feedAuthorName  = "IMOKURI"
     , feedAuthorEmail = ""
-    , feedRoot        = "http://www.imokuri123.com"
+    , feedRoot        = "http://imokuri123.com"
     }
 
