@@ -1,0 +1,500 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+    <title>Wake up! Good night* - 最近の投稿</title>
+    <link href="http://www.imokuri123.com/feed/atom.xml" rel="self" />
+    <link href="http://www.imokuri123.com" />
+    <id>http://www.imokuri123.com/feed/atom.xml</id>
+    <author>
+        <name>IMOKURI</name>
+        <email></email>
+    </author>
+    <updated>2015-04-05T20:07:53Z</updated>
+    <entry>
+    <title>Hakyllを使ってGitHub Pagesを作成して、そのソースも管理して、Travis CIで自動デプロイする。</title>
+    <link href="http://www.imokuri123.com/blog/2015/04/create-github-pages-with-hakyll.html" />
+    <id>http://www.imokuri123.com/blog/2015/04/create-github-pages-with-hakyll.html</id>
+    <published>2015-04-05T20:07:53Z</published>
+    <updated>2015-04-05T20:07:53Z</updated>
+    <summary type="html"><![CDATA[<p><a href="https://pages.github.com/">GitHub Pages</a>は、レポジトリに配置されたファイルにそって、Webページが生成されます。そのため、<code>index.html</code> などは、レポジトリのルートに配置されている必要があります。</p>
+<p>一方、<a href="http://jaspervdj.be/hakyll/">Hakyll</a>は、公開用の <code>index.html</code> などのファイルが、ルートディレクトリではなく、 <code>_site</code> というディレクトリ配下に生成されます。</p>
+<p>そのため、HakyllのソースのルートディレクトリからGithub Pagesのレポジトリにソースをアップロードしてしまうと、正しくWebページが表示されません。</p>
+<p>そこで、レポジトリのmasterブランチでは、公開用にHakyllで生成したファイル( <code>_site</code> 配下の <code>index.html</code> など)が配置され、sourceブランチに、Webページ生成元となるソースを含めたファイルを配置するようにレポジトリを作成したいと思います。</p>
+<p>その際、sourceブランチを修正、プッシュしたら、自動でmasterブランチが更新されるよう、<a href="https://travis-ci.org/">Travis CI</a>を使用して自動化したいと思います。</p>
+<!--more-->
+<hr />
+<p>はじめに、GitHub Pagesを作成するレポジトリを作成します。</p>
+<p>GitHub Pagesのレポジトリは、 <code>&lt;account name&gt;.github.io</code> で<a href="https://github.com/IMOKURI/IMOKURI.github.io">作成します</a>。</p>
+<p>レポジトリ作成の時点では、 <code>Initialize this repository with a README</code> はチェック <strong>しない</strong> ことを想定しています。</p>
+<hr />
+<p>まずは、Hakyllをsandboxにインストールして、Webページのソースを生成します。</p>
+<ul>
+<li>Webページを生成するためのディレクトリを作成。</li>
+</ul>
+<p><code>mkdir $HOME/hakyll; cd $HOME/hakyll</code></p>
+<ul>
+<li>sandboxを初期化。</li>
+</ul>
+<p><code>cabal sandbox init</code></p>
+<ul>
+<li>Hakyllをインストール（ちょっと時間かかる）。</li>
+</ul>
+<p><code>cabal install -j --disable-documentation hakyll</code></p>
+<ul>
+<li>Webページのソースを生成。</li>
+</ul>
+<p><code>cabal exec hakyll-init &lt;account name&gt;.github.io</code></p>
+<ul>
+<li>あとで、buildの確認にsandoboxを使いたいので、移動。</li>
+</ul>
+<p><code>mv .cabal-sandbox &lt;account name&gt;.github.io/</code></p>
+<hr />
+<p>続いて、GitHubのレポジトリに空のmasterブランチを作成します。</p>
+<ul>
+<li>gitを初期化。</li>
+</ul>
+<p><code>git init</code></p>
+<ul>
+<li>remoteブランチを登録。</li>
+</ul>
+<p><code>git remote add origin git@github.com:&lt;account name&gt;/&lt;account name&gt;.github.io.git</code></p>
+<ul>
+<li>masterブランチを空コミット。</li>
+</ul>
+<p><code>git commit --allow-empty -m &quot;Initial commit&quot;</code></p>
+<ul>
+<li>GitHubのレポジトリにアップロード。</li>
+</ul>
+<p><code>git push origin master</code></p>
+<hr />
+<p>sourceブランチを作成し、 <code>_site</code> ディレクトリをサブモジュールに登録します。</p>
+<ul>
+<li>sourceブランチを作成。</li>
+</ul>
+<p><code>git checkout -b source</code></p>
+<ul>
+<li><code>_site</code> ディレクトリをサブモジュールに登録。</li>
+</ul>
+<p><code>git submodule add git@github.com:&lt;account name&gt;/&lt;account name&gt;.github.io.git _site</code></p>
+<ul>
+<li>.gitmodulesファイルをTravisからアクセスできるように修正。</li>
+</ul>
+<p><code>vi .gitmodules</code></p>
+<p><code>url</code> を <code>https://github.com/&lt;account name&gt;/&lt;account name&gt;.github.io.git</code> に修正。</p>
+<ul>
+<li>.gitignoreファイルを作成。</li>
+</ul>
+<p><code>vi .gitignore</code></p>
+<pre><code>.cabal-sandbox
+cabal.sandbox.config
+dist/
+_cache
+_site</code></pre>
+<ul>
+<li>Hakyllのソースをbuild確認。</li>
+</ul>
+<p><code>cabal sandbox init</code></p>
+<p><code>cabal run -j build</code></p>
+<hr />
+<p>Travis CIがGitHubのレポジトリを更新できるようTokenを取得します。</p>
+<ul>
+<li><p>GitHubの<a href="https://github.com/settings/applications">Tokenを生成するページ</a>にアクセス。</p></li>
+<li><p><code>Generate new token</code> をクリック。</p></li>
+<li><p><code>Select scopes</code> は、デフォルトのに追加して、 <code>read:org</code> 、 <code>write:repo_hook</code> をチェック。</p></li>
+<li><p>生成されたTokenは控えておく。</p></li>
+</ul>
+<hr />
+<p>Travis CIでGitHubと連携する設定を追加します。</p>
+<ul>
+<li><a href="https://travis-ci.org/profile/">Travis CIのアカウント管理画面</a>で、GitHubのレポジトリの情報を取得。</li>
+</ul>
+<p><code>sync</code> ボタンをクリック。</p>
+<p><code>&lt;account name&gt;/&lt;account name&gt;.github.io</code> のスイッチをON。</p>
+<p>歯車アイコンを押して、設定画面へ。</p>
+<p><code>Build only if .travis.yml is present</code> のスイッチをON。</p>
+<hr />
+<p>TokenをTravisの設定に追加するため、暗号化します。</p>
+<ul>
+<li>Rubyのgemが必要なのでインストール。</li>
+</ul>
+<p><code>sudo yum install rubygems ruby-devel</code></p>
+<ul>
+<li>Travisをインストール。</li>
+</ul>
+<p><code>sudo gem install travis</code></p>
+<ul>
+<li>Tokenの情報と、メールアドレスの情報を暗号化。情報を控える。</li>
+</ul>
+<p><code>travis encrypt -r &lt;account name&gt;/&lt;account name&gt;.github.io GH_EMAIL=&lt;your email&gt;@&lt;your domain&gt;.&lt;tld&gt;</code></p>
+<p><code>travis encrypt -r &lt;account name&gt;/&lt;account name&gt;.github.io GH_TOKEN=&lt;the token that is used to access github&gt;</code></p>
+<hr />
+<p>Travis CIとの連携を <code>.travis.yml</code> に記載します。</p>
+<ul>
+<li><code>.travis.yml</code> ファイルを作成。</li>
+</ul>
+<p><code>vi .travis.yml</code></p>
+<div class="sourceCode"><pre class="sourceCode yaml"><code class="sourceCode yaml"><span class="co"># NB: don&#39;t set `language: haskell` here</span>
+
+<span class="co"># See also https://github.com/hvr/multi-ghc-travis for more information</span>
+
+<span class="fu">branches:</span>
+  <span class="fu">only:</span>
+    <span class="kw">-</span> source
+
+<span class="fu">env:</span>
+  <span class="fu">global:</span>
+    <span class="kw">-</span> GH_NAME=<span class="st">&quot;Travis on behalf of IMOKURI&quot;</span>
+    <span class="kw">-</span> <span class="fu">secure:</span> <span class="st">&quot;&lt;text that encrypts your email address&gt;&quot;</span>
+    <span class="kw">-</span> <span class="fu">secure:</span> <span class="st">&quot;&lt;text that encrypts github token&gt;&quot;</span>
+
+  <span class="fu">matrix:</span>
+    <span class="kw">-</span> CABALVER=1.20 GHCVER=7.8.3
+<span class="co">#    - CABALVER=1.22 GHCVER=7.10.1</span>
+<span class="co">#    - CABALVER=head GHCVER=head</span>
+
+<span class="fu">before_install:</span>
+  <span class="kw">-</span> <span class="fu">travis_retry sudo add-apt-repository -y ppa:</span>hvr/ghc
+  <span class="kw">-</span> travis_retry sudo apt-get update
+  <span class="kw">-</span> travis_retry sudo apt-get install cabal-install-$CABALVER ghc-$GHCVER
+  <span class="kw">-</span> <span class="fu">export PATH=/opt/ghc/$GHCVER/bin:</span>/opt/cabal/$CABALVER/bin:$PATH
+
+  <span class="kw">-</span> git submodule foreach --recursive <span class="st">&#39;git checkout master; git ls-files | grep -v README | grep -v CNAME | xargs -r git rm&#39;</span>
+
+<span class="fu">install:</span>
+  <span class="kw">-</span> travis_retry cabal update
+  <span class="kw">-</span> cabal sandbox init
+  <span class="kw">-</span> cabal install --only-dependencies --disable-documentation
+  <span class="kw">-</span> cabal configure --disable-library-profiling --disable-tests --disable-library-coverage --disable-benchmarks --disable-split-objs
+
+<span class="fu">before_script:</span>
+  <span class="kw">-</span> git config --global user.name <span class="st">&quot;$GH_NAME&quot;</span>
+  <span class="kw">-</span> git config --global user.email <span class="st">&quot;$GH_EMAIL&quot;</span>
+
+<span class="fu">script:</span>
+  <span class="kw">-</span> cabal run -j build
+
+<span class="fu">after_success:</span>
+  <span class="kw">-</span> if <span class="kw">[[</span> <span class="st">&quot;$TRAVIS_BRANCH&quot;</span> == <span class="st">&quot;source&quot;</span> <span class="kw">]]</span>; then
+    cd _site;
+    <span class="fu">export REMOTE=$(git config remote.origin.url | sed &#39;s/.*:</span>\/\///&#39;);
+    <span class="fu">git remote add github https:</span>//${GH_TOKEN}@${REMOTE};
+    git add --all;
+    git status;
+    git commit -m <span class="st">&quot;Built by Travis ( build $TRAVIS_BUILD_NUMBER )&quot;</span>;
+    <span class="fu">git push github master:</span>master | grep -v http;
+    fi</code></pre></div>
+<hr />
+<p>時は来た。。</p>
+<ul>
+<li>すべてのファイルをコミットしてsourceブランチにプッシュ。</li>
+</ul>
+<p><code>git add --all</code></p>
+<p><code>git commit -m &quot;Add source&quot;</code></p>
+<p><code>git push origin source</code></p>
+<ul>
+<li><p><a href="https://travis-ci.org/repositories">Travis CIのbuildの様子</a>を見守る。</p></li>
+<li><p>GitHubのmasterブランチが更新されたか確認。</p></li>
+<li><p>GitHub Pages(.github.io)に反映されたか確認。</p></li>
+</ul>
+<hr />
+<p>参考:</p>
+<p><a href="http://begriffs.com/posts/2014-08-12-create-static-site-with-hakyll-github.html">Create a static site with Hakyll, Github and Travis CI</a></p>
+<p><a href="http://timbaumann.info/posts/2013-08-04-hakyll-github-and-travis.html">Hakyll, Github and building a static site with Travis CI</a></p>]]></summary>
+</entry>
+<entry>
+    <title>Docker ユースケース【監視対象としてのSNMP Agent】</title>
+    <link href="http://www.imokuri123.com/blog/2014/10/docker-use-case-snmp-agent.html" />
+    <id>http://www.imokuri123.com/blog/2014/10/docker-use-case-snmp-agent.html</id>
+    <published>2014-10-19T00:35:41Z</published>
+    <updated>2014-10-19T00:35:41Z</updated>
+    <summary type="html"><![CDATA[<p>物理サーバでも、仮想マシンでもない、Dockerを始めとしたコンテナ型の仮想化が有効なユースケースがあります。</p>
+<p>それは、SNMP Agentとしてです。</p>
+<p>具体的には、SNMP Agentを監視するSNMP Managerの試験などの用途として、大量のSNMP Agentが必要な場合、に効果的だと思います。</p>
+<!--more-->
+<h2 id="snmp-managerの試験について">SNMP Managerの試験について</h2>
+<p>SNMP Managerは、大量のサーバやプロセス、ログなどを監視するアプリケーションを指します。</p>
+<p>その試験のためには、監視対象となる大量のサーバや、プロセス、ログが必要です。</p>
+<p>物理サーバを用意するのが難しいのは、もちろんですが、仮想OSを用意するにしても、数百、数千、数万の仮想OSを用意するとなると、サーバリソースが多く必要となり、やはり、現実的には、難しくなってきます。</p>
+<p>では、SNMP Agentが大量にいると見せかければ、よいのでは？</p>
+<p>という発想になり、ひとつのサーバに複数のIPアドレスを割り当て、それらを個別に監視することで、大量の監視対象がいるように見せかけることができることがあります。</p>
+<h4 id="それで解決できれば今日のこの後の話はなかったことにしてください">それで解決できれば、今日の、この後の話はなかったことにしてください。＞ ＜</h4>
+<p>ただ、昨今のSNMP Managerは賢く、</p>
+<p>複数のIPアドレスが付与されていることを検知して、別々に監視しようとしても、同一ホストと判断し、登録できない場合があります。</p>
+<p>そのため、SNMPのレイヤでは、少なくとも、監視対象は分割されている必要性が出てきます。</p>
+<h2 id="そこでdockerです">そこで、Dockerです。</h2>
+<p>Dockerを使えば、Dockerごとに別のSNMP Agentとして、SNMPを使用することができます。</p>
+<p>また、仮想OSに比べ、（基本的に）SNMP Agentのプロセスのみをコンテナ内で起動すれば良いため、必要なサーバリソースがガクッと減ります。</p>
+<p>ものにもよるかと思いますが、数MB～数十MBくらいのメモリ量でコンテナを起動できます。仮想OSとなると1GB程度は必要かと思いますので、結果として、数百、数千台規模のAgentを用意することが可能になります。</p>
+<p>最後に、SNMP Agentとして利用できるオープンソースを紹介します。</p>
+<p><a href="http://snmpsim.sourceforge.net/">SNMPSIM</a>というものです。</p>
+<p>これの良い所は、様々な種類のSNMP Agentを擬似できるところで、</p>
+<p>事前に、本物の機器からMIB値の情報を集めておけば、収集した値を応答するAgentが簡単に起動できるのです。</p>
+<h2 id="まだ困っていること">まだ困っていること</h2>
+<p>監視対象として使用する場合は、監視対象のIPアドレスを登録するため、</p>
+<p>コンテナを起動するたびに、IPアドレスが変わってしまうのは非常に困ります。</p>
+<p>DockerはそのDeployの容易性などの目的のため？、固定IPアドレスを明確に割り振る手段が備わっていない(v1.3.0時点)ので、固定IPアドレスを割り当てたい場合は、それ用のツールを使用する必要があります。</p>
+<p>Dockerの機能として、実現できるといいなぁと思っているのですが、もう少し時間がかかりそうですかね。</p>]]></summary>
+</entry>
+<entry>
+    <title>HaskellでSNMP Trapを投げる</title>
+    <link href="http://www.imokuri123.com/blog/2014/06/send-snmptrap-using-haskell.html" />
+    <id>http://www.imokuri123.com/blog/2014/06/send-snmptrap-using-haskell.html</id>
+    <published>2014-06-29T16:58:25Z</published>
+    <updated>2014-06-29T16:58:25Z</updated>
+    <summary type="html"><![CDATA[<p>Haskellには、SNMP Trapを送信するライブラリがないですかね。</p>
+<p>ということで、簡単なものだけ作ってみました。</p>
+<p>目指したものとしては、</p>
+<ol style="list-style-type: decimal">
+<li><p>送信したいSNMP Trapを複数定義した設定ファイルを読み込む</p></li>
+<li><p>SNMP Trapの定義ごとにSNMP Trapのパケットを組み立てる</p></li>
+<li><p>SNMP Trapの定義ごとにスレッドを立てて、SNMP Trapを送信する（指定した間隔で投げ続ける）</p></li>
+</ol>
+<p>と言った感じです。</p>
+<!--more-->
+<p>＋＋＋</p>
+<p><strong>1. 送信したいSNMP Trapを複数定義した設定ファイルを読み込む</strong></p>
+<p>設定ファイルは iniファイル の形式で、作成します。</p>
+<p>ライブラリは <a href="https://hackage.haskell.org/package/ConfigFile">ConfigFile</a> を使用していきます。</p>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="ot">readConfig ::</span> <span class="dt">IO</span> <span class="dt">ConfigParser</span>
+readConfig <span class="fu">=</span>
+  getCurrentDirectory
+  <span class="fu">&gt;&gt;=</span> getDirectoryContents
+  <span class="fu">&gt;&gt;=</span> return <span class="fu">.</span> head <span class="fu">.</span> filter (<span class="st">&quot;config.ini&quot;</span> <span class="ot">`isSuffixOf`</span>)
+  <span class="fu">&gt;&gt;=</span> readfile emptyCP
+  <span class="fu">&gt;&gt;=</span> return <span class="fu">.</span> either (const emptyCP) id</code></pre></div>
+<p>ツールの実行ディレクトリと同じフォルダにある iniファイル を読み込んで、ConfigParserを返します。</p>
+<p>今後、必要な変数などはこのConfigParserから取得していきます。</p>
+<p>＋＋＋</p>
+<p><strong>2. SNMP Trapの定義ごとにSNMP Trapのパケットを組み立てる</strong></p>
+<p>SNMP TrapはASN1という規格でエンコードされます。</p>
+<p>このエンコードには、<a href="http://hackage.haskell.org/package/asn1-encoding">asn1-encoding</a> を使っていきます。</p>
+<p>今回は、簡単に、ということで、v1のトラップで、bind変数もstringを1つだけ、、ということでやっていきます・・・（＞＿＜；）</p>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="ot">makeASN1TrapMsgs ::</span> <span class="dt">ConfigParser</span> <span class="ot">-&gt;</span> [<span class="dt">SectionSpec</span>] <span class="ot">-&gt;</span> [<span class="dt">B.ByteString</span>]
+makeASN1TrapMsgs _ [] <span class="fu">=</span> []
+makeASN1TrapMsgs cp (s<span class="fu">:</span>ss) <span class="fu">=</span> (B.concat <span class="fu">$</span> BL.toChunks <span class="fu">$</span> encodeASN1 <span class="dt">DER</span> (makeASN1TrapData cp s)) <span class="fu">:</span> makeASN1TrapMsgs cp ss</code></pre></div>
+<p>複数のSNMP Trapを定義するということで、iniファイルのセクションごとに、SNMP Trapを定義して、セクションごとにSNMP Trapのメッセージを組み立てていきます。</p>
+<p>encodeASN1は遅延評価されますが、後の送信処理のところでは正格評価されるので、ここで変換しておきます。</p>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="ot">makeASN1TrapData ::</span> <span class="dt">ConfigParser</span> <span class="ot">-&gt;</span> <span class="dt">SectionSpec</span> <span class="ot">-&gt;</span> [<span class="dt">ASN1</span>]
+makeASN1TrapData cp sec <span class="fu">|</span> version <span class="fu">==</span> <span class="st">&quot;1&quot;</span> <span class="fu">=</span> asn1Trap1Data cp sec
+                        <span class="fu">|</span> otherwise <span class="fu">=</span> [<span class="dt">Null</span>]
+  <span class="kw">where</span> version <span class="fu">=</span> forceEither <span class="fu">$</span> get cp sec <span class="st">&quot;snmp_version&quot;</span></code></pre></div>
+<p>今回は、v1のみ対応ということで。。</p>
+<p>設定値は、forceEitherで取っていきます。iniファイルの設定はちゃんと出来ているということで。。</p>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="ot">asn1Trap1Data ::</span> <span class="dt">ConfigParser</span> <span class="ot">-&gt;</span> <span class="dt">SectionSpec</span> <span class="ot">-&gt;</span> [<span class="dt">ASN1</span>]
+asn1Trap1Data cp sec <span class="fu">=</span> [ <span class="dt">Start</span> <span class="dt">Sequence</span>                   <span class="co">-- SNMP packet start</span>
+                       , <span class="dt">IntVal</span> <span class="dv">0</span>                         <span class="co">-- SNMP version: version-1</span>
+                       , <span class="dt">OctetString</span> community            <span class="co">-- SNMP community</span>
+                       , <span class="dt">Start</span> (<span class="dt">Container</span> <span class="dt">Context</span> <span class="dv">4</span>)      <span class="co">-- SNMP trap pdu v1 start</span>
+                       , <span class="dt">OID</span> enterpriseId                 <span class="co">-- Enterprise OID</span>
+                       , <span class="dt">Other</span> <span class="dt">Application</span> <span class="dv">0</span> agentAddress <span class="co">-- Agent Address</span>
+                       , <span class="dt">IntVal</span> genericTrap               <span class="co">-- Generic trap</span>
+                       , <span class="dt">IntVal</span> specificTrap              <span class="co">-- Specific trap</span>
+                       , <span class="dt">Other</span> <span class="dt">Application</span> <span class="dv">3</span> timeTicks    <span class="co">-- Time ticks</span>
+                       , <span class="dt">Start</span> <span class="dt">Sequence</span>                   <span class="co">-- Variable binding list start</span>
+                       , <span class="dt">Start</span> <span class="dt">Sequence</span>                   <span class="co">-- 1st variable binding start</span>
+                       , <span class="dt">OID</span> varbindOid                   <span class="co">-- Object name</span>
+                       , <span class="dt">OctetString</span> varbindMsg           <span class="co">-- Value</span>
+                       , <span class="dt">End</span> <span class="dt">Sequence</span>                     <span class="co">-- 1st variable binding end</span>
+                       , <span class="dt">End</span> <span class="dt">Sequence</span>                     <span class="co">-- Variable binding list end</span>
+                       , <span class="dt">End</span> (<span class="dt">Container</span> <span class="dt">Context</span> <span class="dv">4</span>)        <span class="co">-- SNMP trap pdu v1 end</span>
+                       , <span class="dt">End</span> <span class="dt">Sequence</span>                     <span class="co">-- SNMP Packaet end</span>
+                       ]
+  <span class="kw">where</span> community <span class="fu">=</span> C.pack <span class="fu">$</span> forceEither <span class="fu">$</span> get cp sec <span class="st">&quot;snmp_community&quot;</span>
+        enterpriseId <span class="fu">=</span> map (\s <span class="ot">-&gt;</span> read<span class="ot"> s ::</span> <span class="dt">Integer</span>) <span class="fu">$</span> dropWhile (<span class="fu">==</span><span class="st">&quot;&quot;</span>) <span class="fu">$</span> splitOn <span class="st">&quot;.&quot;</span> <span class="fu">$</span> forceEither <span class="fu">$</span> get cp sec <span class="st">&quot;enterprise_oid&quot;</span>
+        agentAddress <span class="fu">=</span> B.pack <span class="fu">$</span> map (\s <span class="ot">-&gt;</span> read<span class="ot"> s ::</span> <span class="dt">Word8</span>) <span class="fu">$</span> splitOn <span class="st">&quot;.&quot;</span> <span class="fu">$</span> forceEither <span class="fu">$</span> get cp sec <span class="st">&quot;agent_ip_address&quot;</span>
+        genericTrap <span class="fu">=</span> read (forceEither <span class="fu">$</span> get cp sec <span class="st">&quot;generic_trap&quot;</span>)<span class="ot"> ::</span> <span class="dt">Integer</span>
+        specificTrap <span class="fu">=</span> read (forceEither <span class="fu">$</span> get cp sec <span class="st">&quot;specific_trap&quot;</span>)<span class="ot"> ::</span> <span class="dt">Integer</span>
+        timeTicks&#39; <span class="fu">=</span> read (forceEither <span class="fu">$</span> get cp sec <span class="st">&quot;time_stamp&quot;</span>)<span class="ot"> ::</span> <span class="dt">Integer</span>
+        timeTicks <span class="fu">=</span> <span class="kw">case</span> timeTicks&#39; <span class="kw">of</span>
+          <span class="dv">0</span> <span class="ot">-&gt;</span> B.pack [<span class="dv">0</span>]
+          _ <span class="ot">-&gt;</span> B.dropWhile (<span class="fu">==</span><span class="dv">0</span>) <span class="fu">$</span> encode timeTicks&#39;
+        varbindOid <span class="fu">=</span> map (\s <span class="ot">-&gt;</span> read<span class="ot"> s ::</span> <span class="dt">Integer</span>) <span class="fu">$</span> dropWhile (<span class="fu">==</span><span class="st">&quot;&quot;</span>) <span class="fu">$</span> splitOn <span class="st">&quot;.&quot;</span> <span class="fu">$</span> forceEither <span class="fu">$</span> get cp sec <span class="st">&quot;varbind_oid&quot;</span>
+        varbindMsg <span class="fu">=</span> C.pack <span class="fu">$</span> forceEither <span class="fu">$</span> get cp sec <span class="st">&quot;varbind_msg&quot;</span></code></pre></div>
+<p>SNMP Trapのパケットを組み立てていきます。</p>
+<p>SNMP Trapのパケットの構造は、RFCや、パケットキャプチャを参照いただくとして、その構造に合わせて、ASN1のリストを作っていきます。</p>
+<p>ASN1は、＜データの型＞、＜データの長さ＞、＜データ本体＞の形式でエンコードされます。そのため、複数のデータをまとめる型の場合、その開始と終了を明示する必要があります。</p>
+<p>各設定値は、ConfigParserからゴリゴリ読み込んでいきます。</p>
+<p>＋＋＋</p>
+<p><strong>3. SNMP Trapの定義ごとにスレッドを立てて、SNMP Trapを送信する</strong></p>
+<p>SNMP Trapの送信は <a href="http://hackage.haskell.org/package/network">network</a> を使っていきます。</p>
+<p>また、SNMP Trapの定義ごとに別スレッドを立てていくのには、<a href="https://hackage.haskell.org/package/base-4.7.0.0/docs/Control-Concurrent.html">Control.Concurrent</a> を使います。</p>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="ot">sendTrap ::</span> <span class="dt">ConfigParser</span> <span class="ot">-&gt;</span> [<span class="dt">B.ByteString</span>] <span class="ot">-&gt;</span> [<span class="dt">ThreadId</span>] <span class="ot">-&gt;</span> <span class="dt">IO</span> [<span class="dt">ThreadId</span>]
+sendTrap _ [] ts <span class="fu">=</span> return ts
+sendTrap cp (msg<span class="fu">:</span>msgs) ts <span class="fu">=</span> <span class="kw">do</span>
+  thread <span class="ot">&lt;-</span> forkIO <span class="fu">$</span> sendTrapBy intval server msg
+  sendTrap cp msgs (thread<span class="fu">:</span>ts)
+  <span class="kw">where</span> intval <span class="fu">=</span> read (forceEither <span class="fu">$</span> get cp <span class="st">&quot;DEFAULT&quot;</span> <span class="st">&quot;trap_send_interval&quot;</span>)<span class="ot"> ::</span> <span class="dt">Int</span>
+        server <span class="fu">=</span> forceEither <span class="fu">$</span> get cp <span class="st">&quot;DEFAULT&quot;</span> <span class="st">&quot;server_ip_address&quot;</span></code></pre></div>
+<p>Control.ConcurrentのforkIOを使ってSNMP Trapの定義ごとにスレッドを起動してきます。</p>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="ot">sendTrapBy ::</span> <span class="dt">Int</span> <span class="ot">-&gt;</span> <span class="dt">String</span> <span class="ot">-&gt;</span> <span class="dt">B.ByteString</span> <span class="ot">-&gt;</span> <span class="dt">IO</span> ()
+sendTrapBy intval server trap <span class="fu">=</span> <span class="kw">do</span>
+  sendTrapTo server trap
+  threadDelay (intval <span class="fu">*</span> <span class="dv">1000</span>)
+  sendTrapBy intval server trap</code></pre></div>
+<p>threadDelayを使って、SNMP Trapを定期的な間隔で送信していきます。</p>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="ot">sendTrapTo ::</span> <span class="dt">String</span> <span class="ot">-&gt;</span> <span class="dt">B.ByteString</span> <span class="ot">-&gt;</span> <span class="dt">IO</span> ()
+sendTrapTo server trap <span class="fu">=</span> withSocketsDo <span class="fu">$</span> <span class="kw">do</span>
+  addrs <span class="ot">&lt;-</span> getAddrInfo <span class="dt">Nothing</span> (<span class="dt">Just</span> server) (<span class="dt">Just</span> <span class="st">&quot;snmptrap&quot;</span>)
+  <span class="kw">let</span> addr <span class="fu">=</span> head addrs
+  sock <span class="ot">&lt;-</span> socket <span class="dt">AF_INET</span> <span class="dt">Datagram</span> defaultProtocol
+  bind sock (<span class="dt">SockAddrInet</span> aNY_PORT iNADDR_ANY)
+  connect sock (addrAddress addr)
+  sendAll sock trap
+  close sock</code></pre></div>
+<p>送信処理は、送信先サーバの情報を設定から取得し、UDPで接続するソケットを作成します。</p>
+<p>送信元IPとポートは自動で割り当てにして、接続したら、組み立てたパケットを送信して、ソケットクローズです。</p>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell">waitLoadTime <span class="ot">&lt;-</span> loadTime cp
+when waitLoadTime <span class="fu">$</span> mapM_ killThread sendTrapThreads</code></pre></div>
+<p>SNMP Trapの送信処理は、指定した時間経過したら終了するようにするため、</p>
+<p>killThreadで停止していきます。</p>
+<p>＋＋＋</p>
+<p>SNMP Trapを送信するには、いろいろ決めないと行けないので、設定情報を作るのも結構面倒ですね。</p>
+<p>ただ、監視の仕組みを導入するときは、性能などを確認するために、負荷ツールが必要になってくるので、どうやったら、楽になるかなぁと考えつつ、改良してみようかなと思います。</p>
+<hr />
+<p>追記:</p>
+<p>ソースは<a href="https://github.com/IMOKURI/snmptrapper">こちら</a>にあります。</p>]]></summary>
+</entry>
+<entry>
+    <title>交渉で良い結果を得る方法7つ</title>
+    <link href="http://www.imokuri123.com/blog/2014/05/how-to-create-good-outcomes-when-negotiating.html" />
+    <id>http://www.imokuri123.com/blog/2014/05/how-to-create-good-outcomes-when-negotiating.html</id>
+    <published>2014-05-08T19:54:09Z</published>
+    <updated>2014-05-08T19:54:09Z</updated>
+    <summary type="html"><![CDATA[<p>交渉でのミスを避けるための7つのポイントが、参考になったので、まとめます。</p>
+<!--more-->
+<ol style="list-style-type: decimal">
+<li><p><strong>ほしいものを知る</strong> ほしいものを理解せずに交渉を始める人がいます。ほしいものがわかっていないのであれば、ゆずれるものとゆずれないものの区別をつけることはできないでしょう。</p></li>
+<li><p><strong>用語を理解する</strong> 基本的なことですが、無視されがちです。文書にサインするときは、それを読んで、理解している必要があります（たとえば、法的な資料や、使用許諾書など読んでいますか）。交渉で専門用語を使用するのであれば、その言葉の使い方を確認しましょう。</p></li>
+<li><p><strong>あいまいなものを残さない</strong> これはもっとも難しいことです。フランクな間柄での交渉はなおのことです。あなたが「ほのめかしたこと」が合意されたと考えてはいけません。交渉したいポイントは明確にすべきです。</p></li>
+<li><p><strong>すべてを記録する</strong> 交渉で合意したことがあれば、記録して、確認しましょう。シンプルにメールでの確認でも良いでしょう。そして、それは可能な限りすぐに実施すべきです。各々が合意したことに、食い違いがあった際、すぐ見つけることができるからです。重要な事は、沈黙は承諾とみなされないということです。</p></li>
+<li><p><strong>相手が友達というだけで、</strong> あなたがほしい物を与えてくれるわけではないし、相手がほしい物をあなたが与えるわけでもありません。ビジネスと友達関係を混同すると、やりにくい状況となります。交渉はビジネスであることを心に留めておくことです。また、友人との交渉は曖昧な状況も生みやすいため、十分に注意が必要です。</p></li>
+<li><p><strong>バカになることは重要なことではない</strong> これがより良い交渉者であることの有名な誤解です。これは正しくありません。恐怖心を与える人が良い交渉者です。彼らは重要なポイントには執拗に粘り強く、重要でないポイントでは潔くなります。大切なことは、交渉が関係構築のスタートの助けになると覚えておくことです。ほとんどの場合、驚くほど小さな世界で活動していることもあり、あなたは関係構築のスタートを（交渉のような）どろどろした状況で始めたくないかもしれません。ただ、あなたが何度も何度も同じ人と会う中で、正しい言葉を使っていれば、関係は建設的になります。</p></li>
+<li><p><strong>自分の言葉が自分を守る</strong> もっとも重要なルールがここにあります。あなたが何かに合意した時、約束を破ってはいけません。約束を破るかもしれない状況に陥った時でさえダメです。あなたが握手や書面で何かに合意したならすでに交渉は終わっています。約束を破ることは、あなたの評価とあなたが築き上げてきた信頼を崩壊させるもっとも早いやり方です。あなたが合意したことに不透明なことがあるのであれば、3.を参照してください。約束を破ったあとに、無邪気なことを言って釈明できる場所はありません。ある程度までは、混乱していたのだろうと許されることもあるかもしれませんが、あなたがした合意はなくなることはありません。</p></li>
+</ol>
+<p>＋＋</p>
+<p>なかなか自分でもできていないことが多いなぁと考えさせられます。</p>
+<p>ひとまず、恐い顔で過ごすことを心がけるようにします。（違</p>
+<p>参考： <a href="http://www.aaronkharris.com/guidelines-when-negotiating">How to create good outcomes when negotiating</a></p>]]></summary>
+</entry>
+<entry>
+    <title>何が人を動かすのか</title>
+    <link href="http://www.imokuri123.com/blog/2013/12/why-we-do-what-we-do.html" />
+    <id>http://www.imokuri123.com/blog/2013/12/why-we-do-what-we-do.html</id>
+    <published>2013-12-25T00:26:34Z</published>
+    <updated>2013-12-25T00:26:34Z</updated>
+    <summary type="html"><![CDATA[<p>人を動かすものは何か。</p>
+<p>客観的に、論理的に、考え、行動せよ、、、云々、とよく言われます。</p>
+<p>それは、もともと人がそう動けないからでしょうか。</p>
+<p>このAdvent Calendarの中でも<a href="http://www.imokuri123.com/blog/2013/12/puzzle-of-motivation.html">内的モチベーションについての話題</a>がありました。</p>
+<p>Candle Problemを引き合いに、人によりよく働いてもらうための手法について、学びました。</p>
+<p>また、<a href="http://www.imokuri123.com/blog/2013/12/emotion-moves-behavior.html">人の認識の仕方によって、幸福度は変化するという話</a>もありました。</p>
+<p>機械的にやっているだけでは、得られない満足度がそこにはありました。</p>
+<p>さらに、<a href="http://www.imokuri123.com/blog/2013/12/the-happy-secret-to-better-work.html">幸福度が上がることで、より良い結果が得られるという結果</a>もありました。</p>
+<p>バカみたいな前向きさも良い結果に寄与するということです。</p>
+<p>これらに共通するのは何でしょうか。</p>
+<!--more-->
+<p>それは「感情」です。</p>
+<p>人は感情によって動き、動かされます。</p>
+<p>というより、</p>
+<p>感情を与えられる行動を取っている、という方が正確でしょうか。</p>
+<p>では、何が人に感情を与える行動なのか？</p>
+<p>ひとつは、次のニーズ（人格的ニーズ）を満たす行動で、これらにより達成感が得られることから、行動に結びつきます。</p>
+<ol style="list-style-type: decimal">
+<li><p>確実性</p></li>
+<li><p>不確かさ</p></li>
+<li><p>重要性</p></li>
+<li><p>繋がりと愛</p></li>
+</ol>
+<p>１と２は矛盾しているようですが、「安定した生活がしたいけど、たまには刺激がほしい」というのは、まさにこのことかなと思います。</p>
+<p>もう一つは、次のニーズ（精神的ニーズ）を満たす行動で、これらによっても充足が得られるため、これも行動に結びつきます。</p>
+<ol style="list-style-type: decimal">
+<li><p>成長</p></li>
+<li><p>貢献</p></li>
+</ol>
+<p>こちらのニーズは満たすのが難しいとされます。だからこそ、強い行動力を生み出します。</p>
+<p>そして、人をこれらの行動に結びつけるのが、目標とプロセス（地図）でしょうか。</p>
+<p>どのような目標とプロセスを与えれば、上記の感情が満たせるのか、</p>
+<p>それが人を動かすヒントかもしれません。</p>
+<p>+++</p>
+<p>この投稿は、「<a href="http://www.adventar.org/calendars/158">TED 広める価値のあるアイデア Advent Calendar 2013</a>」に向けた投稿です。</p>]]></summary>
+</entry>
+<entry>
+    <title>指揮者に学ぶリーダーシップ</title>
+    <link href="http://www.imokuri123.com/blog/2013/12/lead-like-the-great-conductors.html" />
+    <id>http://www.imokuri123.com/blog/2013/12/lead-like-the-great-conductors.html</id>
+    <published>2013-12-24T07:30:19Z</published>
+    <updated>2013-12-24T07:30:19Z</updated>
+    <summary type="html"><![CDATA[<p>指揮者はただ指揮棒を振っているわけではないそうです。</p>
+<p>あまり考えたことなかったですが。（おぃ</p>
+<p>なるほど、そこから、一般的なリーダーとしての振る舞いが学べるということですね。</p>
+<p>ただ、リーダーとしての振る舞いは、決まりきったものではないと思います。</p>
+<p>なので、自分で考え試行錯誤し、ものにしていくことが必要です。</p>
+<p>その考えるときの、参考になるのが、こういったプレゼンテーションから学べます。</p>
+<p>失敗したケースは何が悪いのか、</p>
+<p>うまく言っているケースは何がよいのか</p>
+<!--more-->
+<p>最後は自分で考え、試行錯誤して、身につけていくものですね。</p>
+<p>+++</p>
+<p>この投稿は、「<a href="http://www.adventar.org/calendars/158">TED 広める価値のあるアイデア Advent Calendar 2013</a>」に向けた投稿です。</p>]]></summary>
+</entry>
+<entry>
+    <title>子供にやらせたい人生ゲーム</title>
+    <link href="http://www.imokuri123.com/blog/2013/12/the-world-peace-game.html" />
+    <id>http://www.imokuri123.com/blog/2013/12/the-world-peace-game.html</id>
+    <published>2013-12-23T10:22:15Z</published>
+    <updated>2013-12-23T10:22:15Z</updated>
+    <summary type="html"><![CDATA[<p>普通の人生ゲームではなくて、</p>
+<p>戦争の話とか、</p>
+<p>経済の話とか、</p>
+<p>政治の話とか、</p>
+<p>そういうゲームです。</p>
+<!--more-->
+<p>+++</p>
+<p>この投稿は、「<a href="http://www.adventar.org/calendars/158">TED 広める価値のあるアイデア Advent Calendar 2013</a>」に向けた投稿です。</p>]]></summary>
+</entry>
+<entry>
+    <title>うまく行くと思っていれば成功する！？</title>
+    <link href="http://www.imokuri123.com/blog/2013/12/the-happy-secret-to-better-work.html" />
+    <id>http://www.imokuri123.com/blog/2013/12/the-happy-secret-to-better-work.html</id>
+    <published>2013-12-22T00:03:41Z</published>
+    <updated>2013-12-22T00:03:41Z</updated>
+    <summary type="html"><![CDATA[<p>成功すれば、幸せになれる、のは本当？</p>
+<p>むしろ逆じゃない！？</p>
+<p>幸せなら成功する、</p>
+<p>もっと言うと、</p>
+<p>幸せだと思い込んでいれば成功する！</p>
+<p>その秘密のご紹介です。</p>
+<!--more-->
+<p>+++</p>
+<p>この投稿は、「<a href="http://www.adventar.org/calendars/158">TED 広める価値のあるアイデア Advent Calendar 2013</a>」に向けた投稿です。</p>]]></summary>
+</entry>
+<entry>
+    <title>やる気に関する驚きの科学</title>
+    <link href="http://www.imokuri123.com/blog/2013/12/puzzle-of-motivation.html" />
+    <id>http://www.imokuri123.com/blog/2013/12/puzzle-of-motivation.html</id>
+    <published>2013-12-21T07:40:32Z</published>
+    <updated>2013-12-21T07:40:32Z</updated>
+    <summary type="html"><![CDATA[<p>上の画像は「ろうそくの問題」と言われているテストです。</p>
+<p>ろうそくと、マッチと、画鋲を与えられ、</p>
+<p>「ろうそくのろうがテーブルに落ちないように壁に取り付けてください」</p>
+<p>というのが問題です。</p>
+<p>我々の仕事は、頭をつかう仕事をこなすことが求められてきています。↑のような。</p>
+<p>頭を使わない仕事はどんどん機械がやるようになるからです。</p>
+<p>では、そのときに、高いパフォーマンスを出してもらうためには、</p>
+<p>どうすればよいでしょうか。</p>
+<!--more-->
+<p>+++</p>
+<p>この投稿は、「<a href="http://www.adventar.org/calendars/158">TED 広める価値のあるアイデア Advent Calendar 2013</a>」に向けた投稿です。</p>]]></summary>
+</entry>
+<entry>
+    <title>口笛すげぇ</title>
+    <link href="http://www.imokuri123.com/blog/2013/12/a-whistleblower-you-haven-t-heard.html" />
+    <id>http://www.imokuri123.com/blog/2013/12/a-whistleblower-you-haven-t-heard.html</id>
+    <published>2013-12-20T00:00:39Z</published>
+    <updated>2013-12-20T00:00:39Z</updated>
+    <summary type="html"><![CDATA[<p>口笛得意な方、ぜひ真似してみてね♪</p>
+<!--more-->
+<p>+++</p>
+<p>この投稿は、「<a href="http://www.adventar.org/calendars/158">TED 広める価値のあるアイデア Advent Calendar 2013</a>」に向けた投稿です。</p>]]></summary>
+</entry>
+
+</feed>
