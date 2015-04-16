@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
     <title>Wake up! Good night* - 最近の投稿</title>
-    <link href="http://www.imokuri123.com/feed/atom.xml" rel="self" />
-    <link href="http://www.imokuri123.com" />
-    <id>http://www.imokuri123.com/feed/atom.xml</id>
+    <link href="http://imokuri123.com/feed/atom.xml" rel="self" />
+    <link href="http://imokuri123.com" />
+    <id>http://imokuri123.com/feed/atom.xml</id>
     <author>
         <name>IMOKURI</name>
         <email></email>
@@ -11,8 +11,8 @@
     <updated>2015-04-05T20:07:53Z</updated>
     <entry>
     <title>Hakyllを使ってGitHub Pagesを作成して、そのソースも管理して、Travis CIで自動デプロイする。</title>
-    <link href="http://www.imokuri123.com/blog/2015/04/create-github-pages-with-hakyll.html" />
-    <id>http://www.imokuri123.com/blog/2015/04/create-github-pages-with-hakyll.html</id>
+    <link href="http://imokuri123.com/blog/2015/04/create-github-pages-with-hakyll.html" />
+    <id>http://imokuri123.com/blog/2015/04/create-github-pages-with-hakyll.html</id>
     <published>2015-04-05T20:07:53Z</published>
     <updated>2015-04-05T20:07:53Z</updated>
     <summary type="html"><![CDATA[<p><a href="https://pages.github.com/">GitHub Pages</a>は、レポジトリに配置されたファイルにそって、Webページが生成されます。そのため、<code>index.html</code> などは、レポジトリのルートに配置されている必要があります。</p>
@@ -202,8 +202,8 @@ _site</code></pre>
 </entry>
 <entry>
     <title>Docker ユースケース【監視対象としてのSNMP Agent】</title>
-    <link href="http://www.imokuri123.com/blog/2014/10/docker-use-case-snmp-agent.html" />
-    <id>http://www.imokuri123.com/blog/2014/10/docker-use-case-snmp-agent.html</id>
+    <link href="http://imokuri123.com/blog/2014/10/docker-use-case-snmp-agent.html" />
+    <id>http://imokuri123.com/blog/2014/10/docker-use-case-snmp-agent.html</id>
     <published>2014-10-19T00:35:41Z</published>
     <updated>2014-10-19T00:35:41Z</updated>
     <summary type="html"><![CDATA[<p>物理サーバでも、仮想マシンでもない、Dockerを始めとしたコンテナ型の仮想化が有効なユースケースがあります。</p>
@@ -236,8 +236,8 @@ _site</code></pre>
 </entry>
 <entry>
     <title>HaskellでSNMP Trapを投げる</title>
-    <link href="http://www.imokuri123.com/blog/2014/06/send-snmptrap-using-haskell.html" />
-    <id>http://www.imokuri123.com/blog/2014/06/send-snmptrap-using-haskell.html</id>
+    <link href="http://imokuri123.com/blog/2014/06/send-snmptrap-using-haskell.html" />
+    <id>http://imokuri123.com/blog/2014/06/send-snmptrap-using-haskell.html</id>
     <published>2014-06-29T16:58:25Z</published>
     <updated>2014-06-29T16:58:25Z</updated>
     <summary type="html"><![CDATA[<p>Haskellには、SNMP Trapを送信するライブラリがないですかね。</p>
@@ -355,8 +355,8 @@ when waitLoadTime <span class="fu">$</span> mapM_ killThread sendTrapThreads</co
 </entry>
 <entry>
     <title>交渉で良い結果を得る方法7つ</title>
-    <link href="http://www.imokuri123.com/blog/2014/05/how-to-create-good-outcomes-when-negotiating.html" />
-    <id>http://www.imokuri123.com/blog/2014/05/how-to-create-good-outcomes-when-negotiating.html</id>
+    <link href="http://imokuri123.com/blog/2014/05/how-to-create-good-outcomes-when-negotiating.html" />
+    <id>http://imokuri123.com/blog/2014/05/how-to-create-good-outcomes-when-negotiating.html</id>
     <published>2014-05-08T19:54:09Z</published>
     <updated>2014-05-08T19:54:09Z</updated>
     <summary type="html"><![CDATA[<p>交渉でのミスを避けるための7つのポイントが、参考になったので、まとめます。</p>
@@ -377,8 +377,8 @@ when waitLoadTime <span class="fu">$</span> mapM_ killThread sendTrapThreads</co
 </entry>
 <entry>
     <title>何が人を動かすのか</title>
-    <link href="http://www.imokuri123.com/blog/2013/12/why-we-do-what-we-do.html" />
-    <id>http://www.imokuri123.com/blog/2013/12/why-we-do-what-we-do.html</id>
+    <link href="http://imokuri123.com/blog/2013/12/why-we-do-what-we-do.html" />
+    <id>http://imokuri123.com/blog/2013/12/why-we-do-what-we-do.html</id>
     <published>2013-12-25T00:26:34Z</published>
     <updated>2013-12-25T00:26:34Z</updated>
     <summary type="html"><![CDATA[<p>人を動かすものは何か。</p>
@@ -419,8 +419,8 @@ when waitLoadTime <span class="fu">$</span> mapM_ killThread sendTrapThreads</co
 </entry>
 <entry>
     <title>指揮者に学ぶリーダーシップ</title>
-    <link href="http://www.imokuri123.com/blog/2013/12/lead-like-the-great-conductors.html" />
-    <id>http://www.imokuri123.com/blog/2013/12/lead-like-the-great-conductors.html</id>
+    <link href="http://imokuri123.com/blog/2013/12/lead-like-the-great-conductors.html" />
+    <id>http://imokuri123.com/blog/2013/12/lead-like-the-great-conductors.html</id>
     <published>2013-12-24T07:30:19Z</published>
     <updated>2013-12-24T07:30:19Z</updated>
     <summary type="html"><![CDATA[<p>指揮者はただ指揮棒を振っているわけではないそうです。</p>
@@ -438,8 +438,8 @@ when waitLoadTime <span class="fu">$</span> mapM_ killThread sendTrapThreads</co
 </entry>
 <entry>
     <title>子供にやらせたい人生ゲーム</title>
-    <link href="http://www.imokuri123.com/blog/2013/12/the-world-peace-game.html" />
-    <id>http://www.imokuri123.com/blog/2013/12/the-world-peace-game.html</id>
+    <link href="http://imokuri123.com/blog/2013/12/the-world-peace-game.html" />
+    <id>http://imokuri123.com/blog/2013/12/the-world-peace-game.html</id>
     <published>2013-12-23T10:22:15Z</published>
     <updated>2013-12-23T10:22:15Z</updated>
     <summary type="html"><![CDATA[<p>普通の人生ゲームではなくて、</p>
@@ -453,8 +453,8 @@ when waitLoadTime <span class="fu">$</span> mapM_ killThread sendTrapThreads</co
 </entry>
 <entry>
     <title>うまく行くと思っていれば成功する！？</title>
-    <link href="http://www.imokuri123.com/blog/2013/12/the-happy-secret-to-better-work.html" />
-    <id>http://www.imokuri123.com/blog/2013/12/the-happy-secret-to-better-work.html</id>
+    <link href="http://imokuri123.com/blog/2013/12/the-happy-secret-to-better-work.html" />
+    <id>http://imokuri123.com/blog/2013/12/the-happy-secret-to-better-work.html</id>
     <published>2013-12-22T00:03:41Z</published>
     <updated>2013-12-22T00:03:41Z</updated>
     <summary type="html"><![CDATA[<p>成功すれば、幸せになれる、のは本当？</p>
@@ -469,8 +469,8 @@ when waitLoadTime <span class="fu">$</span> mapM_ killThread sendTrapThreads</co
 </entry>
 <entry>
     <title>やる気に関する驚きの科学</title>
-    <link href="http://www.imokuri123.com/blog/2013/12/puzzle-of-motivation.html" />
-    <id>http://www.imokuri123.com/blog/2013/12/puzzle-of-motivation.html</id>
+    <link href="http://imokuri123.com/blog/2013/12/puzzle-of-motivation.html" />
+    <id>http://imokuri123.com/blog/2013/12/puzzle-of-motivation.html</id>
     <published>2013-12-21T07:40:32Z</published>
     <updated>2013-12-21T07:40:32Z</updated>
     <summary type="html"><![CDATA[<p>上の画像は「ろうそくの問題」と言われているテストです。</p>
@@ -487,8 +487,8 @@ when waitLoadTime <span class="fu">$</span> mapM_ killThread sendTrapThreads</co
 </entry>
 <entry>
     <title>口笛すげぇ</title>
-    <link href="http://www.imokuri123.com/blog/2013/12/a-whistleblower-you-haven-t-heard.html" />
-    <id>http://www.imokuri123.com/blog/2013/12/a-whistleblower-you-haven-t-heard.html</id>
+    <link href="http://imokuri123.com/blog/2013/12/a-whistleblower-you-haven-t-heard.html" />
+    <id>http://imokuri123.com/blog/2013/12/a-whistleblower-you-haven-t-heard.html</id>
     <published>2013-12-20T00:00:39Z</published>
     <updated>2013-12-20T00:00:39Z</updated>
     <summary type="html"><![CDATA[<p>口笛得意な方、ぜひ真似してみてね♪</p>

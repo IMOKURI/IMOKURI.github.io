@@ -3,14 +3,14 @@
     xmlns:dc="http://purl.org/dc/elements/1.1/">
     <channel>
         <title>Wake up! Good night* - 最近の投稿</title>
-        <link>http://www.imokuri123.com</link>
+        <link>http://imokuri123.com</link>
         <description><![CDATA[インフラ系SEのまとめノート]]></description>
-        <atom:link href="http://www.imokuri123.com/feed/rss.xml" rel="self"
+        <atom:link href="http://imokuri123.com/feed/rss.xml" rel="self"
                    type="application/rss+xml" />
         <lastBuildDate>Sun, 05 Apr 2015 20:07:53 UT</lastBuildDate>
         <item>
     <title>Hakyllを使ってGitHub Pagesを作成して、そのソースも管理して、Travis CIで自動デプロイする。</title>
-    <link>http://www.imokuri123.com/blog/2015/04/create-github-pages-with-hakyll.html</link>
+    <link>http://imokuri123.com/blog/2015/04/create-github-pages-with-hakyll.html</link>
     <description><![CDATA[<p><a href="https://pages.github.com/">GitHub Pages</a>は、レポジトリに配置されたファイルにそって、Webページが生成されます。そのため、<code>index.html</code> などは、レポジトリのルートに配置されている必要があります。</p>
 <p>一方、<a href="http://jaspervdj.be/hakyll/">Hakyll</a>は、公開用の <code>index.html</code> などのファイルが、ルートディレクトリではなく、 <code>_site</code> というディレクトリ配下に生成されます。</p>
 <p>そのため、HakyllのソースのルートディレクトリからGithub Pagesのレポジトリにソースをアップロードしてしまうと、正しくWebページが表示されません。</p>
@@ -196,12 +196,12 @@ _site</code></pre>
 <p><a href="http://begriffs.com/posts/2014-08-12-create-static-site-with-hakyll-github.html">Create a static site with Hakyll, Github and Travis CI</a></p>
 <p><a href="http://timbaumann.info/posts/2013-08-04-hakyll-github-and-travis.html">Hakyll, Github and building a static site with Travis CI</a></p>]]></description>
     <pubDate>Sun, 05 Apr 2015 20:07:53 UT</pubDate>
-    <guid>http://www.imokuri123.com/blog/2015/04/create-github-pages-with-hakyll.html</guid>
+    <guid>http://imokuri123.com/blog/2015/04/create-github-pages-with-hakyll.html</guid>
     <dc:creator>IMOKURI</dc:creator>
 </item>
 <item>
     <title>Docker ユースケース【監視対象としてのSNMP Agent】</title>
-    <link>http://www.imokuri123.com/blog/2014/10/docker-use-case-snmp-agent.html</link>
+    <link>http://imokuri123.com/blog/2014/10/docker-use-case-snmp-agent.html</link>
     <description><![CDATA[<p>物理サーバでも、仮想マシンでもない、Dockerを始めとしたコンテナ型の仮想化が有効なユースケースがあります。</p>
 <p>それは、SNMP Agentとしてです。</p>
 <p>具体的には、SNMP Agentを監視するSNMP Managerの試験などの用途として、大量のSNMP Agentが必要な場合、に効果的だと思います。</p>
@@ -230,12 +230,12 @@ _site</code></pre>
 <p>DockerはそのDeployの容易性などの目的のため？、固定IPアドレスを明確に割り振る手段が備わっていない(v1.3.0時点)ので、固定IPアドレスを割り当てたい場合は、それ用のツールを使用する必要があります。</p>
 <p>Dockerの機能として、実現できるといいなぁと思っているのですが、もう少し時間がかかりそうですかね。</p>]]></description>
     <pubDate>Sun, 19 Oct 2014 00:35:41 UT</pubDate>
-    <guid>http://www.imokuri123.com/blog/2014/10/docker-use-case-snmp-agent.html</guid>
+    <guid>http://imokuri123.com/blog/2014/10/docker-use-case-snmp-agent.html</guid>
     <dc:creator>IMOKURI</dc:creator>
 </item>
 <item>
     <title>HaskellでSNMP Trapを投げる</title>
-    <link>http://www.imokuri123.com/blog/2014/06/send-snmptrap-using-haskell.html</link>
+    <link>http://imokuri123.com/blog/2014/06/send-snmptrap-using-haskell.html</link>
     <description><![CDATA[<p>Haskellには、SNMP Trapを送信するライブラリがないですかね。</p>
 <p>ということで、簡単なものだけ作ってみました。</p>
 <p>目指したものとしては、</p>
@@ -349,12 +349,12 @@ when waitLoadTime <span class="fu">$</span> mapM_ killThread sendTrapThreads</co
 <p>追記:</p>
 <p>ソースは<a href="https://github.com/IMOKURI/snmptrapper">こちら</a>にあります。</p>]]></description>
     <pubDate>Sun, 29 Jun 2014 16:58:25 UT</pubDate>
-    <guid>http://www.imokuri123.com/blog/2014/06/send-snmptrap-using-haskell.html</guid>
+    <guid>http://imokuri123.com/blog/2014/06/send-snmptrap-using-haskell.html</guid>
     <dc:creator>IMOKURI</dc:creator>
 </item>
 <item>
     <title>交渉で良い結果を得る方法7つ</title>
-    <link>http://www.imokuri123.com/blog/2014/05/how-to-create-good-outcomes-when-negotiating.html</link>
+    <link>http://imokuri123.com/blog/2014/05/how-to-create-good-outcomes-when-negotiating.html</link>
     <description><![CDATA[<p>交渉でのミスを避けるための7つのポイントが、参考になったので、まとめます。</p>
 <!--more-->
 <ol style="list-style-type: decimal">
@@ -371,12 +371,12 @@ when waitLoadTime <span class="fu">$</span> mapM_ killThread sendTrapThreads</co
 <p>ひとまず、恐い顔で過ごすことを心がけるようにします。（違</p>
 <p>参考： <a href="http://www.aaronkharris.com/guidelines-when-negotiating">How to create good outcomes when negotiating</a></p>]]></description>
     <pubDate>Thu, 08 May 2014 19:54:09 UT</pubDate>
-    <guid>http://www.imokuri123.com/blog/2014/05/how-to-create-good-outcomes-when-negotiating.html</guid>
+    <guid>http://imokuri123.com/blog/2014/05/how-to-create-good-outcomes-when-negotiating.html</guid>
     <dc:creator>IMOKURI</dc:creator>
 </item>
 <item>
     <title>何が人を動かすのか</title>
-    <link>http://www.imokuri123.com/blog/2013/12/why-we-do-what-we-do.html</link>
+    <link>http://imokuri123.com/blog/2013/12/why-we-do-what-we-do.html</link>
     <description><![CDATA[<p>人を動かすものは何か。</p>
 <p>客観的に、論理的に、考え、行動せよ、、、云々、とよく言われます。</p>
 <p>それは、もともと人がそう動けないからでしょうか。</p>
@@ -413,12 +413,12 @@ when waitLoadTime <span class="fu">$</span> mapM_ killThread sendTrapThreads</co
 <p>+++</p>
 <p>この投稿は、「<a href="http://www.adventar.org/calendars/158">TED 広める価値のあるアイデア Advent Calendar 2013</a>」に向けた投稿です。</p>]]></description>
     <pubDate>Wed, 25 Dec 2013 00:26:34 UT</pubDate>
-    <guid>http://www.imokuri123.com/blog/2013/12/why-we-do-what-we-do.html</guid>
+    <guid>http://imokuri123.com/blog/2013/12/why-we-do-what-we-do.html</guid>
     <dc:creator>IMOKURI</dc:creator>
 </item>
 <item>
     <title>指揮者に学ぶリーダーシップ</title>
-    <link>http://www.imokuri123.com/blog/2013/12/lead-like-the-great-conductors.html</link>
+    <link>http://imokuri123.com/blog/2013/12/lead-like-the-great-conductors.html</link>
     <description><![CDATA[<p>指揮者はただ指揮棒を振っているわけではないそうです。</p>
 <p>あまり考えたことなかったですが。（おぃ</p>
 <p>なるほど、そこから、一般的なリーダーとしての振る舞いが学べるということですね。</p>
@@ -432,12 +432,12 @@ when waitLoadTime <span class="fu">$</span> mapM_ killThread sendTrapThreads</co
 <p>+++</p>
 <p>この投稿は、「<a href="http://www.adventar.org/calendars/158">TED 広める価値のあるアイデア Advent Calendar 2013</a>」に向けた投稿です。</p>]]></description>
     <pubDate>Tue, 24 Dec 2013 07:30:19 UT</pubDate>
-    <guid>http://www.imokuri123.com/blog/2013/12/lead-like-the-great-conductors.html</guid>
+    <guid>http://imokuri123.com/blog/2013/12/lead-like-the-great-conductors.html</guid>
     <dc:creator>IMOKURI</dc:creator>
 </item>
 <item>
     <title>子供にやらせたい人生ゲーム</title>
-    <link>http://www.imokuri123.com/blog/2013/12/the-world-peace-game.html</link>
+    <link>http://imokuri123.com/blog/2013/12/the-world-peace-game.html</link>
     <description><![CDATA[<p>普通の人生ゲームではなくて、</p>
 <p>戦争の話とか、</p>
 <p>経済の話とか、</p>
@@ -447,12 +447,12 @@ when waitLoadTime <span class="fu">$</span> mapM_ killThread sendTrapThreads</co
 <p>+++</p>
 <p>この投稿は、「<a href="http://www.adventar.org/calendars/158">TED 広める価値のあるアイデア Advent Calendar 2013</a>」に向けた投稿です。</p>]]></description>
     <pubDate>Mon, 23 Dec 2013 10:22:15 UT</pubDate>
-    <guid>http://www.imokuri123.com/blog/2013/12/the-world-peace-game.html</guid>
+    <guid>http://imokuri123.com/blog/2013/12/the-world-peace-game.html</guid>
     <dc:creator>IMOKURI</dc:creator>
 </item>
 <item>
     <title>うまく行くと思っていれば成功する！？</title>
-    <link>http://www.imokuri123.com/blog/2013/12/the-happy-secret-to-better-work.html</link>
+    <link>http://imokuri123.com/blog/2013/12/the-happy-secret-to-better-work.html</link>
     <description><![CDATA[<p>成功すれば、幸せになれる、のは本当？</p>
 <p>むしろ逆じゃない！？</p>
 <p>幸せなら成功する、</p>
@@ -463,12 +463,12 @@ when waitLoadTime <span class="fu">$</span> mapM_ killThread sendTrapThreads</co
 <p>+++</p>
 <p>この投稿は、「<a href="http://www.adventar.org/calendars/158">TED 広める価値のあるアイデア Advent Calendar 2013</a>」に向けた投稿です。</p>]]></description>
     <pubDate>Sun, 22 Dec 2013 00:03:41 UT</pubDate>
-    <guid>http://www.imokuri123.com/blog/2013/12/the-happy-secret-to-better-work.html</guid>
+    <guid>http://imokuri123.com/blog/2013/12/the-happy-secret-to-better-work.html</guid>
     <dc:creator>IMOKURI</dc:creator>
 </item>
 <item>
     <title>やる気に関する驚きの科学</title>
-    <link>http://www.imokuri123.com/blog/2013/12/puzzle-of-motivation.html</link>
+    <link>http://imokuri123.com/blog/2013/12/puzzle-of-motivation.html</link>
     <description><![CDATA[<p>上の画像は「ろうそくの問題」と言われているテストです。</p>
 <p>ろうそくと、マッチと、画鋲を与えられ、</p>
 <p>「ろうそくのろうがテーブルに落ちないように壁に取り付けてください」</p>
@@ -481,18 +481,18 @@ when waitLoadTime <span class="fu">$</span> mapM_ killThread sendTrapThreads</co
 <p>+++</p>
 <p>この投稿は、「<a href="http://www.adventar.org/calendars/158">TED 広める価値のあるアイデア Advent Calendar 2013</a>」に向けた投稿です。</p>]]></description>
     <pubDate>Sat, 21 Dec 2013 07:40:32 UT</pubDate>
-    <guid>http://www.imokuri123.com/blog/2013/12/puzzle-of-motivation.html</guid>
+    <guid>http://imokuri123.com/blog/2013/12/puzzle-of-motivation.html</guid>
     <dc:creator>IMOKURI</dc:creator>
 </item>
 <item>
     <title>口笛すげぇ</title>
-    <link>http://www.imokuri123.com/blog/2013/12/a-whistleblower-you-haven-t-heard.html</link>
+    <link>http://imokuri123.com/blog/2013/12/a-whistleblower-you-haven-t-heard.html</link>
     <description><![CDATA[<p>口笛得意な方、ぜひ真似してみてね♪</p>
 <!--more-->
 <p>+++</p>
 <p>この投稿は、「<a href="http://www.adventar.org/calendars/158">TED 広める価値のあるアイデア Advent Calendar 2013</a>」に向けた投稿です。</p>]]></description>
     <pubDate>Fri, 20 Dec 2013 00:00:39 UT</pubDate>
-    <guid>http://www.imokuri123.com/blog/2013/12/a-whistleblower-you-haven-t-heard.html</guid>
+    <guid>http://imokuri123.com/blog/2013/12/a-whistleblower-you-haven-t-heard.html</guid>
     <dc:creator>IMOKURI</dc:creator>
 </item>
 
