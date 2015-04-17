@@ -21,8 +21,8 @@ main = hakyll $ do
         route   idRoute
         compile compressCssCompiler
 
-    match "posts/*/*/*" $ do
-        route   $ setExtension "html" `composeRoutes` gsubRoute "posts/" (const "blog/")
+    match "blog/*/*/*" $ do
+        route   $ setExtension "html"
         compile $ pandocCompiler
             >>= saveSnapshot "contents"
             >>= loadAndApplyTemplate "templates/post.html"    postCtx
@@ -31,7 +31,7 @@ main = hakyll $ do
 
     blog <- buildPaginateWith
         (sortRecentFirst >=> return . paginateEvery 10)
-        "posts/*/*/*"
+        "blog/*/*/*"
         (\n -> if n == 1
                then fromFilePath "blog/index.html"
                else fromFilePath $ "blog/" ++ show n ++ "/index.html")
@@ -53,7 +53,7 @@ main = hakyll $ do
     match "pages/index.html" $ do
         route   $ gsubRoute "pages/" (const "")
         compile $ do
-            posts <- fmap (take 5) . recentFirst =<< loadAll "posts/*/*/*"
+            posts <- fmap (take 5) . recentFirst =<< loadAll "blog/*/*/*"
             let indexCtx = listField "posts" postCtx (return posts)
                         <> constField "title" "Home"
                         <> defaultContext
@@ -81,7 +81,7 @@ main = hakyll $ do
     create ["sitemap.xml"] $ do
         route   idRoute
         compile $ do
-            posts <- recentFirst =<< loadAll "posts/*/*/*"
+            posts <- recentFirst =<< loadAll "blog/*/*/*"
             let sitemapCtx = listField "posts" postCtx (return posts)
                           <> defaultContext
 
@@ -92,14 +92,14 @@ main = hakyll $ do
         route   idRoute
         compile $ do
             let feedCtx = postCtx <> bodyField "description"
-            posts <- fmap (take 10) . recentFirst =<< loadAllSnapshots "posts/*/*/*" "contents"
+            posts <- fmap (take 10) . recentFirst =<< loadAllSnapshots "blog/*/*/*" "contents"
             renderRss feedConfig feedCtx posts
 
     create ["feed/atom.xml"] $ do
         route   idRoute
         compile $ do
             let feedCtx = postCtx <> bodyField "description"
-            posts <- fmap (take 10) . recentFirst =<< loadAllSnapshots "posts/*/*/*" "contents"
+            posts <- fmap (take 10) . recentFirst =<< loadAllSnapshots "blog/*/*/*" "contents"
             renderAtom feedConfig feedCtx posts
 
     match "templates/*" $ compile templateCompiler
