@@ -9,11 +9,11 @@
                    type="application/rss+xml" />
         <lastBuildDate>Tue, 28 Apr 2015 00:00:00 UT</lastBuildDate>
         <item>
-    <title>SNMPに取って代わられるYANG/NETCONF</title>
+    <title>SNMPに取って代わるYANG/NETCONF</title>
     <link>http://imokuri123.com/blog/2015/04/snmp-will-be-replaced-by-yang-netconf.html</link>
     <description><![CDATA[<p><a href="https://tools.ietf.org/html/rfc6241">NETCONF</a>は、IETFによって策定が進められているNetwork管理用のプロトコルです。<br /><a href="https://tools.ietf.org/html/rfc6020">YANG</a>は、NETCONFのデータを表現するための言語です。</p>
 <p>これらは、<a href="http://www.ietf.org/iesg/">IESG</a>（IETFの活動と標準化プロセスの、技術的な側面についての責任を担っているグループ）によって使用が推奨され始めています。<a href="http://www.ietf.org/iesg/statement/writable-mib-module.html">こちら</a></p>
-<p>今後、SNMP/SMI2に取って代わられるであろうYANG/NETCONFについて、まとめていきます。</p>
+<p>今後、SNMP/SMI2に取って代わるであろうYANG/NETCONFについて、まとめていきます。</p>
 <!--more-->
 <h3 id="概要">概要</h3>
 <p>SNMPとNETCONFの仕組みはかなり似ています。</p>
