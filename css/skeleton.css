@@ -372,6 +372,7 @@ form {
 .u-full-width {
   width: 100%;
   box-sizing: border-box; }
+img,
 .u-max-full-width {
   max-width: 100%;
   box-sizing: border-box; }
