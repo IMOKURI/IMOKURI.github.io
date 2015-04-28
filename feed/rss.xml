@@ -7,8 +7,156 @@
         <description><![CDATA[インフラ系SEのまとめノート]]></description>
         <atom:link href="http://imokuri123.com/feed/rss.xml" rel="self"
                    type="application/rss+xml" />
-        <lastBuildDate>Sun, 05 Apr 2015 20:07:53 UT</lastBuildDate>
+        <lastBuildDate>Tue, 28 Apr 2015 00:00:00 UT</lastBuildDate>
         <item>
+    <title>SNMPに取って代わられるYANG/NETCONF</title>
+    <link>http://imokuri123.com/blog/2015/04/snmp-will-be-replaced-by-yang-netconf.html</link>
+    <description><![CDATA[<p><a href="https://tools.ietf.org/html/rfc6241">NETCONF</a>は、IETFによって策定が進められているNetwork管理用のプロトコルです。<br /><a href="https://tools.ietf.org/html/rfc6020">YANG</a>は、NETCONFのデータを表現するための言語です。</p>
+<p>これらは、<a href="http://www.ietf.org/iesg/">IESG</a>（IETFの活動と標準化プロセスの、技術的な側面についての責任を担っているグループ）によって使用が推奨され始めています。<a href="http://www.ietf.org/iesg/statement/writable-mib-module.html">こちら</a></p>
+<p>今後、SNMP/SMI2に取って代わられるであろうYANG/NETCONFについて、まとめていきます。</p>
+<!--more-->
+<h3 id="概要">概要</h3>
+<p>SNMPとNETCONFの仕組みはかなり似ています。</p>
+<p>SNMPが、SNMP ManagerとSNMP Agentの間を、さまざまなMIB(SMIv2)モジュールの定義に沿って、SNMPのプロトコルでやり取りをするように、<br />NETCONFは、NETCONF clientとNETCONF Serverの間を、さまざまなYANGモジュールの定義に沿って、NETCONFのプロトコルでやりとりします。</p>
+<p><img src="/images/2014-04-snmp-netconf-overview_mini.jpg" alt="SNMP NETCONF overview" /><br /></p>
+<p>SNMPとNETCONFは、メッセージのやりとりの仕組みもかなり似ています。</p>
+<p>どちらも、「Managerからリクエストし、Deviceが応答する仕組み」と「Deviceが能動的に、Managerに通知する仕組み」があります。</p>
+<p><img src="/images/2014-04-snmp-netconf-messaging-model_mini.jpg" alt="SNMP NETCONF messaging model" /><br /></p>
+<hr />
+<p><strong>では、なぜ、NETCONFを使う必要があるのでしょうか。</strong></p>
+<p>それには、大きく2つの理由があります。</p>
+<ol style="list-style-type: decimal">
+<li>強固なトランザクションのモデルをもっていること
+<ul>
+<li>SNMPは、トランザクションの仕組みを持っておらず、機器の設定管理には不向きでした。</li>
+<li>NETCONFは、トランザクションの仕組みを持っており、妥当性の確認や、ロールバックが使用可能です。また、ネットワークにまたがって（複数の機器にまたがって）トランザクションを発行、コミットを行うことが可能です。</li>
+</ul></li>
+<li>SNMPにはない特徴をもっていること
+<ul>
+<li>YANGによる応用力のある定義が可能であること</li>
+<li>YANGによって、独自のプロトコル操作が定義できること</li>
+<li>データに応じたツールをサポートするための言語表現が可能なこと</li>
+<li>XMLサブツリーとXPathを使って、受信したデータに対して、さまざまなフィルタができること</li>
+</ul></li>
+</ol>
+<hr />
+<p><strong>NETCONFのプロトコルのレイヤーについて</strong></p>
+<p>NETCONFのプロトコルには、4つのレイヤーがあります。それぞれのレイヤーでSNMPの場合の何に対応するのかをまとめます。</p>
+<ol style="list-style-type: decimal">
+<li>コンテンツレイヤー
+<ul>
+<li>SNMPでいうところのbind変数のリストの情報が含まれます。NETCONFの場合は、XMLのサブツリーで表現します。</li>
+</ul></li>
+<li>オペレーションレイヤー
+<ul>
+<li>SNMPの場合はRFCで定義されている情報が含まれます。NETCONFの場合は、YANGでの定義の内容になります。</li>
+</ul></li>
+<li>メッセージレイヤー
+<ul>
+<li>SNMPの場合は、SNMPのPDUに該当します。NETCONFでは、リモートプロシージャーコール(RPC)となります。</li>
+</ul></li>
+<li>トランスポートレイヤー
+<ul>
+<li>SNMPでは、メッセージベースでのデータ転送となりますが、NETCONFの場合はセッションベースでのやりとりになります。</li>
+<li>SNMPでは、UDPを使用します。NETCONFでは、SSHもしくは、TLS over TCPを使用します。</li>
+</ul></li>
+</ol>
+<p><img src="/images/2014-04-netconf-protocol-layer_mini.jpg" alt="NETCONF protocol layer" /><br /></p>
+<p>具体的な、要素の比較は以下になります。</p>
+<table>
+<thead>
+<tr class="header">
+<th align="left">Layer</th>
+<th align="left">SNMP/SMIv2</th>
+<th align="left">NETCONF/YANG</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Content (Device Data)</td>
+<td align="left">OBJECT-TYPE</td>
+<td align="left">data-def-stmt</td>
+</tr>
+<tr class="even">
+<td align="left">Content (Notification Data)</td>
+<td align="left">NOTIFICATION-TYPE</td>
+<td align="left">notification-stmt</td>
+</tr>
+<tr class="odd">
+<td align="left">Operations</td>
+<td align="left">Set, Get, GetNext, GetBulk</td>
+<td align="left">rpc-stmt (edit-config, copy-config)</td>
+</tr>
+<tr class="even">
+<td align="left">Messages (Device Data)</td>
+<td align="left">Set, Get, GetNext, GetBulk PDUs</td>
+<td align="left">&lt;rpc&gt;, &lt;rpc-reply&gt;</td>
+</tr>
+<tr class="odd">
+<td align="left">Messages (Notification Data)</td>
+<td align="left">Trap PDU, Inform PDU, Report PDU</td>
+<td align="left">&lt;notification&gt;, N/A, N/A</td>
+</tr>
+<tr class="even">
+<td align="left">Transport</td>
+<td align="left">Message-based: UDP</td>
+<td align="left">Session-based: SSH/TCP</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<p><strong>NETCONFの設定、データについて</strong></p>
+<p>NETCONFの設定はデータストアに格納されます。データストアとはその名の通り設定などが格納される場所のことで、ファイルだったり、データベースだったりします。<br />設定データストアにはデバイスの設定など書き込み可能なデータが含まれます。<br />一方、状態データには、設定ではない、機器の状態や統計情報などの読み取り専用の情報が含まれます。</p>
+<p>YANGのXPathでは、この設定データと非設定データ（状態データ）を明確に分けています。<br />それは、設定のダンプやリストアの際にわかりやすいようにするため、などの理由によります。詳細は<a href="https://tools.ietf.org/html/rfc3535#section-3">こちら</a></p>
+<hr />
+<p><strong>YANGとSMIv2の基本的なデータ構成の違い</strong></p>
+<ul>
+<li>YANGは、以下の要素を持ちます。
+<ul>
+<li>リーフノード
+<ul>
+<li>リーフノードは、整数や文字列などのシンプルなデータを持ちます。</li>
+<li>特定のタイプのデータを一つだけ持つことができ、子ノードは持ちません。</li>
+</ul></li>
+<li>リーフリストノード
+<ul>
+<li>リーフリストは、リーフノードのリストです。</li>
+<li>リーフノードは全て同じタイプのデータを持っている必要があります。</li>
+</ul></li>
+<li>コンテナーノード
+<ul>
+<li>コンテナーノードは、サブツリー内の関連のあるノードをグルーピングするのに使われます。</li>
+<li>コンテナーノードは、直接値をもたず、子ノードだけを持つことができます。</li>
+<li>子ノードは複数のタイプのノードを混在させることができます。</li>
+</ul></li>
+<li>リストノード
+<ul>
+<li>リストノードは、リストエントリーのリストです。</li>
+<li>それぞれのリストエントリーは、そのキーリーフ(key leaf)とその値で一意に特定されます。</li>
+<li>リストは、複数のキーリーフと、さまざまなタイプの子ノードを持つことができます。</li>
+</ul></li>
+</ul></li>
+<li>MIBモジュールは、データの定義は1階層ですが、YANGモジュールは、データは複数階層で定義できます。</li>
+</ul>
+<p><img src="/images/2014-04-snmp-netconf-building-data_mini.jpg" alt="MIB YANG building data" /><br /></p>
+<ul>
+<li>さらに、YANGには、チョイス／ケースノードという要素もあります。
+<ul>
+<li>チョイスノードの中に、複数のケースノードが定義できます。</li>
+<li>実際にやりとりされるデータはそのうちの1つのケースノードのデータのみになります。</li>
+</ul></li>
+</ul>
+<p>ノードの説明については、RFCの<a href="https://tools.ietf.org/html/rfc6020#section-4.2.2">こちら</a>の説明がわかりやすいです。</p>
+<hr />
+<p>長くなってきましたので、つづきは、また今度。</p>
+<hr />
+<p>参考：<br /><a href="http://www.ieee802.org/802_tutorials/2014-07/Tutorial_Berman_1407.pdf">A Guide to NETCONF for SNMP Developers</a></p>
+<hr />]]></description>
+    <pubDate>Tue, 28 Apr 2015 00:00:00 UT</pubDate>
+    <guid>http://imokuri123.com/blog/2015/04/snmp-will-be-replaced-by-yang-netconf.html</guid>
+    <dc:creator>IMOKURI</dc:creator>
+</item>
+<item>
     <title>Hakyllを使ってGitHub Pagesを作成して、そのソースも管理して、Travis CIで自動デプロイする。</title>
     <link>http://imokuri123.com/blog/2015/04/create-github-pages-with-hakyll.html</link>
     <description><![CDATA[<p><a href="https://pages.github.com/">GitHub Pages</a>は、レポジトリに配置されたファイルにそって、Webページが生成されます。そのため、<code>index.html</code> などは、レポジトリのルートに配置されている必要があります。</p>
@@ -482,17 +630,6 @@ when waitLoadTime <span class="fu">$</span> mapM_ killThread sendTrapThreads</co
 <p>この投稿は、「<a href="http://www.adventar.org/calendars/158">TED 広める価値のあるアイデア Advent Calendar 2013</a>」に向けた投稿です。</p>]]></description>
     <pubDate>Sat, 21 Dec 2013 07:40:32 UT</pubDate>
     <guid>http://imokuri123.com/blog/2013/12/puzzle-of-motivation.html</guid>
-    <dc:creator>IMOKURI</dc:creator>
-</item>
-<item>
-    <title>口笛すげぇ</title>
-    <link>http://imokuri123.com/blog/2013/12/a-whistleblower-you-haven-t-heard.html</link>
-    <description><![CDATA[<p>口笛得意な方、ぜひ真似してみてね♪</p>
-<!--more-->
-<p>+++</p>
-<p>この投稿は、「<a href="http://www.adventar.org/calendars/158">TED 広める価値のあるアイデア Advent Calendar 2013</a>」に向けた投稿です。</p>]]></description>
-    <pubDate>Fri, 20 Dec 2013 00:00:39 UT</pubDate>
-    <guid>http://imokuri123.com/blog/2013/12/a-whistleblower-you-haven-t-heard.html</guid>
     <dc:creator>IMOKURI</dc:creator>
 </item>
 
