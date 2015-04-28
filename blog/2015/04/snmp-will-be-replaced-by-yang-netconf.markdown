@@ -1,7 +1,7 @@
 ---
 date: 2015-04-28
 slug: snmp-will-be-replaced-by-yang-netconf
-title: SNMPに取って代わられるYANG/NETCONF
+title: SNMPに取って代わるYANG/NETCONF
 categories: Network
 tags: yang,netconf,snmp,smi,mib,ietf,iesg
 ---
@@ -11,7 +11,7 @@ tags: yang,netconf,snmp,smi,mib,ietf,iesg
 
 これらは、[IESG](http://www.ietf.org/iesg/)（IETFの活動と標準化プロセスの、技術的な側面についての責任を担っているグループ）によって使用が推奨され始めています。[こちら](http://www.ietf.org/iesg/statement/writable-mib-module.html)  
 
-今後、SNMP/SMI2に取って代わられるであろうYANG/NETCONFについて、まとめていきます。
+今後、SNMP/SMI2に取って代わるであろうYANG/NETCONFについて、まとめていきます。
 
 <!--more-->
 
