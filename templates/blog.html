@@ -2,19 +2,19 @@
 <h3>$title$</h3>
 
 <p>ごゆるりお楽しみください。</p>
+<hr>
 
 <ul>
     $for(posts)$
-        <li>
 
-            <h4>$title$</h4>
-            <div class="info">$date$</div>
+        <h4>$title$</h4>
+        <div class="info">$date$</div>
 
-            $if(teaser)$
-                $teaser$...<a href="$url$">(続きを読む)</a>
-            $endif$
+        $if(teaser)$
+            $teaser$...<a href="$url$">(続きを読む)</a>
+        $endif$
 
-        </li>
+        <hr>
 
     $endfor$
 </ul>
