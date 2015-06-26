@@ -7,6 +7,7 @@ tags: aaa,bbb,ccc
 ---
 
 
-***
+<!--more-->
+
 
 
