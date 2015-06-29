@@ -1,11 +1,9 @@
 # NB: don't set `language: haskell` here
-
 # See also https://github.com/hvr/multi-ghc-travis for more information
 
 branches:
   only:
     - source
-#    - develop
 
 env:
   global:
@@ -14,8 +12,7 @@ env:
     - secure: "PJdQbveUtenH0lFV5oOOYsBBMwGKEZ7QsnEmtHLyeCb4KNvslA3J7DUn5tBMJa8Zczz7ZiTEuwHPE0CwUZAwht7gOKbnPwMgK+CtB4RcV1rvEvJpCl6y2OuIQ6tP35zZ6Ox6QVAB4yN7+XALeXCLk/9n0yZPQ77rTWBrHvaRxMM="
 
   matrix:
-    - CABALVER=1.22 GHCVER=7.8.4
-#    - CABALVER=1.20 GHCVER=7.8.3
+    - CABALVER=1.20 GHCVER=7.8.3
 #    - CABALVER=1.22 GHCVER=7.10.1
 #    - CABALVER=head GHCVER=head
 
@@ -30,7 +27,8 @@ before_install:
 install:
   - travis_retry cabal update
   - cabal sandbox init
-  - cabal install --only-dependencies --disable-documentation
+#  - cabal install --only-dependencies --disable-documentation
+  - cabal install --only-dependencies
   - cabal configure --disable-library-profiling --disable-tests --disable-library-coverage --disable-benchmarks --disable-split-objs
 
 before_script:
