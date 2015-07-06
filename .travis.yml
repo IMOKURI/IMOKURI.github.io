@@ -1,5 +1,5 @@
-# NB: don't set `language: haskell` here
-# See also https://github.com/hvr/multi-ghc-travis for more information
+language: haskell
+ghc: 7.8
 
 branches:
   only:
@@ -11,21 +11,12 @@ env:
     - secure: "iw7zkk4s3JZoZ9rqL9Fe43TcnGVJ4eTURgIxS2f0swsdpo/zZ9i5tiZ/QrZtRioOLjwwe3TNrJehWQrEv2oMy+By5a4c9NI4gMmCRlps3IGvW8SEFEoelaMqM4HZB/eXPZkhKyqf7LpGz3oC2HAH65u6Z9UfPchjsKJ8QmGTW4w="
     - secure: "PJdQbveUtenH0lFV5oOOYsBBMwGKEZ7QsnEmtHLyeCb4KNvslA3J7DUn5tBMJa8Zczz7ZiTEuwHPE0CwUZAwht7gOKbnPwMgK+CtB4RcV1rvEvJpCl6y2OuIQ6tP35zZ6Ox6QVAB4yN7+XALeXCLk/9n0yZPQ77rTWBrHvaRxMM="
 
-  matrix:
-    - CABALVER=1.18 GHCVER=7.8.4
-
 before_install:
-  - travis_retry sudo add-apt-repository -y ppa:hvr/ghc
-  - travis_retry sudo apt-get update
-  - travis_retry sudo apt-get install cabal-install-$CABALVER ghc-$GHCVER
-  - export PATH=/opt/ghc/$GHCVER/bin:/opt/cabal/$CABALVER/bin:$PATH
-
   - git submodule foreach --recursive 'git checkout master; git ls-files | grep -v README | grep -v CNAME | xargs -r git rm'
 
 install:
-  - travis_retry cabal update
   - curl https://dl.dropboxusercontent.com/u/266709/github-pages/cabal-sandbox.tar.xz | tar xJ
-  - cabal sandbox --sandbox='./.cabal-sandbox' init
+  - cabal sandbox init
   - cabal configure --disable-library-profiling --disable-tests --disable-library-coverage --disable-benchmarks --disable-split-objs
 
 before_script:
@@ -45,4 +36,7 @@ after_success:
     git commit -m "Built by Travis ( build $TRAVIS_BUILD_NUMBER )";
     git push github master:master | grep -v http;
     fi
+
+notifications:
+  email: false
 
