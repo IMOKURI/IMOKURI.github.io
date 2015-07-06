@@ -24,8 +24,8 @@ before_install:
 
 install:
   - travis_retry cabal update
-  - curl https://dl.dropboxusercontent.com/u/266709/github-pages/cabal-sandbox.tar.xz | tar xJ -C $TRAVIS_BUILD_DIR
-  - cabal sandbox init --sandbox .
+  - curl https://dl.dropboxusercontent.com/u/266709/github-pages/cabal-sandbox.tar.xz | tar xJ
+  - cabal sandbox --sandbox='./.cabal-sandbox' init
   - cabal configure --disable-library-profiling --disable-tests --disable-library-coverage --disable-benchmarks --disable-split-objs
 
 before_script:
