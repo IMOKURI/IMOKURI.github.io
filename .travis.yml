@@ -12,9 +12,7 @@ env:
     - secure: "PJdQbveUtenH0lFV5oOOYsBBMwGKEZ7QsnEmtHLyeCb4KNvslA3J7DUn5tBMJa8Zczz7ZiTEuwHPE0CwUZAwht7gOKbnPwMgK+CtB4RcV1rvEvJpCl6y2OuIQ6tP35zZ6Ox6QVAB4yN7+XALeXCLk/9n0yZPQ77rTWBrHvaRxMM="
 
   matrix:
-    - CABALVER=1.20 GHCVER=7.8.3
-#    - CABALVER=1.22 GHCVER=7.10.1
-#    - CABALVER=head GHCVER=head
+    - CABALVER=1.18 GHCVER=7.8.4
 
 before_install:
   - travis_retry sudo add-apt-repository -y ppa:hvr/ghc
@@ -25,10 +23,8 @@ before_install:
   - git submodule foreach --recursive 'git checkout master; git ls-files | grep -v README | grep -v CNAME | xargs -r git rm'
 
 install:
-  - travis_retry cabal update
-  - cabal sandbox init
-#  - cabal install --only-dependencies --disable-documentation
-  - cabal install --only-dependencies
+  - curl https://dl.dropboxusercontent.com/u/266709/github-pages/cabal-sandbox.tar.xz | tar xJ
+  - cabal sandbox init --sandbox .
   - cabal configure --disable-library-profiling --disable-tests --disable-library-coverage --disable-benchmarks --disable-split-objs
 
 before_script:
