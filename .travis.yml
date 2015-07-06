@@ -23,7 +23,8 @@ before_install:
   - git submodule foreach --recursive 'git checkout master; git ls-files | grep -v README | grep -v CNAME | xargs -r git rm'
 
 install:
-  - curl https://dl.dropboxusercontent.com/u/266709/github-pages/cabal-sandbox.tar.xz | tar xJ
+  - travis_retry cabal update
+  - curl https://dl.dropboxusercontent.com/u/266709/github-pages/cabal-sandbox.tar.xz | tar xJ -C $TRAVIS_BUILD_DIR
   - cabal sandbox init --sandbox .
   - cabal configure --disable-library-profiling --disable-tests --disable-library-coverage --disable-benchmarks --disable-split-objs
 
