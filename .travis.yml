@@ -15,8 +15,9 @@ before_install:
   - git submodule foreach --recursive 'git checkout master; git ls-files | grep -v README | grep -v CNAME | xargs -r git rm'
 
 install:
-  - curl https://dl.dropboxusercontent.com/u/266709/github-pages/cabal-sandbox.tar.xz | tar xJ
+  - travis_retry cabal update
   - cabal sandbox init
+  - cabal install --only-dependencies
   - cabal configure
 
 before_script:
