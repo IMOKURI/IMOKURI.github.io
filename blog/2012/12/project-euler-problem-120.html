@@ -60,7 +60,7 @@
 <p><span class="math"><em>a</em><sup>2</sup></span> を法とした2naの最大値が <span class="math"><em>r</em><sub><em>m</em><em>a</em><em>x</em></sub></span> となります。</p>
 <p>と言った感じで考えて行きまして。</p>
 <p>Haskellで書いてみたソースは以下のようになりました。</p>
-<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="ot">listA ::</span> [<span class="dt">Int</span>]
+<pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="ot">listA ::</span> [<span class="dt">Int</span>]
 listA <span class="fu">=</span> [<span class="dv">3</span><span class="fu">..</span><span class="dv">1000</span>]
 
 <span class="ot">make2N ::</span> <span class="dt">Int</span> <span class="ot">-&gt;</span> <span class="dt">Int</span>
@@ -69,7 +69,7 @@ make2N a <span class="fu">=</span> <span class="kw">if</span> mod a <span class=
 <span class="ot">makeResult ::</span> [<span class="dt">Int</span>] <span class="ot">-&gt;</span> <span class="dt">Int</span>
 makeResult <span class="fu">=</span> foldr (\a acc <span class="ot">-&gt;</span> (make2N a)<span class="fu">*</span>a <span class="fu">+</span> acc) <span class="dv">0</span>
 
-main <span class="fu">=</span> print <span class="fu">$</span> makeResult listA</code></pre></div>
+main <span class="fu">=</span> print <span class="fu">$</span> makeResult listA</code></pre>
 <p>プログラマではないので、イケてないかもですが、、そこはご容赦を。。</p>
 <p>とりあえず、数式もソースコードも書けました。</p>
 <p>ただ、書きながらちょっとイマイチなところもあったので、今後要改善ですね。</p>
