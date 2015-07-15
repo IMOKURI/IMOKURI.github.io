@@ -7,8 +7,84 @@
         <description><![CDATA[インフラ系SEのまとめノート]]></description>
         <atom:link href="http://imokuri123.com/feed/rss.xml" rel="self"
                    type="application/rss+xml" />
-        <lastBuildDate>Tue, 28 Apr 2015 00:00:00 UT</lastBuildDate>
+        <lastBuildDate>Wed, 15 Jul 2015 00:00:00 UT</lastBuildDate>
         <item>
+    <title>Haskellでニューラルネットワーク</title>
+    <link>http://imokuri123.com/blog/2015/07/neural-network-in-haskell.html</link>
+    <description><![CDATA[<p>Haskellの<a href="https://ja.wikipedia.org/wiki/ニューラルネットワーク">ニューラルネットワーク</a>のライブラリの<a href="https://hackage.haskell.org/package/LambdaNet">LambdaNet</a>を使って、ニューラルネットワークを構築してみたいと思います。</p>
+<p>題材は、ニューラルネットワークの例としてよく使用されるXORをシュミレーションしてみたいと思います。</p>
+<table>
+<thead>
+<tr class="header">
+<th align="left">Input</th>
+<th align="left">Output</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">(0,0)</td>
+<td align="left">0</td>
+</tr>
+<tr class="even">
+<td align="left">(0,1)</td>
+<td align="left">1</td>
+</tr>
+<tr class="odd">
+<td align="left">(1,0)</td>
+<td align="left">1</td>
+</tr>
+<tr class="even">
+<td align="left">(1,1)</td>
+<td align="left">0</td>
+</tr>
+</tbody>
+</table>
+<!--more-->
+<hr />
+<p>まずは、層（レイヤー）の数と素子（ニューロン）の数を決めます。</p>
+<p>1つ目の層が入力層、最後の層が出力層となり、<br />入力層のニューロンの数は、入力のデータの数、<br />出力層のニューロンの数は出力のデータの数とします。</p>
+<p>それ以外のレイヤーが隠れ層です。<br />隠れ層の数と、それぞれの層が持つニューロンの数をいくつにすれば良いかは、<br />いろいろな手法が考えられているようですが、この記事では割愛します。。</p>
+<p>今回は、入力層のデータの数が2つ、出力層のデータの数が1つです。 隠れ層は、よくあるXORの例にならい、隠れ層1つ（ニューロン2つ）としたいとおもいます。</p>
+<p>続いて、各層のニューロンをどのように接続するかを考えます。 一般的には各ニューロンを接続する・しないのマップで表現されることが考えられそうですが、 LambdaNetのライブラリでは、現状、すべてのニューロンを接続することしかできません。</p>
+<p>活性化関数には、sigmoid、tanh、ReLUが用意されています。<br />今回はsigmoidを使ってみます。</p>
+<p>重みとバイアスの初期値はランダムですが、一様なもの（uniforms）と、<br />正規分布に従うもの（normals）が用意されています。<br />今回はnormalsを使ってみます。</p>
+<p>ここまでの情報で、初期値を持ったニューラルネットワークができます。<br />ソースはこちらです。</p>
+<pre class="sourceCode haskell"><code class="sourceCode haskell">  g <span class="ot">&lt;-</span> newStdGen
+  <span class="kw">let</span> l   <span class="fu">=</span> <span class="dt">LayerDefinition</span> sigmoidNeuron <span class="dv">2</span> connectFully
+      l&#39;  <span class="fu">=</span> <span class="dt">LayerDefinition</span> sigmoidNeuron <span class="dv">2</span> connectFully
+      l&#39;&#39; <span class="fu">=</span> <span class="dt">LayerDefinition</span> sigmoidNeuron <span class="dv">1</span> connectFully
+
+  <span class="kw">let</span> n <span class="fu">=</span> createNetwork normals g [l, l&#39;, l&#39;&#39;]</code></pre>
+<hr />
+<p>次に、誤差逆伝播法（バックプロパゲーション）を使った教師あり学習を作っていきます。</p>
+<p>LambdaNetでは、誤差関数（コスト関数）として、二乗誤差関数のみが提供されています。</p>
+<p>学習係数は、用途に合わせて調整します。</p>
+<p>ニューラルネットワークの更新の方法は、毎回の学習のたびにネットワークを更新するオンライン（online）と、<br />n回学習ごとに更新するミニバッチ（minibatch n）が用意されています。</p>
+<p>学習用のデータとしては、XORのインプットとアウトプットの4パターンを使用します。</p>
+<p>準備した学習用のデータで1万回学習するソースがこちらです。</p>
+<pre class="sourceCode haskell"><code class="sourceCode haskell">  <span class="kw">let</span> t <span class="fu">=</span> <span class="dt">BackpropTrainer</span> <span class="dv">3</span> quadraticCost quadraticCost&#39;
+
+  <span class="kw">let</span> dat <span class="fu">=</span> [(fromList [<span class="dv">0</span>, <span class="dv">1</span>], fromList [<span class="dv">1</span>]),
+             (fromList [<span class="dv">1</span>, <span class="dv">1</span>], fromList [<span class="dv">0</span>]),
+             (fromList [<span class="dv">1</span>, <span class="dv">0</span>], fromList [<span class="dv">1</span>]),
+             (fromList [<span class="dv">0</span>, <span class="dv">0</span>], fromList [<span class="dv">0</span>])]
+
+  <span class="kw">let</span> n&#39; <span class="fu">=</span> trainNTimes n t online dat <span class="dv">10000</span></code></pre>
+<hr />
+<p>最後に、学習したネットワークをテストしてみます。</p>
+<p>うまくいけば、XORの結果が得られていると思います。<br />（今回のソースの条件だと、最初の乱数の状況によってはあまりよい結果にならない場合もありそうです・・）</p>
+<p>良いケース</p>
+<p>==&gt; XOR predictions:<br />(0,0): fromList [5.9859958e-3]<br />(1,0): fromList [0.9938293]<br />(0,1): fromList [0.9938205]<br />(1,1): fromList [7.5507853e-3]</p>
+<p>悪いケース・・・</p>
+<p>==&gt; XOR predictions:<br />(0,0): fromList [5.984603e-3]<br />(1,0): fromList [0.99414057]<br />(0,1): fromList [0.4489829]<br />(1,1): fromList [0.44912618]</p>
+<p>この形を基本に様々なケースに拡張してみたいと思います。</p>
+<hr />
+<p>今回作成したコードは<a href="https://github.com/IMOKURI/nn-sample">こちら</a>です。<br />LambdaNetの<a href="https://github.com/jbarrow/LambdaNet/blob/master/examples/XOR.hs">こちら</a>のコードを参考にしています。</p>]]></description>
+    <pubDate>Wed, 15 Jul 2015 00:00:00 UT</pubDate>
+    <guid>http://imokuri123.com/blog/2015/07/neural-network-in-haskell.html</guid>
+    <dc:creator>IMOKURI</dc:creator>
+</item>
+<item>
     <title>SNMPに取って代わるYANG/NETCONF</title>
     <link>http://imokuri123.com/blog/2015/04/snmp-will-be-replaced-by-yang-netconf.html</link>
     <description><![CDATA[<p><a href="https://tools.ietf.org/html/rfc6241">NETCONF</a>は、IETFによって策定が進められているNetwork管理用のプロトコルです。<br /><a href="https://tools.ietf.org/html/rfc6020">YANG</a>は、NETCONFのデータを表現するための言語です。</p>
@@ -612,24 +688,6 @@ when waitLoadTime <span class="fu">$</span> mapM_ killThread sendTrapThreads</co
 <p>この投稿は、「<a href="http://www.adventar.org/calendars/158">TED 広める価値のあるアイデア Advent Calendar 2013</a>」に向けた投稿です。</p>]]></description>
     <pubDate>Sun, 22 Dec 2013 00:03:41 UT</pubDate>
     <guid>http://imokuri123.com/blog/2013/12/the-happy-secret-to-better-work.html</guid>
-    <dc:creator>IMOKURI</dc:creator>
-</item>
-<item>
-    <title>やる気に関する驚きの科学</title>
-    <link>http://imokuri123.com/blog/2013/12/puzzle-of-motivation.html</link>
-    <description><![CDATA[<p>上の画像は「ろうそくの問題」と言われているテストです。</p>
-<p>ろうそくと、マッチと、画鋲を与えられ、</p>
-<p>「ろうそくのろうがテーブルに落ちないように壁に取り付けてください」</p>
-<p>というのが問題です。</p>
-<p>我々の仕事は、頭をつかう仕事をこなすことが求められてきています。↑のような。</p>
-<p>頭を使わない仕事はどんどん機械がやるようになるからです。</p>
-<p>では、そのときに、高いパフォーマンスを出してもらうためには、</p>
-<p>どうすればよいでしょうか。</p>
-<!--more-->
-<p>+++</p>
-<p>この投稿は、「<a href="http://www.adventar.org/calendars/158">TED 広める価値のあるアイデア Advent Calendar 2013</a>」に向けた投稿です。</p>]]></description>
-    <pubDate>Sat, 21 Dec 2013 07:40:32 UT</pubDate>
-    <guid>http://imokuri123.com/blog/2013/12/puzzle-of-motivation.html</guid>
     <dc:creator>IMOKURI</dc:creator>
 </item>
 

@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="ja">
+    <head>
+        <meta charset="utf-8" />
+        <title>Wake up! Good night* - Haskellでニューラルネットワーク</title>
+        <meta name="description" content="Personal blog" />
+        <meta name="keywords" content="blog,haskell" />
+        <meta name="author" content="IMOKURI" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+        <link rel="stylesheet" href="../../../css/normalize.css">
+        <link rel="stylesheet" href="../../../css/skeleton.css">
+        <link rel="shortcut icon" href="../../../images/favicon.ico">
+        <link rel="alternate" type="application/rss+xml" title="RSS" href="http://imokuri123.com/feed/rss.xml">
+
+        <script>
+          (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+          (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+          })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+          ga('create', 'UA-62022693-1', 'auto');
+          ga('send', 'pageview');
+
+        </script>
+
+    </head>
+    <body>
+
+<div class="section header">
+    <div class="container">
+        <a class="button" href="../../../">Home</a>
+        <a class="button" href="../../../about/">About</a>
+        <a class="button" href="../../../blog/">Blog</a>
+    </div>
+    <div class="container">
+        <img class="u-max-full-width" src="../../../images/title.png">
+    </div>
+</div>
+
+<div class="section body">
+    <div class="container">
+        <article>
+<h3>Haskellでニューラルネットワーク</h3>
+
+<div class="info">
+    Posted on July 15, 2015
+    
+</div>
+
+<p>Haskellの<a href="https://ja.wikipedia.org/wiki/ニューラルネットワーク">ニューラルネットワーク</a>のライブラリの<a href="https://hackage.haskell.org/package/LambdaNet">LambdaNet</a>を使って、ニューラルネットワークを構築してみたいと思います。</p>
+<p>題材は、ニューラルネットワークの例としてよく使用されるXORをシュミレーションしてみたいと思います。</p>
+<table>
+<thead>
+<tr class="header">
+<th align="left">Input</th>
+<th align="left">Output</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">(0,0)</td>
+<td align="left">0</td>
+</tr>
+<tr class="even">
+<td align="left">(0,1)</td>
+<td align="left">1</td>
+</tr>
+<tr class="odd">
+<td align="left">(1,0)</td>
+<td align="left">1</td>
+</tr>
+<tr class="even">
+<td align="left">(1,1)</td>
+<td align="left">0</td>
+</tr>
+</tbody>
+</table>
+<!--more-->
+<hr />
+<p>まずは、層（レイヤー）の数と素子（ニューロン）の数を決めます。</p>
+<p>1つ目の層が入力層、最後の層が出力層となり、<br />入力層のニューロンの数は、入力のデータの数、<br />出力層のニューロンの数は出力のデータの数とします。</p>
+<p>それ以外のレイヤーが隠れ層です。<br />隠れ層の数と、それぞれの層が持つニューロンの数をいくつにすれば良いかは、<br />いろいろな手法が考えられているようですが、この記事では割愛します。。</p>
+<p>今回は、入力層のデータの数が2つ、出力層のデータの数が1つです。 隠れ層は、よくあるXORの例にならい、隠れ層1つ（ニューロン2つ）としたいとおもいます。</p>
+<p>続いて、各層のニューロンをどのように接続するかを考えます。 一般的には各ニューロンを接続する・しないのマップで表現されることが考えられそうですが、 LambdaNetのライブラリでは、現状、すべてのニューロンを接続することしかできません。</p>
+<p>活性化関数には、sigmoid、tanh、ReLUが用意されています。<br />今回はsigmoidを使ってみます。</p>
+<p>重みとバイアスの初期値はランダムですが、一様なもの（uniforms）と、<br />正規分布に従うもの（normals）が用意されています。<br />今回はnormalsを使ってみます。</p>
+<p>ここまでの情報で、初期値を持ったニューラルネットワークができます。<br />ソースはこちらです。</p>
+<pre class="sourceCode haskell"><code class="sourceCode haskell">  g <span class="ot">&lt;-</span> newStdGen
+  <span class="kw">let</span> l   <span class="fu">=</span> <span class="dt">LayerDefinition</span> sigmoidNeuron <span class="dv">2</span> connectFully
+      l'  <span class="fu">=</span> <span class="dt">LayerDefinition</span> sigmoidNeuron <span class="dv">2</span> connectFully
+      l'' <span class="fu">=</span> <span class="dt">LayerDefinition</span> sigmoidNeuron <span class="dv">1</span> connectFully
+
+  <span class="kw">let</span> n <span class="fu">=</span> createNetwork normals g [l, l', l'']</code></pre>
+<hr />
+<p>次に、誤差逆伝播法（バックプロパゲーション）を使った教師あり学習を作っていきます。</p>
+<p>LambdaNetでは、誤差関数（コスト関数）として、二乗誤差関数のみが提供されています。</p>
+<p>学習係数は、用途に合わせて調整します。</p>
+<p>ニューラルネットワークの更新の方法は、毎回の学習のたびにネットワークを更新するオンライン（online）と、<br />n回学習ごとに更新するミニバッチ（minibatch n）が用意されています。</p>
+<p>学習用のデータとしては、XORのインプットとアウトプットの4パターンを使用します。</p>
+<p>準備した学習用のデータで1万回学習するソースがこちらです。</p>
+<pre class="sourceCode haskell"><code class="sourceCode haskell">  <span class="kw">let</span> t <span class="fu">=</span> <span class="dt">BackpropTrainer</span> <span class="dv">3</span> quadraticCost quadraticCost'
+
+  <span class="kw">let</span> dat <span class="fu">=</span> [(fromList [<span class="dv">0</span>, <span class="dv">1</span>], fromList [<span class="dv">1</span>]),
+             (fromList [<span class="dv">1</span>, <span class="dv">1</span>], fromList [<span class="dv">0</span>]),
+             (fromList [<span class="dv">1</span>, <span class="dv">0</span>], fromList [<span class="dv">1</span>]),
+             (fromList [<span class="dv">0</span>, <span class="dv">0</span>], fromList [<span class="dv">0</span>])]
+
+  <span class="kw">let</span> n' <span class="fu">=</span> trainNTimes n t online dat <span class="dv">10000</span></code></pre>
+<hr />
+<p>最後に、学習したネットワークをテストしてみます。</p>
+<p>うまくいけば、XORの結果が得られていると思います。<br />（今回のソースの条件だと、最初の乱数の状況によってはあまりよい結果にならない場合もありそうです・・）</p>
+<p>良いケース</p>
+<p>==&gt; XOR predictions:<br />(0,0): fromList [5.9859958e-3]<br />(1,0): fromList [0.9938293]<br />(0,1): fromList [0.9938205]<br />(1,1): fromList [7.5507853e-3]</p>
+<p>悪いケース・・・</p>
+<p>==&gt; XOR predictions:<br />(0,0): fromList [5.984603e-3]<br />(1,0): fromList [0.99414057]<br />(0,1): fromList [0.4489829]<br />(1,1): fromList [0.44912618]</p>
+<p>この形を基本に様々なケースに拡張してみたいと思います。</p>
+<hr />
+<p>今回作成したコードは<a href="https://github.com/IMOKURI/nn-sample">こちら</a>です。<br />LambdaNetの<a href="https://github.com/jbarrow/LambdaNet/blob/master/examples/XOR.hs">こちら</a>のコードを参考にしています。</p>
+
+</article>
+
+
+<a href="https://twitter.com/share" class="twitter-share-button" data-related="rouge_pawn">Tweet</a>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+
+
+
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES * * */
+    var disqus_shortname = 'IMOKURI';
+    var disqus_identifier = "/blog/2015/07/neural-network-in-haskell.html";
+    var disqus_title = "Haskellでニューラルネットワーク";
+    var disqus_url = "http://imokuri123.com/blog/2015/07/neural-network-in-haskell.html";
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+
+
+    </div>
+</div>
+
+<div class="section footer">
+    <div class="container">
+        Site proudly generated by <a href="http://jaspervdj.be/hakyll">Hakyll</a>
+        and <a href="http://getskeleton.com/">Skeleton</a>
+    </div>
+</div>
+
+    </body>
+</html>

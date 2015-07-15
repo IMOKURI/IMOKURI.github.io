@@ -2,6 +2,10 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
     <url>
+        <loc>http://imokuri123.com/blog/2015/07/neural-network-in-haskell.html</loc>
+    </url>
+
+    <url>
         <loc>http://imokuri123.com/blog/2015/04/snmp-will-be-replaced-by-yang-netconf.html</loc>
     </url>
 
