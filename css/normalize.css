@@ -1,21 +1,11 @@
 /*! normalize.css v3.0.2 | MIT License | git.io/normalize */
 
-/*
 @font-face{
   font-family:"Koku Mincho";
   src:url("../fonts/font_1_kokumr_1.00_rls.eot");
   src:url("../fonts/font_1_kokumr_1.00_rls.eot?#iefix")format("embedded-opentype"),
       url("../fonts/font_1_kokumr_1.00_rls.woff")format("woff"),
       url("../fonts/font_1_kokumr_1.00_rls.ttf")format("truetype");
-}
-*/
-
-@font-face{
-  font-family:"Koku Gothic";
-  src:url("../fonts/font_1_kokugl_1.15_rls.eot");
-  src:url("../fonts/font_1_kokugl_1.15_rls.eot?#iefix")format("embedded-opentype"),
-      url("../fonts/font_1_kokugl_1.15_rls.woff")format("woff"),
-      url("../fonts/font_1_kokugl_1.15_rls.ttf")format("truetype");
 }
 
 @font-face{
@@ -26,16 +16,10 @@
       url("../fonts/RictyDiminished-Regular.ttf")format("truetype");
 }
 
-/**
- * 1. Set default font family to sans-serif.
- * 2. Prevent iOS text size adjust after orientation change, without disabling
- *    user zoom.
- */
-
 html {
-  font-family: "Koku Gothic", sans-serif; /* 1 */
-  -ms-text-size-adjust: 100%; /* 2 */
-  -webkit-text-size-adjust: 100%; /* 2 */
+  font-family: "Koku Mincho", serif;
+  -ms-text-size-adjust: 100%;
+  -webkit-text-size-adjust: 100%;
 }
 
 /**
