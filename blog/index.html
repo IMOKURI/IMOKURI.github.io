@@ -1,59 +1,58 @@
 <!DOCTYPE html>
 <html lang="ja">
-    <head>
-        <meta charset="utf-8" />
-        <title>Wake up! Good night* - Blog</title>
-        <meta name="description" content="Personal blog" />
-        <meta name="keywords" content="blog,haskell" />
-        <meta name="author" content="IMOKURI" />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <head>
+    <meta charset="utf-8" />
+    <title>Wake up! Good night* - Blog</title>
+    <meta name="description" content="Personal blog" />
+    <meta name="keywords" content="blog,haskell" />
+    <meta name="author" content="IMOKURI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-        <link rel="stylesheet" href="../css/normalize.css">
-        <link rel="stylesheet" href="../css/skeleton.css">
-        <link rel="shortcut icon" href="../images/favicon.ico">
-        <link rel="alternate" type="application/rss+xml" title="RSS" href="http://imokuri123.com/feed/rss.xml">
+    <link rel="stylesheet" href="../css/normalize.css">
+    <link rel="stylesheet" href="../css/skeleton.css">
+    <link rel="shortcut icon" href="../images/favicon.ico">
+    <link rel="alternate" type="application/rss+xml" title="RSS" href="http://imokuri123.com/feed/rss.xml">
 
-        <script>
-          (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-          (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-          })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
 
-          ga('create', 'UA-62022693-1', 'auto');
-          ga('send', 'pageview');
+      ga('create', 'UA-62022693-1', 'auto');
+      ga('send', 'pageview');
 
-        </script>
+    </script>
 
-    </head>
-    <body>
+  </head>
+  <body>
 
-<div class="section header">
-    <div class="container">
+    <div class="section header">
+      <div class="container">
         <a class="button" href="../">Home</a>
         <a class="button" href="../about/">About</a>
         <a class="button" href="../blog/">Blog</a>
-    </div>
-    <div class="container">
+      </div>
+      <div class="container">
         <img class="u-max-full-width" src="../images/title.png" alt="Title - Wake Up! Good Night*">
+      </div>
     </div>
-</div>
 
-<div class="section body">
-    <div class="container">
+    <div class="section body">
+      <div class="container">
         <article>
 <h3>Blog</h3>
 
 <p>ごゆるりお楽しみください。</p>
 <hr>
 
-<ul>
-    
 
-        <h4>Haskellでニューラルネットワーク</h4>
-        <div class="info">July 15, 2015</div>
 
-        
-            <p>Haskellの<a href="https://ja.wikipedia.org/wiki/ニューラルネットワーク">ニューラルネットワーク</a>のライブラリの<a href="https://hackage.haskell.org/package/LambdaNet">LambdaNet</a>を使って、ニューラルネットワークを構築してみたいと思います。</p>
+  <h4>Haskellでニューラルネットワーク</h4>
+  <div class="info">July 15, 2015</div>
+
+  
+    <p>Haskellの<a href="https://ja.wikipedia.org/wiki/ニューラルネットワーク">ニューラルネットワーク</a>のライブラリの<a href="https://hackage.haskell.org/package/LambdaNet">LambdaNet</a>を使って、ニューラルネットワークを構築してみたいと思います。</p>
 <p>題材は、ニューラルネットワークの例としてよく使用されるXORをシュミレーションしてみたいと思います。</p>
 <table>
 <thead>
@@ -82,61 +81,61 @@
 </tbody>
 </table>
 ...<a href="../blog/2015/07/neural-network-in-haskell.html">(続きを読む)</a>
-        
+  
 
-        <hr>
+  <hr>
 
-    
 
-        <h4>SNMPに取って代わるYANG/NETCONF</h4>
-        <div class="info">April 28, 2015</div>
 
-        
-            <p><a href="https://tools.ietf.org/html/rfc6241">NETCONF</a>は、IETFによって策定が進められているNetwork管理用のプロトコルです。<br /><a href="https://tools.ietf.org/html/rfc6020">YANG</a>は、NETCONFのデータを表現するための言語です。</p>
+  <h4>SNMPに取って代わるYANG/NETCONF</h4>
+  <div class="info">April 28, 2015</div>
+
+  
+    <p><a href="https://tools.ietf.org/html/rfc6241">NETCONF</a>は、IETFによって策定が進められているNetwork管理用のプロトコルです。<br /><a href="https://tools.ietf.org/html/rfc6020">YANG</a>は、NETCONFのデータを表現するための言語です。</p>
 <p>これらは、<a href="http://www.ietf.org/iesg/">IESG</a>（IETFの活動と標準化プロセスの、技術的な側面についての責任を担っているグループ）によって使用が推奨され始めています。<a href="http://www.ietf.org/iesg/statement/writable-mib-module.html">こちら</a></p>
 <p>今後、SNMP/SMI2に取って代わるであろうYANG/NETCONFについて、まとめていきます。</p>
 ...<a href="../blog/2015/04/snmp-will-be-replaced-by-yang-netconf.html">(続きを読む)</a>
-        
+  
 
-        <hr>
+  <hr>
 
-    
 
-        <h4>Hakyllを使ってGitHub Pagesを作成して、そのソースも管理して、Travis CIで自動デプロイする。</h4>
-        <div class="info">April  5, 2015</div>
 
-        
-            <p><a href="https://pages.github.com/">GitHub Pages</a>は、レポジトリに配置されたファイルにそって、Webページが生成されます。そのため、<code>index.html</code> などは、レポジトリのルートに配置されている必要があります。</p>
+  <h4>Hakyllを使ってGitHub Pagesを作成して、そのソースも管理して、Travis CIで自動デプロイする。</h4>
+  <div class="info">April  5, 2015</div>
+
+  
+    <p><a href="https://pages.github.com/">GitHub Pages</a>は、レポジトリに配置されたファイルにそって、Webページが生成されます。そのため、<code>index.html</code> などは、レポジトリのルートに配置されている必要があります。</p>
 <p>一方、<a href="http://jaspervdj.be/hakyll/">Hakyll</a>は、公開用の <code>index.html</code> などのファイルが、ルートディレクトリではなく、 <code>_site</code> というディレクトリ配下に生成されます。</p>
 <p>そのため、HakyllのソースのルートディレクトリからGithub Pagesのレポジトリにソースをアップロードしてしまうと、正しくWebページが表示されません。</p>
 <p>そこで、レポジトリのmasterブランチでは、公開用にHakyllで生成したファイル( <code>_site</code> 配下の <code>index.html</code> など)が配置され、sourceブランチに、Webページ生成元となるソースを含めたファイルを配置するようにレポジトリを作成したいと思います。</p>
 <p>その際、sourceブランチを修正、プッシュしたら、自動でmasterブランチが更新されるよう、<a href="https://travis-ci.org/">Travis CI</a>を使用して自動化したいと思います。</p>
 ...<a href="../blog/2015/04/create-github-pages-with-hakyll.html">(続きを読む)</a>
-        
+  
 
-        <hr>
+  <hr>
 
-    
 
-        <h4>Docker ユースケース【監視対象としてのSNMP Agent】</h4>
-        <div class="info">October 19, 2014</div>
 
-        
-            <p>物理サーバでも、仮想マシンでもない、Dockerを始めとしたコンテナ型の仮想化が有効なユースケースがあります。</p>
+  <h4>Docker ユースケース【監視対象としてのSNMP Agent】</h4>
+  <div class="info">October 19, 2014</div>
+
+  
+    <p>物理サーバでも、仮想マシンでもない、Dockerを始めとしたコンテナ型の仮想化が有効なユースケースがあります。</p>
 <p>それは、SNMP Agentとしてです。</p>
 <p>具体的には、SNMP Agentを監視するSNMP Managerの試験などの用途として、大量のSNMP Agentが必要な場合、に効果的だと思います。</p>
 ...<a href="../blog/2014/10/docker-use-case-snmp-agent.html">(続きを読む)</a>
-        
+  
 
-        <hr>
+  <hr>
 
-    
 
-        <h4>HaskellでSNMP Trapを投げる</h4>
-        <div class="info">June 29, 2014</div>
 
-        
-            <p>Haskellには、SNMP Trapを送信するライブラリがないですかね。</p>
+  <h4>HaskellでSNMP Trapを投げる</h4>
+  <div class="info">June 29, 2014</div>
+
+  
+    <p>Haskellには、SNMP Trapを送信するライブラリがないですかね。</p>
 <p>ということで、簡単なものだけ作ってみました。</p>
 <p>目指したものとしては、</p>
 <ol style="list-style-type: decimal">
@@ -146,29 +145,29 @@
 </ol>
 <p>と言った感じです。</p>
 ...<a href="../blog/2014/06/send-snmptrap-using-haskell.html">(続きを読む)</a>
-        
+  
 
-        <hr>
+  <hr>
 
-    
 
-        <h4>交渉で良い結果を得る方法7つ</h4>
-        <div class="info">May  8, 2014</div>
 
-        
-            <p>交渉でのミスを避けるための7つのポイントが、参考になったので、まとめます。</p>
+  <h4>交渉で良い結果を得る方法7つ</h4>
+  <div class="info">May  8, 2014</div>
+
+  
+    <p>交渉でのミスを避けるための7つのポイントが、参考になったので、まとめます。</p>
 ...<a href="../blog/2014/05/how-to-create-good-outcomes-when-negotiating.html">(続きを読む)</a>
-        
+  
 
-        <hr>
+  <hr>
 
-    
 
-        <h4>何が人を動かすのか</h4>
-        <div class="info">December 25, 2013</div>
 
-        
-            <p>人を動かすものは何か。</p>
+  <h4>何が人を動かすのか</h4>
+  <div class="info">December 25, 2013</div>
+
+  
+    <p>人を動かすものは何か。</p>
 <p>客観的に、論理的に、考え、行動せよ、、、云々、とよく言われます。</p>
 <p>それは、もともと人がそう動けないからでしょうか。</p>
 <p>このAdvent Calendarの中でも<a href="http://www.imokuri123.com/blog/2013/12/puzzle-of-motivation.html">内的モチベーションについての話題</a>がありました。</p>
@@ -179,17 +178,17 @@
 <p>バカみたいな前向きさも良い結果に寄与するということです。</p>
 <p>これらに共通するのは何でしょうか。</p>
 ...<a href="../blog/2013/12/why-we-do-what-we-do.html">(続きを読む)</a>
-        
+  
 
-        <hr>
+  <hr>
 
-    
 
-        <h4>指揮者に学ぶリーダーシップ</h4>
-        <div class="info">December 24, 2013</div>
 
-        
-            <p>指揮者はただ指揮棒を振っているわけではないそうです。</p>
+  <h4>指揮者に学ぶリーダーシップ</h4>
+  <div class="info">December 24, 2013</div>
+
+  
+    <p>指揮者はただ指揮棒を振っているわけではないそうです。</p>
 <p>あまり考えたことなかったですが。（おぃ</p>
 <p>なるほど、そこから、一般的なリーダーとしての振る舞いが学べるということですね。</p>
 <p>ただ、リーダーとしての振る舞いは、決まりきったものではないと思います。</p>
@@ -198,74 +197,73 @@
 <p>失敗したケースは何が悪いのか、</p>
 <p>うまく言っているケースは何がよいのか</p>
 ...<a href="../blog/2013/12/lead-like-the-great-conductors.html">(続きを読む)</a>
-        
+  
 
-        <hr>
+  <hr>
 
-    
 
-        <h4>子供にやらせたい人生ゲーム</h4>
-        <div class="info">December 23, 2013</div>
 
-        
-            <p>普通の人生ゲームではなくて、</p>
+  <h4>子供にやらせたい人生ゲーム</h4>
+  <div class="info">December 23, 2013</div>
+
+  
+    <p>普通の人生ゲームではなくて、</p>
 <p>戦争の話とか、</p>
 <p>経済の話とか、</p>
 <p>政治の話とか、</p>
 <p>そういうゲームです。</p>
 ...<a href="../blog/2013/12/the-world-peace-game.html">(続きを読む)</a>
-        
+  
 
-        <hr>
+  <hr>
 
-    
 
-        <h4>うまく行くと思っていれば成功する！？</h4>
-        <div class="info">December 22, 2013</div>
 
-        
-            <p>成功すれば、幸せになれる、のは本当？</p>
+  <h4>うまく行くと思っていれば成功する！？</h4>
+  <div class="info">December 22, 2013</div>
+
+  
+    <p>成功すれば、幸せになれる、のは本当？</p>
 <p>むしろ逆じゃない！？</p>
 <p>幸せなら成功する、</p>
 <p>もっと言うと、</p>
 <p>幸せだと思い込んでいれば成功する！</p>
 <p>その秘密のご紹介です。</p>
 ...<a href="../blog/2013/12/the-happy-secret-to-better-work.html">(続きを読む)</a>
-        
+  
 
-        <hr>
+  <hr>
 
-    
-</ul>
+
 
 </article>
 
 <div class="pagination">
-    <div class="container">
-        
-        
-        &mdash;
-        1 of 4
-        &mdash;
-        
-            &nbsp;<a href="../blog/2/index.html">Next&nbsp;&rsaquo;</a>
-        
-        
-            &nbsp;<a href="../blog/4/index.html">Last&nbsp;&raquo;</a>
-        
-    </div>
+  <div class="container">
+    
+    
+    &mdash;
+    1 of 4
+    &mdash;
+    
+      &nbsp;<a href="../blog/2/index.html">Next&nbsp;&rsaquo;</a>
+    
+    
+      &nbsp;<a href="../blog/4/index.html">Last&nbsp;&raquo;</a>
+    
+  </div>
 </div>
 
 
+      </div>
     </div>
-</div>
 
-<div class="section footer">
-    <div class="container">
+    <div class="section footer">
+      <div class="container">
         Site proudly generated by <a href="http://jaspervdj.be/hakyll">Hakyll</a>
         and <a href="http://getskeleton.com/">Skeleton</a>
+      </div>
     </div>
-</div>
 
-    </body>
+  </body>
 </html>
