@@ -4,40 +4,38 @@
 <p>ごゆるりお楽しみください。</p>
 <hr>
 
-<ul>
-    $for(posts)$
+$for(posts)$
 
-        <h4>$title$</h4>
-        <div class="info">$date$</div>
+  <h4>$title$</h4>
+  <div class="info">$date$</div>
 
-        $if(teaser)$
-            $teaser$...<a href="$url$">(続きを読む)</a>
-        $endif$
+  $if(teaser)$
+    $teaser$...<a href="$url$">(続きを読む)</a>
+  $endif$
 
-        <hr>
+  <hr>
 
-    $endfor$
-</ul>
+$endfor$
 
 </article>
 
 <div class="pagination">
-    <div class="container">
-        $if(firstPageUrl)$
-            <a href="$firstPageUrl$">&laquo;&nbsp;First</a>&nbsp;
-        $endif$
-        $if(previousPageUrl)$
-            <a href="$previousPageUrl$">&lsaquo;&nbsp;Previous</a>&nbsp;
-        $endif$
-        &mdash;
-        $currentPageNum$ of $numPages$
-        &mdash;
-        $if(nextPageUrl)$
-            &nbsp;<a href="$nextPageUrl$">Next&nbsp;&rsaquo;</a>
-        $endif$
-        $if(lastPageUrl)$
-            &nbsp;<a href="$lastPageUrl$">Last&nbsp;&raquo;</a>
-        $endif$
-    </div>
+  <div class="container">
+    $if(firstPageUrl)$
+      <a href="$firstPageUrl$">&laquo;&nbsp;First</a>&nbsp;
+    $endif$
+    $if(previousPageUrl)$
+      <a href="$previousPageUrl$">&lsaquo;&nbsp;Previous</a>&nbsp;
+    $endif$
+    &mdash;
+    $currentPageNum$ of $numPages$
+    &mdash;
+    $if(nextPageUrl)$
+      &nbsp;<a href="$nextPageUrl$">Next&nbsp;&rsaquo;</a>
+    $endif$
+    $if(lastPageUrl)$
+      &nbsp;<a href="$lastPageUrl$">Last&nbsp;&raquo;</a>
+    $endif$
+  </div>
 </div>
 
