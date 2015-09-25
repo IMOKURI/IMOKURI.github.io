@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <title>Wake up! Good night* - KeterでYesodを動かす。</title>
+    <meta name="description" content="Personal blog" />
+    <meta name="keywords" content="blog,haskell" />
+    <meta name="author" content="IMOKURI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <link rel="stylesheet" href="../../../css/normalize.css">
+    <link rel="stylesheet" href="../../../css/skeleton.css">
+    <link rel="shortcut icon" href="../../../images/favicon.ico">
+    <link rel="alternate" type="application/rss+xml" title="RSS" href="http://imokuri123.com/feed/rss.xml">
+
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+      ga('create', 'UA-62022693-1', 'auto');
+      ga('send', 'pageview');
+
+    </script>
+
+  </head>
+  <body>
+
+    <div class="section header">
+      <div class="container">
+        <a class="button" href="../../../">Home</a>
+        <a class="button" href="../../../about/">About</a>
+        <a class="button" href="../../../blog/">Blog</a>
+      </div>
+      <div class="container">
+        <img class="u-max-full-width" src="../../../images/title.png" alt="Title - Wake Up! Good Night*">
+      </div>
+    </div>
+
+    <div class="section body">
+      <div class="container">
+        <article>
+<h3>KeterでYesodを動かす。</h3>
+
+<div class="info">
+  Posted on September 25, 2015
+  
+</div>
+
+<p>KeterとNginxを使って、Yesodをdaemonとして起動してみたので、まとめです。</p>
+<p>結果として、</p>
+<ul>
+<li>Yesodはsandboxにインストールする。</li>
+<li>本番環境には、バイナリのみ配置する。(今回は便宜上同じ環境です・・)</li>
+</ul>
+<p>な感じで動作できそうな感じになりました。</p>
+<p>ただ、cabal hellが怖くない(？)本番環境などでは、sandboxが消えちゃった時のことを考えると(そんなこと考えるのはおかしいかもですが、、)globalな環境にインストールしちゃっても良いのかもしれません。</p>
+<!--more-->
+<p>今回の環境は、以下のとおりです。</p>
+<ul>
+<li>Fedora 22</li>
+<li>Haskell-Platform 2014.2</li>
+<li>GHC 7.8.4</li>
+<li>Nginx 1.8.0</li>
+</ul>
+<p>stackはまだ勉強中なので、、cabalを使っています。。</p>
+<h2 id="yesodをインストールする">Yesodをインストールする</h2>
+<p>YesodとKeterをsandboxにインストールします。安心してインストールできるようにLTS Haskellを使いました。</p>
+<pre><code>$ mkdir yesod &amp;&amp; cd yesod
+$ cabal sandbox init
+
+## (執筆時点の)最新のLTS HaskellはGHC 7.10向けなので、LTS2を使います。
+$ wget https://www.stackage.org/lts-2/cabal.config
+
+$ cabal update
+$ cabal install yesod-bin keter</code></pre>
+<p>インストールすると、 <code>./cabal-sandbox/bin</code> 配下にyesodなどのコマンドができています。<br />やり方としては、スマートではないかもしれませんが、このコマンドを(楽に)使いたいので、パスを通しておきます。</p>
+<pre><code>$ export PATH=&quot;＜ほげほげ＞/yesod/.cabal-sandbox/bin:$PATH&quot;
+$ yesod init</code></pre>
+<p>Yesodのプロジェクトのディレクトリに移動して、またもsandboxでインストールです。<br />ここはcabalファイルに、細かくバージョンの制限があったので、LTS Haskellはなしでやっちゃいました。</p>
+<pre><code>$ cd &lt;プロジェクトのディレクトリ&gt;
+$ cabal sandbox init
+$ cabal install --only-dependencies</code></pre>
+<h2 id="keter用にyesodのプログラムを準備する">Keter用にYesodのプログラムを準備する</h2>
+<p>苦悩の末に、Yesodのプロジェクトが出来上がったら、Keterの設定ファイル(config/keter.yml)を更新します。<br />最低限更新が必要なのは以下かと思います。</p>
+<pre><code>user-edited: false    ## 削除
+
+stanzas:
+  - type: webapp
+    hosts:
+      - www.&lt;かっこいいドメイン&gt;.com    ## プロジェクトのドメインに変更</code></pre>
+<p>設定ファイルを更新したら、本番環境に持っていくバイナリファイルを作ります。<br />バイナリファイルの実体は、Yesodのプログラムや設定ファイルをgzipで固めたものです。<br />出来上がった <code>＜プロジェクト名＞.keter</code> が持っていくバイナリになります。</p>
+<pre><code>$ yesod keter</code></pre>
+<h2 id="keterの起動準備">Keterの起動準備</h2>
+<p>Keterの起動ディレクトリを適当な場所に作成して、起動ファイルを準備します。</p>
+<pre><code>$ mkdir keter &amp;&amp; cd keter
+$ mkdir etc incoming</code></pre>
+<p>incomingディレクトリには、先ほど作ったYesodのプロジェクトのバイナリファイルを配置しておきます。</p>
+<p>etcディレクトリには、Keterの起動ファイル(keter.yaml)を準備します。<br />この環境はsystemdなので、以下のようになりますが、それ以外の環境については巻末のリンクをご参照ください。</p>
+<pre><code>root: ＜ほげほげ＞/keter    ## 上で作ったKeterの起動ディレクトリ
+nginx:
+  start:
+    - systemctl
+    - start
+    - nginx.service
+  reload:
+    - systemctl
+    - reload
+    - nginx.service</code></pre>
+<p>つづいて、Keterのsystemd用のファイル(/usr/lib/systemd/system/keter.service)を準備します。</p>
+<pre><code>[Unit]
+Description=Keter Deployment Handler
+After=local-fs.target network.target
+
+[Service]
+ExecStart=/＜Keterをインストールしたディレクトリ＞/keter /＜Keterの起動ディレクトリ＞/etc/keter.yaml
+
+[Install]
+WantedBy=multi-user.target</code></pre>
+<p>最後にnginxのProxyの設定(/etc/nginx/nginx.conf)を変更します。</p>
+<pre><code>http {
+    server {
+        server_name  www.&lt;かっこいいドメイン&gt;.com;    ## プロジェクトのドメインに変更
+        location / {
+            proxy_pass http://localhost:&lt;Yesodのポート番号&gt;;    ## Proxyの設定を追加
+        }
+    }
+}</code></pre>
+<h2 id="keter起動">Keter起動！</h2>
+<p>起動します。</p>
+<pre><code># systemctl start keter.service</code></pre>
+<p>うまく行っていれば、設定したドメインでアクセスできるかと思います。</p>
+<p>OS起動時に自動で起動するようにするのは、こちらです。</p>
+<pre><code># systemctl enable keter.service</code></pre>
+<h3 id="参考">参考</h3>
+<p><a href="https://pbrisbin.com/posts/yesod_deployments_with_keter/">Yesod Deployments with Keter</a><br /><a href="http://www.yesodweb.com/book/deploying-your-webapp">Deploying your Webapp</a></p>
+
+</article>
+
+
+<a href="https://twitter.com/share" class="twitter-share-button" data-related="rouge_pawn">Tweet</a>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+
+
+
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+  /* * * CONFIGURATION VARIABLES * * */
+  var disqus_shortname = 'IMOKURI';
+  var disqus_identifier = "/blog/2015/09/yesod-deployments-with-keter.html";
+  var disqus_title = "KeterでYesodを動かす。";
+  var disqus_url = "http://imokuri123.com/blog/2015/09/yesod-deployments-with-keter.html";
+
+  /* * * DON'T EDIT BELOW THIS LINE * * */
+  (function() {
+    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+
+
+      </div>
+    </div>
+
+    <div class="section footer">
+      <div class="container">
+        Site proudly generated by <a href="http://jaspervdj.be/hakyll">Hakyll</a>
+        and <a href="http://getskeleton.com/">Skeleton</a>
+      </div>
+    </div>
+
+  </body>
+</html>

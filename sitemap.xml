@@ -2,6 +2,10 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
   <url>
+    <loc>http://imokuri123.com/blog/2015/09/yesod-deployments-with-keter.html</loc>
+  </url>
+
+  <url>
     <loc>http://imokuri123.com/blog/2015/07/neural-network-in-haskell.html</loc>
   </url>
 

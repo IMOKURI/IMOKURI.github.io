@@ -8,8 +8,102 @@
         <name>IMOKURI</name>
         <email></email>
     </author>
-    <updated>2015-07-15T00:00:00Z</updated>
+    <updated>2015-09-25T00:00:00Z</updated>
     <entry>
+    <title>KeterでYesodを動かす。</title>
+    <link href="http://imokuri123.com/blog/2015/09/yesod-deployments-with-keter.html" />
+    <id>http://imokuri123.com/blog/2015/09/yesod-deployments-with-keter.html</id>
+    <published>2015-09-25T00:00:00Z</published>
+    <updated>2015-09-25T00:00:00Z</updated>
+    <summary type="html"><![CDATA[<p>KeterとNginxを使って、Yesodをdaemonとして起動してみたので、まとめです。</p>
+<p>結果として、</p>
+<ul>
+<li>Yesodはsandboxにインストールする。</li>
+<li>本番環境には、バイナリのみ配置する。(今回は便宜上同じ環境です・・)</li>
+</ul>
+<p>な感じで動作できそうな感じになりました。</p>
+<p>ただ、cabal hellが怖くない(？)本番環境などでは、sandboxが消えちゃった時のことを考えると(そんなこと考えるのはおかしいかもですが、、)globalな環境にインストールしちゃっても良いのかもしれません。</p>
+<!--more-->
+<p>今回の環境は、以下のとおりです。</p>
+<ul>
+<li>Fedora 22</li>
+<li>Haskell-Platform 2014.2</li>
+<li>GHC 7.8.4</li>
+<li>Nginx 1.8.0</li>
+</ul>
+<p>stackはまだ勉強中なので、、cabalを使っています。。</p>
+<h2 id="yesodをインストールする">Yesodをインストールする</h2>
+<p>YesodとKeterをsandboxにインストールします。安心してインストールできるようにLTS Haskellを使いました。</p>
+<pre><code>$ mkdir yesod &amp;&amp; cd yesod
+$ cabal sandbox init
+
+## (執筆時点の)最新のLTS HaskellはGHC 7.10向けなので、LTS2を使います。
+$ wget https://www.stackage.org/lts-2/cabal.config
+
+$ cabal update
+$ cabal install yesod-bin keter</code></pre>
+<p>インストールすると、 <code>./cabal-sandbox/bin</code> 配下にyesodなどのコマンドができています。<br />やり方としては、スマートではないかもしれませんが、このコマンドを(楽に)使いたいので、パスを通しておきます。</p>
+<pre><code>$ export PATH=&quot;＜ほげほげ＞/yesod/.cabal-sandbox/bin:$PATH&quot;
+$ yesod init</code></pre>
+<p>Yesodのプロジェクトのディレクトリに移動して、またもsandboxでインストールです。<br />ここはcabalファイルに、細かくバージョンの制限があったので、LTS Haskellはなしでやっちゃいました。</p>
+<pre><code>$ cd &lt;プロジェクトのディレクトリ&gt;
+$ cabal sandbox init
+$ cabal install --only-dependencies</code></pre>
+<h2 id="keter用にyesodのプログラムを準備する">Keter用にYesodのプログラムを準備する</h2>
+<p>苦悩の末に、Yesodのプロジェクトが出来上がったら、Keterの設定ファイル(config/keter.yml)を更新します。<br />最低限更新が必要なのは以下かと思います。</p>
+<pre><code>user-edited: false    ## 削除
+
+stanzas:
+  - type: webapp
+    hosts:
+      - www.&lt;かっこいいドメイン&gt;.com    ## プロジェクトのドメインに変更</code></pre>
+<p>設定ファイルを更新したら、本番環境に持っていくバイナリファイルを作ります。<br />バイナリファイルの実体は、Yesodのプログラムや設定ファイルをgzipで固めたものです。<br />出来上がった <code>＜プロジェクト名＞.keter</code> が持っていくバイナリになります。</p>
+<pre><code>$ yesod keter</code></pre>
+<h2 id="keterの起動準備">Keterの起動準備</h2>
+<p>Keterの起動ディレクトリを適当な場所に作成して、起動ファイルを準備します。</p>
+<pre><code>$ mkdir keter &amp;&amp; cd keter
+$ mkdir etc incoming</code></pre>
+<p>incomingディレクトリには、先ほど作ったYesodのプロジェクトのバイナリファイルを配置しておきます。</p>
+<p>etcディレクトリには、Keterの起動ファイル(keter.yaml)を準備します。<br />この環境はsystemdなので、以下のようになりますが、それ以外の環境については巻末のリンクをご参照ください。</p>
+<pre><code>root: ＜ほげほげ＞/keter    ## 上で作ったKeterの起動ディレクトリ
+nginx:
+  start:
+    - systemctl
+    - start
+    - nginx.service
+  reload:
+    - systemctl
+    - reload
+    - nginx.service</code></pre>
+<p>つづいて、Keterのsystemd用のファイル(/usr/lib/systemd/system/keter.service)を準備します。</p>
+<pre><code>[Unit]
+Description=Keter Deployment Handler
+After=local-fs.target network.target
+
+[Service]
+ExecStart=/＜Keterをインストールしたディレクトリ＞/keter /＜Keterの起動ディレクトリ＞/etc/keter.yaml
+
+[Install]
+WantedBy=multi-user.target</code></pre>
+<p>最後にnginxのProxyの設定(/etc/nginx/nginx.conf)を変更します。</p>
+<pre><code>http {
+    server {
+        server_name  www.&lt;かっこいいドメイン&gt;.com;    ## プロジェクトのドメインに変更
+        location / {
+            proxy_pass http://localhost:&lt;Yesodのポート番号&gt;;    ## Proxyの設定を追加
+        }
+    }
+}</code></pre>
+<h2 id="keter起動">Keter起動！</h2>
+<p>起動します。</p>
+<pre><code># systemctl start keter.service</code></pre>
+<p>うまく行っていれば、設定したドメインでアクセスできるかと思います。</p>
+<p>OS起動時に自動で起動するようにするのは、こちらです。</p>
+<pre><code># systemctl enable keter.service</code></pre>
+<h3 id="参考">参考</h3>
+<p><a href="https://pbrisbin.com/posts/yesod_deployments_with_keter/">Yesod Deployments with Keter</a><br /><a href="http://www.yesodweb.com/book/deploying-your-webapp">Deploying your Webapp</a></p>]]></summary>
+</entry>
+<entry>
     <title>Haskellでニューラルネットワーク</title>
     <link href="http://imokuri123.com/blog/2015/07/neural-network-in-haskell.html" />
     <id>http://imokuri123.com/blog/2015/07/neural-network-in-haskell.html</id>
@@ -671,22 +765,6 @@ when waitLoadTime <span class="fu">$</span> mapM_ killThread sendTrapThreads</co
 <p>経済の話とか、</p>
 <p>政治の話とか、</p>
 <p>そういうゲームです。</p>
-<!--more-->
-<p>+++</p>
-<p>この投稿は、「<a href="http://www.adventar.org/calendars/158">TED 広める価値のあるアイデア Advent Calendar 2013</a>」に向けた投稿です。</p>]]></summary>
-</entry>
-<entry>
-    <title>うまく行くと思っていれば成功する！？</title>
-    <link href="http://imokuri123.com/blog/2013/12/the-happy-secret-to-better-work.html" />
-    <id>http://imokuri123.com/blog/2013/12/the-happy-secret-to-better-work.html</id>
-    <published>2013-12-22T00:03:41Z</published>
-    <updated>2013-12-22T00:03:41Z</updated>
-    <summary type="html"><![CDATA[<p>成功すれば、幸せになれる、のは本当？</p>
-<p>むしろ逆じゃない！？</p>
-<p>幸せなら成功する、</p>
-<p>もっと言うと、</p>
-<p>幸せだと思い込んでいれば成功する！</p>
-<p>その秘密のご紹介です。</p>
 <!--more-->
 <p>+++</p>
 <p>この投稿は、「<a href="http://www.adventar.org/calendars/158">TED 広める価値のあるアイデア Advent Calendar 2013</a>」に向けた投稿です。</p>]]></summary>
