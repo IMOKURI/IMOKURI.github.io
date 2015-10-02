@@ -6,7 +6,7 @@ slug: send-snmptrap-using-haskell
 title: HaskellでSNMP Trapを投げる
 wordpressid: 361
 categories: Network,Programming
-tags: haskell,snmp trap
+tags: haskell,snmp
 ---
 
 Haskellには、SNMP Trapを送信するライブラリがないですかね。

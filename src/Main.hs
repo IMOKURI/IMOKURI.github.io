@@ -21,11 +21,13 @@ main = hakyll $ do
         route   idRoute
         compile compressCssCompiler
 
+    tags <- buildTags "blog/*/*/*" (fromCapture "tags/*.html")
+
     match "blog/*/*/*" $ do
         route   $ setExtension "html"
         compile $ pandocCompiler
             >>= saveSnapshot "contents"
-            >>= loadAndApplyTemplate "templates/post.html"    postCtx
+            >>= loadAndApplyTemplate "templates/post.html"    (postCtxWithTags tags)
             >>= loadAndApplyTemplate "templates/default.html" postCtx
             >>= relativizeUrls
 
@@ -41,13 +43,26 @@ main = hakyll $ do
         compile $ do
             posts <- recentFirst =<< loadAll pattern
             let blogCtx = constField "title" "Blog"
-                       <> listField "posts" postCtx (return posts)
+                       <> listField "posts" (postCtxWithTags tags) (return posts)
                        <> paginateContext blog pageNum
                        <> defaultContext
 
             makeItem ""
                 >>= loadAndApplyTemplate "templates/blog.html" blogCtx
                 >>= loadAndApplyTemplate "templates/default.html" blogCtx
+                >>= relativizeUrls
+
+    tagsRules tags $ \tag pattern -> do
+        route   idRoute
+        compile $ do
+            posts <- recentFirst =<< loadAll pattern
+            let tagCtx = constField "title" ("Posts tagged " ++ tag)
+                      <> listField "posts" (postCtxWithTags tags) (return posts)
+                      <> defaultContext
+
+            makeItem ""
+                >>= loadAndApplyTemplate "templates/tag.html" tagCtx
+                >>= loadAndApplyTemplate "templates/default.html" tagCtx
                 >>= relativizeUrls
 
     match "pages/index.html" $ do
@@ -111,6 +126,10 @@ postCtx = dateField "date" "%B %e, %Y"
        <> teaserField "teaser" "contents"
        <> constField "host" (feedRoot feedConfig)
        <> defaultContext
+
+postCtxWithTags :: Tags -> Context String
+postCtxWithTags tags = tagsField "tags" tags
+                    <> postCtx
 
 rootDirIndex :: Identifier -> FilePath
 rootDirIndex = (</> "index.html") . dropExtension . takeFileName . toFilePath

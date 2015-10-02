@@ -1,14 +1,19 @@
 <article>
 <h3>$title$</h3>
 
-<div class="info">
-  <p>
-  Posted on $date$
-  $if(author)$
-    by $author$
-  $endif$
-  </p>
-</div>
+<p>
+  <div class="info">
+    Posted on $date$
+    $if(author)$
+      by $author$
+    $endif$
+  </div>
+  <div class="info">
+    $if(tags)$
+      Tags: $tags$
+    $endif$
+  </div>
+</p>
 
 $body$
 

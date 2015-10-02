@@ -7,7 +7,20 @@
 $for(posts)$
 
   <h4>$title$</h4>
-  <div class="info"><p>$date$</p></div>
+
+  <p>
+    <div class="info">
+      Posted on $date$
+      $if(author)$
+        by $author$
+      $endif$
+    </div>
+    <div class="info">
+      $if(tags)$
+        Tags: $tags$
+      $endif$
+    </div>
+  </p>
 
   $if(teaser)$
     $teaser$...<a href="$url$">(続きを読む)</a>

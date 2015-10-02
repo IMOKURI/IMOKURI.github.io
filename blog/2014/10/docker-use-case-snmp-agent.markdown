@@ -6,7 +6,7 @@ slug: docker-use-case-snmp-agent
 title: Docker ユースケース【監視対象としてのSNMP Agent】
 wordpressid: 391
 categories: Network
-tags: Docker,SNMP
+tags: Docker,snmp
 ---
 
 物理サーバでも、仮想マシンでもない、Dockerを始めとしたコンテナ型の仮想化が有効なユースケースがあります。
