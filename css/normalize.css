@@ -8,14 +8,6 @@
       url("../fonts/font_1_kokumr_1.00_rls.ttf")format("truetype");
 }
 
-@font-face{
-  font-family:"Ricty Diminished";
-  src:url("../fonts/RictyDiminished-Regular.eot");
-  src:url("../fonts/RictyDiminished-Regular.eot?#iefix")format("embedded-opentype"),
-      url("../fonts/RictyDiminished-Regular.woff")format("woff"),
-      url("../fonts/RictyDiminished-Regular.ttf")format("truetype");
-}
-
 html {
   font-family: "Koku Mincho", serif;
   -ms-text-size-adjust: 100%;
@@ -240,7 +232,7 @@ code,
 kbd,
 pre,
 samp {
-  font-family: "Ricty Diminished", monospace;
+  font-family: monospace, monospace;
   font-size: 1em;
 }
 
