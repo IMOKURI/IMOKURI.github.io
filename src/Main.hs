@@ -69,8 +69,10 @@ main = hakyll $ do
         route   $ gsubRoute "pages/" (const "")
         compile $ do
             posts <- fmap (take 5) . recentFirst =<< loadAll "blog/*/*/*"
+            tagCloud <- renderTagCloud 85.0 135.0 tags
             let indexCtx = listField "posts" postCtx (return posts)
                         <> constField "title" "Home"
+                        <> constField "tagcloud" tagCloud
                         <> defaultContext
 
             getResourceBody
