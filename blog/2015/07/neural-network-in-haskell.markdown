@@ -3,7 +3,7 @@ date: 2015-07-15
 slug: neural-network-in-haskell
 title: Haskellでニューラルネットワーク
 categories: Programming
-tags: haskell,neural network,machine learning,lambdanet
+tags: haskell,neural-network,machine-learning,lambdanet
 ---
 
 Haskellの[ニューラルネットワーク](https://ja.wikipedia.org/wiki/ニューラルネットワーク)のライブラリの[LambdaNet](https://hackage.haskell.org/package/LambdaNet)を使って、ニューラルネットワークを構築してみたいと思います。

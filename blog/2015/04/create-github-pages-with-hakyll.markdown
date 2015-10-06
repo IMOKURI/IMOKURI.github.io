@@ -6,7 +6,7 @@ slug: create-github-pages-with-hakyll
 title: Hakyllを使ってGitHub Pagesを作成して、そのソースも管理して、Travis CIで自動デプロイする。
 wordpressid: 421
 categories: Programming
-tags: github,github pages,hakyll,haskell,travis ci
+tags: github,github-pages,hakyll,haskell,travis-ci
 ---
 
 [GitHub Pages](https://pages.github.com/)は、レポジトリに配置されたファイルにそって、Webページが生成されます。そのため、`index.html` などは、レポジトリのルートに配置されている必要があります。  
