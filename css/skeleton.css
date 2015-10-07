@@ -42,7 +42,7 @@
   position: relative;
   width: 100%;
   max-width: 960px;
-  margin: 1em auto;
+  margin: 0 auto;
   padding: 0 20px;
   box-sizing: border-box; }
 .column,
@@ -311,8 +311,27 @@ ol ul {
   margin: 1.5rem 0 1.5rem 3rem;
   font-size: 90%; }
 li {
-  margin-bottom: 1.5rem; }
+  margin-bottom: 1rem; }
 
+nav ul li {
+  display: inline-block;
+  list-style: none;
+  padding: 0 20px;
+  text-align: center;
+  font-size: 150%;
+  border-style: solid none;
+  border-color: #bbb;
+  border-width: 1px;
+  background-color: transparent;
+  box-sizing: border-box; }
+
+nav ul li a {
+    text-decoration: none;
+    color: #888; }
+
+nav ul li a:hover {
+    text-decoration: none;
+    color: #333; }
 
 /* Code
 –––––––––––––––––––––––––––––––––––––––––––––––––– */

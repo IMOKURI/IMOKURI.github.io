@@ -1,5 +1,11 @@
 /*! normalize.css v3.0.2 | MIT License | git.io/normalize */
 
+/**
+ * 1. Set default font family to serif.
+ * 2. Prevent iOS text size adjust after orientation change, without disabling
+ *    user zoom.
+ */
+
 @font-face{
   font-family:"Koku Mincho";
   src:url("../fonts/font_1_kokumr_1.00_rls.eot");
@@ -9,9 +15,9 @@
 }
 
 html {
-  font-family: "Koku Mincho", serif;
-  -ms-text-size-adjust: 100%;
-  -webkit-text-size-adjust: 100%;
+  font-family: "Koku Mincho", serif; /* 1 */
+  -ms-text-size-adjust: 100%; /* 2 */
+  -webkit-text-size-adjust: 100%; /* 2 */
 }
 
 /**
