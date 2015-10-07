@@ -3,7 +3,7 @@ date: 2015-04-28
 slug: snmp-will-be-replaced-by-yang-netconf
 title: SNMPに取って代わるYANG/NETCONF
 categories: Network
-tags: yang,netconf,snmp,smi,mib,ietf,iesg
+tags: yang,netconf,snmp,mib
 ---
 
 [NETCONF](https://tools.ietf.org/html/rfc6241)は、IETFによって策定が進められているNetwork管理用のプロトコルです。  

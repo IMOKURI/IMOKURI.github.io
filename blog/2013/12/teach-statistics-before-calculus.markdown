@@ -6,7 +6,7 @@ slug: teach-statistics-before-calculus
 title: 3分間 数学教育改革
 wordpressid: 217
 categories: Life
-tags: Mathematics,TED
+tags: mathematics,TED
 ---
 
 大人になって役に立つの？

@@ -6,7 +6,7 @@ slug: turapoyo
 title: つらぽよ
 wordpressid: 221
 categories: Life
-tags: English
+tags: english
 ---
 
 [つらぽよのAdvent Calenda](http://www.adventar.org/calendars/84)rに参加してしまった。のりで。

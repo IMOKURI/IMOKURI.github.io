@@ -6,7 +6,7 @@ slug: difference-between-process-and-thread
 title: プロセスとスレッドの違い
 wordpressid: 263
 categories: HW/OS
-tags: Linux
+tags: linux
 ---
 
 linux上のアプリケーションはプロセスとして起動されます。
