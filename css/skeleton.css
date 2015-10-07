@@ -319,7 +319,7 @@ nav ul li {
   padding: 0 20px;
   text-align: center;
   font-size: 150%;
-  border-style: solid none;
+  border-style: none none solid;
   border-color: #bbb;
   border-width: 1px;
   background-color: transparent;
