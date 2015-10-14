@@ -78,21 +78,13 @@
 
 </article>
 
-<div class="one-half column">
-<script>
-  (function() {
-    var cx = '002288689330672087579:-_yg6ccgle4';
-    var gcse = document.createElement('script');
-    gcse.type = 'text/javascript';
-    gcse.async = true;
-    gcse.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') +
-        '//cse.google.com/cse.js?cx=' + cx;
-    var s = document.getElementsByTagName('script')[0];
-    s.parentNode.insertBefore(gcse, s);
-  })();
-</script>
-<gcse:search></gcse:search>
-</div>
+<form id="cse-search-box" action="http://google.com/cse">
+  <input type="hidden" name="cx" value="002288689330672087579:-_yg6ccgle4" />
+  <input type="hidden" name="ie" value="UTF-8" />
+  <input type="text" name="q" size="31" />
+  <input class="button-primary" type="submit" name="sa" value="Search" />
+</form>
+<script type="text/javascript" src="//www.google.com/cse/brand?form=cse-search-box"></script>
 
 
       </div>
