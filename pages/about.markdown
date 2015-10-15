@@ -16,9 +16,7 @@ title: About
 
 <iframe src="http://githubbadge.appspot.com/IMOKURI" style="border: 0;height: 142px;width: 200px;overflow: hidden;" frameBorder="0"></iframe>
 
-<!--
 [![Project Euler](http://projecteuler.net/profile/IMOKURI.png)](http://projecteuler.net/)
--->
 
 </article>
 
