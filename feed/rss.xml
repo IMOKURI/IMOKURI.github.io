@@ -7,8 +7,29 @@
         <description><![CDATA[インフラ系SEのまとめノート]]></description>
         <atom:link href="http://imokuri123.com/feed/rss.xml" rel="self"
                    type="application/rss+xml" />
-        <lastBuildDate>Fri, 25 Sep 2015 00:00:00 UT</lastBuildDate>
+        <lastBuildDate>Mon, 26 Oct 2015 00:00:00 UT</lastBuildDate>
         <item>
+    <title>DNFを使ってFedoraをアップグレードする（Fedora22->23）</title>
+    <link>http://imokuri123.com/blog/2015/10/upgrade-fedora-using-dnf.html</link>
+    <description><![CDATA[<p>Fedora 23から DNF を使って、Fedoraをアップグレードするのが<a href="https://fedoraproject.org/wiki/DNF_system_upgrade">推奨</a>となるようですので、早速試してみたいと思います。</p>
+<p>Fedora 23はこの記事を書いている時点ではベータ版ですが、DNFでのアップグレードができました。</p>
+<!--more-->
+<h3 id="まずはアップグレードに必要なパッケージをインストールします">まずは、アップグレードに必要なパッケージをインストールします。</h3>
+<pre><code>sudo dnf install dnf-plugin-system-upgrade --enablerepo=updates-testing</code></pre>
+<h3 id="続いてアップグレードしたいバージョン今回はfedora-23のパッケージをダウンロードします">続いて、アップグレードしたいバージョン(今回はFedora 23)のパッケージをダウンロードします。</h3>
+<pre><code>sudo dnf system-upgrade download --releasever=23</code></pre>
+<p>私の環境では、1600パッケージ（1.2GB！）ほどがダウンロードの対象となりました。</p>
+<h3 id="アップグレードします">アップグレードします！</h3>
+<pre><code>sudo dnf system-upgrade reboot</code></pre>
+<p>OSが再起動して、起動中に先ほどダウンロードしたパッケージがインストールされていきます。所要時間20分ほどでしょうか。</p>
+<h3 id="無事アップグレード完了">無事、アップグレード完了</h3>
+<pre><code>$ cat /etc/fedora-release
+Fedora release 23 (Twenty Three)</code></pre>]]></description>
+    <pubDate>Mon, 26 Oct 2015 00:00:00 UT</pubDate>
+    <guid>http://imokuri123.com/blog/2015/10/upgrade-fedora-using-dnf.html</guid>
+    <dc:creator>IMOKURI</dc:creator>
+</item>
+<item>
     <title>KeterでYesodを動かす。</title>
     <link>http://imokuri123.com/blog/2015/09/yesod-deployments-with-keter.html</link>
     <description><![CDATA[<p>KeterとNginxを使って、Yesodをdaemonとして起動してみたので、まとめです。</p>
@@ -751,21 +772,6 @@ when waitLoadTime <span class="fu">$</span> mapM_ killThread sendTrapThreads</co
 <p>この投稿は、「<a href="http://www.adventar.org/calendars/158">TED 広める価値のあるアイデア Advent Calendar 2013</a>」に向けた投稿です。</p>]]></description>
     <pubDate>Tue, 24 Dec 2013 07:30:19 UT</pubDate>
     <guid>http://imokuri123.com/blog/2013/12/lead-like-the-great-conductors.html</guid>
-    <dc:creator>IMOKURI</dc:creator>
-</item>
-<item>
-    <title>子供にやらせたい人生ゲーム</title>
-    <link>http://imokuri123.com/blog/2013/12/the-world-peace-game.html</link>
-    <description><![CDATA[<p>普通の人生ゲームではなくて、</p>
-<p>戦争の話とか、</p>
-<p>経済の話とか、</p>
-<p>政治の話とか、</p>
-<p>そういうゲームです。</p>
-<!--more-->
-<p>+++</p>
-<p>この投稿は、「<a href="http://www.adventar.org/calendars/158">TED 広める価値のあるアイデア Advent Calendar 2013</a>」に向けた投稿です。</p>]]></description>
-    <pubDate>Mon, 23 Dec 2013 10:22:15 UT</pubDate>
-    <guid>http://imokuri123.com/blog/2013/12/the-world-peace-game.html</guid>
     <dc:creator>IMOKURI</dc:creator>
 </item>
 
