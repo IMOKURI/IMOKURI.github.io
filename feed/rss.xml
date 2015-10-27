@@ -7,8 +7,61 @@
         <description><![CDATA[インフラ系SEのまとめノート]]></description>
         <atom:link href="http://imokuri123.com/feed/rss.xml" rel="self"
                    type="application/rss+xml" />
-        <lastBuildDate>Mon, 26 Oct 2015 00:00:00 UT</lastBuildDate>
+        <lastBuildDate>Tue, 27 Oct 2015 00:00:00 UT</lastBuildDate>
         <item>
+    <title>Github DesktopとAtomでブログの記事を書いてみる</title>
+    <link>http://imokuri123.com/blog/2015/10/write-blog-with-atom-and-github-desktop.html</link>
+    <description><![CDATA[<p>このブログはgithub pagesで運営しています。</p>
+<p>いつもは、Linuxから記事を書いているのですが、ちょっと趣向をかえて、Github DesktopとAtomを使って、Windows上から記事を書いてみたいと思います。</p>
+<p>使ってみたのは、こちらです。</p>
+<ul>
+<li>GitHub Desktop</li>
+<li>Atom</li>
+<li>Atomのパッケージのmarkdown-writer</li>
+</ul>
+<p>特に、markdown-writerがそこそこ使えそうなので、さわってみました。</p>
+<!--more-->
+<p>Github Desktopはインストールして、起動して、github pages用のレポジトリをクローンしておきます。（雑）</p>
+<p>Atomもインストールして、起動して、お好みのパッケージとmarkdown-writerを入れておきます。（ry</p>
+<h3 id="markdown-writerの設定">markdown-writerの設定</h3>
+<p>ここからが本題です。</p>
+<p>markdown-writerでブログを書きやすくするため、各設定を入れていきます。</p>
+<p>まず、 <code>Site Local Directory</code> にクローンしたレポジトリのディレクトリを入れます。</p>
+<p>Windowsの場合、<code>C:\Users\&lt;ユーザ名&gt;\Documents\GitHub\&lt;レポジトリ名&gt;\</code> みたいな感じになるかと思います。</p>
+<p>デフォルトのファイルパスは、スラッシュ(/)区切りで書いてありますが、ここはWindowsらしくバックスラッシュ(\)でOKです。</p>
+<p>続いて、 <code>Site Drafts Directory</code> や <code>Site Posts Directory</code> に上記のディレクトリからの相対パスを入れます。</p>
+<p><code>drafts\</code> や <code>{year}\{month}\</code> のような感じです。</p>
+<p><code>New Draft File Name</code> や <code>New Post File Name</code> も好みに合わせて変えておきます。</p>
+<h3 id="記事を書く">記事を書く</h3>
+<p>基本的な設定は、ひとまずこのくらいで実際に記事を書いてみます。</p>
+<p>Atomで、コマンドパレット(Ctrl+Shift+P)を開き、 <code>new draft</code>！で、記事のタイトルなどを入力すると、先ほどの下書き用ディレクトリに、ファイルが出来上がります。</p>
+<p>最初に挿入されるテンプレが気に入らなければ、[File]→[Open Your Config]で、以下の様なブロックを追加すれば、変更できます。</p>
+<pre><code>  &quot;markdown-writer&quot;:
+    frontMatter: &quot;&quot;&quot;
+    ---
+    date: &lt;date&gt;
+    slug: &lt;title&gt;
+    title: title in japanese
+    categories: category
+    tags: aaa,bbb,ccc
+    ---
+
+
+    &lt;!--more--&gt;
+    &quot;&quot;&quot;</code></pre>
+<p>記事を書くにあたっても、markdown-writerには、markdownを書くのに便利なコマンドが用意されているので、コマンドパレットを開いて、ゴニョゴニョ書いていくと、結構スイスイかけます。</p>
+<h3 id="公開ディレクトリに移す">公開ディレクトリに移す</h3>
+<p>わざわざ、エクスプローラーを開いて移動する必要はありません。</p>
+<p>大活躍のコマンドパレットで <code>publish draft</code>！で、先ほどの下書きディレクトリから、公開ディレクトリに移動してくれます。</p>
+<p>あとは、Github Desktopで、commitして、syncすればOKです。</p>
+<p>注意点として、文字コードをUTF-8にしておかないと、GitHub Desktopで文字化けてしまいます。</p>
+<p>Windows環境だと、普段はSJISで書いている人も多いと思いますので、記事を書き始める前に、AtomのワークスペースをUTF-8にしてくださいませ。(ステータスバーの右下の方をクリック。もしくは[Ctrl+Shift+U]からのUTF-8)</p>
+<p>快適なブログ書きを～</p>]]></description>
+    <pubDate>Tue, 27 Oct 2015 00:00:00 UT</pubDate>
+    <guid>http://imokuri123.com/blog/2015/10/write-blog-with-atom-and-github-desktop.html</guid>
+    <dc:creator>IMOKURI</dc:creator>
+</item>
+<item>
     <title>DNFを使ってFedoraをアップグレードする（Fedora22->23）</title>
     <link>http://imokuri123.com/blog/2015/10/upgrade-fedora-using-dnf.html</link>
     <description><![CDATA[<p>Fedora 23から DNF を使って、Fedoraをアップグレードするのが<a href="https://fedoraproject.org/wiki/DNF_system_upgrade">推奨</a>となるようですので、早速試してみたいと思います。</p>
@@ -753,25 +806,6 @@ when waitLoadTime <span class="fu">$</span> mapM_ killThread sendTrapThreads</co
 <p>この投稿は、「<a href="http://www.adventar.org/calendars/158">TED 広める価値のあるアイデア Advent Calendar 2013</a>」に向けた投稿です。</p>]]></description>
     <pubDate>Wed, 25 Dec 2013 00:26:34 UT</pubDate>
     <guid>http://imokuri123.com/blog/2013/12/why-we-do-what-we-do.html</guid>
-    <dc:creator>IMOKURI</dc:creator>
-</item>
-<item>
-    <title>指揮者に学ぶリーダーシップ</title>
-    <link>http://imokuri123.com/blog/2013/12/lead-like-the-great-conductors.html</link>
-    <description><![CDATA[<p>指揮者はただ指揮棒を振っているわけではないそうです。</p>
-<p>あまり考えたことなかったですが。（おぃ</p>
-<p>なるほど、そこから、一般的なリーダーとしての振る舞いが学べるということですね。</p>
-<p>ただ、リーダーとしての振る舞いは、決まりきったものではないと思います。</p>
-<p>なので、自分で考え試行錯誤し、ものにしていくことが必要です。</p>
-<p>その考えるときの、参考になるのが、こういったプレゼンテーションから学べます。</p>
-<p>失敗したケースは何が悪いのか、</p>
-<p>うまく言っているケースは何がよいのか</p>
-<!--more-->
-<p>最後は自分で考え、試行錯誤して、身につけていくものですね。</p>
-<p>+++</p>
-<p>この投稿は、「<a href="http://www.adventar.org/calendars/158">TED 広める価値のあるアイデア Advent Calendar 2013</a>」に向けた投稿です。</p>]]></description>
-    <pubDate>Tue, 24 Dec 2013 07:30:19 UT</pubDate>
-    <guid>http://imokuri123.com/blog/2013/12/lead-like-the-great-conductors.html</guid>
     <dc:creator>IMOKURI</dc:creator>
 </item>
 
