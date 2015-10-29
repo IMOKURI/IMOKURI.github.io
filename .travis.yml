@@ -1,9 +1,14 @@
-language: haskell
-ghc: 7.8
+language: c
+
+sudo: false
+cache:
+  directories:
+  - $HOME/.stack
 
 branches:
   only:
     - source
+    - stack-for-travis
 
 env:
   global:
@@ -11,21 +16,27 @@ env:
     - secure: "iw7zkk4s3JZoZ9rqL9Fe43TcnGVJ4eTURgIxS2f0swsdpo/zZ9i5tiZ/QrZtRioOLjwwe3TNrJehWQrEv2oMy+By5a4c9NI4gMmCRlps3IGvW8SEFEoelaMqM4HZB/eXPZkhKyqf7LpGz3oC2HAH65u6Z9UfPchjsKJ8QmGTW4w="
     - secure: "PJdQbveUtenH0lFV5oOOYsBBMwGKEZ7QsnEmtHLyeCb4KNvslA3J7DUn5tBMJa8Zczz7ZiTEuwHPE0CwUZAwht7gOKbnPwMgK+CtB4RcV1rvEvJpCl6y2OuIQ6tP35zZ6Ox6QVAB4yN7+XALeXCLk/9n0yZPQ77rTWBrHvaRxMM="
 
+addons:
+  apt:
+    packages:
+    - libgmp-dev
+
 before_install:
+  - mkdir -p ~/.local/bin
+  - export PATH=$HOME/.local/bin:$PATH
+  - travis_retry curl -L https://www.stackage.org/stack/linux-x86_64 | tar xz --wildcards --strip-components=1 -C ~/.local/bin '*/stack'
   - git submodule foreach --recursive 'git checkout master; git ls-files | grep -v README | grep -v CNAME | xargs -r git rm'
 
 install:
-  - travis_retry cabal update
-  - cabal sandbox init
-  - cabal install --only-dependencies
-  - cabal configure
+  - stack setup
+  - stack build
 
 before_script:
   - git config --global user.name "$GH_NAME"
   - git config --global user.email "$GH_EMAIL"
 
 script:
-  - cabal run -j build
+  - stack exec site build
 
 after_success:
   - if [[ "$TRAVIS_BRANCH" == "source" ]]; then
@@ -40,4 +51,3 @@ after_success:
 
 notifications:
   email: false
-
