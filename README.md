@@ -8,8 +8,6 @@ Sources of my website are in "source" branch.
 
 ### Build
 
-Using stack and GHC 7.10.* (lts-3.7)
-
 ~~~
 stack setup
 stack build
