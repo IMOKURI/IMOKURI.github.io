@@ -80,29 +80,35 @@ $ wget https://www.stackage.org/lts-2/cabal.config
 
 $ cabal update
 $ cabal install yesod-bin keter</code></pre>
-<p>インストールすると、 <code>./cabal-sandbox/bin</code> 配下にyesodなどのコマンドができています。<br />やり方としては、スマートではないかもしれませんが、このコマンドを(楽に)使いたいので、パスを通しておきます。</p>
+<p>インストールすると、 <code>./cabal-sandbox/bin</code> 配下にyesodなどのコマンドができています。<br />
+やり方としては、スマートではないかもしれませんが、このコマンドを(楽に)使いたいので、パスを通しておきます。</p>
 <pre><code>$ export PATH=&quot;＜ほげほげ＞/yesod/.cabal-sandbox/bin:$PATH&quot;
 $ yesod init</code></pre>
-<p>Yesodのプロジェクトのディレクトリに移動して、またもsandboxでインストールです。<br />ここはcabalファイルに、細かくバージョンの制限があったので、LTS Haskellはなしでやっちゃいました。</p>
+<p>Yesodのプロジェクトのディレクトリに移動して、またもsandboxでインストールです。<br />
+ここはcabalファイルに、細かくバージョンの制限があったので、LTS Haskellはなしでやっちゃいました。</p>
 <pre><code>$ cd &lt;プロジェクトのディレクトリ&gt;
 $ cabal sandbox init
 $ cabal install --only-dependencies</code></pre>
 <h2 id="keter用にyesodのプログラムを準備する">Keter用にYesodのプログラムを準備する</h2>
-<p>苦悩の末に、Yesodのプロジェクトが出来上がったら、Keterの設定ファイル(config/keter.yml)を更新します。<br />最低限更新が必要なのは以下かと思います。</p>
+<p>苦悩の末に、Yesodのプロジェクトが出来上がったら、Keterの設定ファイル(config/keter.yml)を更新します。<br />
+最低限更新が必要なのは以下かと思います。</p>
 <pre><code>user-edited: false    ## 削除
 
 stanzas:
   - type: webapp
     hosts:
       - www.&lt;かっこいいドメイン&gt;.com    ## プロジェクトのドメインに変更</code></pre>
-<p>設定ファイルを更新したら、本番環境に持っていくバイナリファイルを作ります。<br />バイナリファイルの実体は、Yesodのプログラムや設定ファイルをgzipで固めたものです。<br />出来上がった <code>＜プロジェクト名＞.keter</code> が持っていくバイナリになります。</p>
+<p>設定ファイルを更新したら、本番環境に持っていくバイナリファイルを作ります。<br />
+バイナリファイルの実体は、Yesodのプログラムや設定ファイルをgzipで固めたものです。<br />
+出来上がった <code>＜プロジェクト名＞.keter</code> が持っていくバイナリになります。</p>
 <pre><code>$ yesod keter</code></pre>
 <h2 id="keterの起動準備">Keterの起動準備</h2>
 <p>Keterの起動ディレクトリを適当な場所に作成して、起動ファイルを準備します。</p>
 <pre><code>$ mkdir keter &amp;&amp; cd keter
 $ mkdir etc incoming</code></pre>
 <p>incomingディレクトリには、先ほど作ったYesodのプロジェクトのバイナリファイルを配置しておきます。</p>
-<p>etcディレクトリには、Keterの起動ファイル(keter.yaml)を準備します。<br />この環境はsystemdなので、以下のようになりますが、それ以外の環境については巻末のリンクをご参照ください。</p>
+<p>etcディレクトリには、Keterの起動ファイル(keter.yaml)を準備します。<br />
+この環境はsystemdなので、以下のようになりますが、それ以外の環境については巻末のリンクをご参照ください。</p>
 <pre><code>root: ＜ほげほげ＞/keter    ## 上で作ったKeterの起動ディレクトリ
 nginx:
   start:
@@ -139,7 +145,8 @@ WantedBy=multi-user.target</code></pre>
 <p>OS起動時に自動で起動するようにするのは、こちらです。</p>
 <pre><code># systemctl enable keter.service</code></pre>
 <h3 id="参考">参考</h3>
-<p><a href="https://pbrisbin.com/posts/yesod_deployments_with_keter/">Yesod Deployments with Keter</a><br /><a href="http://www.yesodweb.com/book/deploying-your-webapp">Deploying your Webapp</a></p>
+<p><a href="https://pbrisbin.com/posts/yesod_deployments_with_keter/">Yesod Deployments with Keter</a><br />
+<a href="http://www.yesodweb.com/book/deploying-your-webapp">Deploying your Webapp</a></p>
 
 </article>
 

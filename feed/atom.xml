@@ -116,29 +116,35 @@ $ wget https://www.stackage.org/lts-2/cabal.config
 
 $ cabal update
 $ cabal install yesod-bin keter</code></pre>
-<p>インストールすると、 <code>./cabal-sandbox/bin</code> 配下にyesodなどのコマンドができています。<br />やり方としては、スマートではないかもしれませんが、このコマンドを(楽に)使いたいので、パスを通しておきます。</p>
+<p>インストールすると、 <code>./cabal-sandbox/bin</code> 配下にyesodなどのコマンドができています。<br />
+やり方としては、スマートではないかもしれませんが、このコマンドを(楽に)使いたいので、パスを通しておきます。</p>
 <pre><code>$ export PATH=&quot;＜ほげほげ＞/yesod/.cabal-sandbox/bin:$PATH&quot;
 $ yesod init</code></pre>
-<p>Yesodのプロジェクトのディレクトリに移動して、またもsandboxでインストールです。<br />ここはcabalファイルに、細かくバージョンの制限があったので、LTS Haskellはなしでやっちゃいました。</p>
+<p>Yesodのプロジェクトのディレクトリに移動して、またもsandboxでインストールです。<br />
+ここはcabalファイルに、細かくバージョンの制限があったので、LTS Haskellはなしでやっちゃいました。</p>
 <pre><code>$ cd &lt;プロジェクトのディレクトリ&gt;
 $ cabal sandbox init
 $ cabal install --only-dependencies</code></pre>
 <h2 id="keter用にyesodのプログラムを準備する">Keter用にYesodのプログラムを準備する</h2>
-<p>苦悩の末に、Yesodのプロジェクトが出来上がったら、Keterの設定ファイル(config/keter.yml)を更新します。<br />最低限更新が必要なのは以下かと思います。</p>
+<p>苦悩の末に、Yesodのプロジェクトが出来上がったら、Keterの設定ファイル(config/keter.yml)を更新します。<br />
+最低限更新が必要なのは以下かと思います。</p>
 <pre><code>user-edited: false    ## 削除
 
 stanzas:
   - type: webapp
     hosts:
       - www.&lt;かっこいいドメイン&gt;.com    ## プロジェクトのドメインに変更</code></pre>
-<p>設定ファイルを更新したら、本番環境に持っていくバイナリファイルを作ります。<br />バイナリファイルの実体は、Yesodのプログラムや設定ファイルをgzipで固めたものです。<br />出来上がった <code>＜プロジェクト名＞.keter</code> が持っていくバイナリになります。</p>
+<p>設定ファイルを更新したら、本番環境に持っていくバイナリファイルを作ります。<br />
+バイナリファイルの実体は、Yesodのプログラムや設定ファイルをgzipで固めたものです。<br />
+出来上がった <code>＜プロジェクト名＞.keter</code> が持っていくバイナリになります。</p>
 <pre><code>$ yesod keter</code></pre>
 <h2 id="keterの起動準備">Keterの起動準備</h2>
 <p>Keterの起動ディレクトリを適当な場所に作成して、起動ファイルを準備します。</p>
 <pre><code>$ mkdir keter &amp;&amp; cd keter
 $ mkdir etc incoming</code></pre>
 <p>incomingディレクトリには、先ほど作ったYesodのプロジェクトのバイナリファイルを配置しておきます。</p>
-<p>etcディレクトリには、Keterの起動ファイル(keter.yaml)を準備します。<br />この環境はsystemdなので、以下のようになりますが、それ以外の環境については巻末のリンクをご参照ください。</p>
+<p>etcディレクトリには、Keterの起動ファイル(keter.yaml)を準備します。<br />
+この環境はsystemdなので、以下のようになりますが、それ以外の環境については巻末のリンクをご参照ください。</p>
 <pre><code>root: ＜ほげほげ＞/keter    ## 上で作ったKeterの起動ディレクトリ
 nginx:
   start:
@@ -175,7 +181,8 @@ WantedBy=multi-user.target</code></pre>
 <p>OS起動時に自動で起動するようにするのは、こちらです。</p>
 <pre><code># systemctl enable keter.service</code></pre>
 <h3 id="参考">参考</h3>
-<p><a href="https://pbrisbin.com/posts/yesod_deployments_with_keter/">Yesod Deployments with Keter</a><br /><a href="http://www.yesodweb.com/book/deploying-your-webapp">Deploying your Webapp</a></p>]]></summary>
+<p><a href="https://pbrisbin.com/posts/yesod_deployments_with_keter/">Yesod Deployments with Keter</a><br />
+<a href="http://www.yesodweb.com/book/deploying-your-webapp">Deploying your Webapp</a></p>]]></summary>
 </entry>
 <entry>
     <title>Haskellでニューラルネットワーク</title>
@@ -214,44 +221,63 @@ WantedBy=multi-user.target</code></pre>
 <!--more-->
 <hr />
 <p>まずは、層（レイヤー）の数と素子（ニューロン）の数を決めます。</p>
-<p>1つ目の層が入力層、最後の層が出力層となり、<br />入力層のニューロンの数は、入力のデータの数、<br />出力層のニューロンの数は出力のデータの数とします。</p>
-<p>それ以外のレイヤーが隠れ層です。<br />隠れ層の数と、それぞれの層が持つニューロンの数をいくつにすれば良いかは、<br />いろいろな手法が考えられているようですが、この記事では割愛します。。</p>
+<p>1つ目の層が入力層、最後の層が出力層となり、<br />
+入力層のニューロンの数は、入力のデータの数、<br />
+出力層のニューロンの数は出力のデータの数とします。</p>
+<p>それ以外のレイヤーが隠れ層です。<br />
+隠れ層の数と、それぞれの層が持つニューロンの数をいくつにすれば良いかは、<br />
+いろいろな手法が考えられているようですが、この記事では割愛します。。</p>
 <p>今回は、入力層のデータの数が2つ、出力層のデータの数が1つです。 隠れ層は、よくあるXORの例にならい、隠れ層1つ（ニューロン2つ）としたいとおもいます。</p>
 <p>続いて、各層のニューロンをどのように接続するかを考えます。 一般的には各ニューロンを接続する・しないのマップで表現されることが考えられそうですが、 LambdaNetのライブラリでは、現状、すべてのニューロンを接続することしかできません。</p>
-<p>活性化関数には、sigmoid、tanh、ReLUが用意されています。<br />今回はsigmoidを使ってみます。</p>
-<p>重みとバイアスの初期値はランダムですが、一様なもの（uniforms）と、<br />正規分布に従うもの（normals）が用意されています。<br />今回はnormalsを使ってみます。</p>
-<p>ここまでの情報で、初期値を持ったニューラルネットワークができます。<br />ソースはこちらです。</p>
-<pre class="sourceCode haskell"><code class="sourceCode haskell">  g <span class="ot">&lt;-</span> newStdGen
+<p>活性化関数には、sigmoid、tanh、ReLUが用意されています。<br />
+今回はsigmoidを使ってみます。</p>
+<p>重みとバイアスの初期値はランダムですが、一様なもの（uniforms）と、<br />
+正規分布に従うもの（normals）が用意されています。<br />
+今回はnormalsを使ってみます。</p>
+<p>ここまでの情報で、初期値を持ったニューラルネットワークができます。<br />
+ソースはこちらです。</p>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell">  g <span class="ot">&lt;-</span> newStdGen
   <span class="kw">let</span> l   <span class="fu">=</span> <span class="dt">LayerDefinition</span> sigmoidNeuron <span class="dv">2</span> connectFully
       l&#39;  <span class="fu">=</span> <span class="dt">LayerDefinition</span> sigmoidNeuron <span class="dv">2</span> connectFully
       l&#39;&#39; <span class="fu">=</span> <span class="dt">LayerDefinition</span> sigmoidNeuron <span class="dv">1</span> connectFully
 
-  <span class="kw">let</span> n <span class="fu">=</span> createNetwork normals g [l, l&#39;, l&#39;&#39;]</code></pre>
+  <span class="kw">let</span> n <span class="fu">=</span> createNetwork normals g [l, l&#39;, l&#39;&#39;]</code></pre></div>
 <hr />
 <p>次に、誤差逆伝播法（バックプロパゲーション）を使った教師あり学習を作っていきます。</p>
 <p>LambdaNetでは、誤差関数（コスト関数）として、二乗誤差関数のみが提供されています。</p>
 <p>学習係数は、用途に合わせて調整します。</p>
-<p>ニューラルネットワークの更新の方法は、毎回の学習のたびにネットワークを更新するオンライン（online）と、<br />n回学習ごとに更新するミニバッチ（minibatch n）が用意されています。</p>
+<p>ニューラルネットワークの更新の方法は、毎回の学習のたびにネットワークを更新するオンライン（online）と、<br />
+n回学習ごとに更新するミニバッチ（minibatch n）が用意されています。</p>
 <p>学習用のデータとしては、XORのインプットとアウトプットの4パターンを使用します。</p>
 <p>準備した学習用のデータで1万回学習するソースがこちらです。</p>
-<pre class="sourceCode haskell"><code class="sourceCode haskell">  <span class="kw">let</span> t <span class="fu">=</span> <span class="dt">BackpropTrainer</span> <span class="dv">3</span> quadraticCost quadraticCost&#39;
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell">  <span class="kw">let</span> t <span class="fu">=</span> <span class="dt">BackpropTrainer</span> <span class="dv">3</span> quadraticCost quadraticCost&#39;
 
   <span class="kw">let</span> dat <span class="fu">=</span> [(fromList [<span class="dv">0</span>, <span class="dv">1</span>], fromList [<span class="dv">1</span>]),
              (fromList [<span class="dv">1</span>, <span class="dv">1</span>], fromList [<span class="dv">0</span>]),
              (fromList [<span class="dv">1</span>, <span class="dv">0</span>], fromList [<span class="dv">1</span>]),
              (fromList [<span class="dv">0</span>, <span class="dv">0</span>], fromList [<span class="dv">0</span>])]
 
-  <span class="kw">let</span> n&#39; <span class="fu">=</span> trainNTimes n t online dat <span class="dv">10000</span></code></pre>
+  <span class="kw">let</span> n&#39; <span class="fu">=</span> trainNTimes n t online dat <span class="dv">10000</span></code></pre></div>
 <hr />
 <p>最後に、学習したネットワークをテストしてみます。</p>
-<p>うまくいけば、XORの結果が得られていると思います。<br />（今回のソースの条件だと、最初の乱数の状況によってはあまりよい結果にならない場合もありそうです・・）</p>
+<p>うまくいけば、XORの結果が得られていると思います。<br />
+（今回のソースの条件だと、最初の乱数の状況によってはあまりよい結果にならない場合もありそうです・・）</p>
 <p>良いケース</p>
-<p>==&gt; XOR predictions:<br />(0,0): fromList [5.9859958e-3]<br />(1,0): fromList [0.9938293]<br />(0,1): fromList [0.9938205]<br />(1,1): fromList [7.5507853e-3]</p>
+<p>==&gt; XOR predictions:<br />
+(0,0): fromList [5.9859958e-3]<br />
+(1,0): fromList [0.9938293]<br />
+(0,1): fromList [0.9938205]<br />
+(1,1): fromList [7.5507853e-3]</p>
 <p>悪いケース・・・</p>
-<p>==&gt; XOR predictions:<br />(0,0): fromList [5.984603e-3]<br />(1,0): fromList [0.99414057]<br />(0,1): fromList [0.4489829]<br />(1,1): fromList [0.44912618]</p>
+<p>==&gt; XOR predictions:<br />
+(0,0): fromList [5.984603e-3]<br />
+(1,0): fromList [0.99414057]<br />
+(0,1): fromList [0.4489829]<br />
+(1,1): fromList [0.44912618]</p>
 <p>この形を基本に様々なケースに拡張してみたいと思います。</p>
 <hr />
-<p>今回作成したコードは<a href="https://github.com/IMOKURI/nn-sample">こちら</a>です。<br />LambdaNetの<a href="https://github.com/jbarrow/LambdaNet/blob/master/examples/XOR.hs">こちら</a>のコードを参考にしています。</p>]]></summary>
+<p>今回作成したコードは<a href="https://github.com/IMOKURI/nn-sample">こちら</a>です。<br />
+LambdaNetの<a href="https://github.com/jbarrow/LambdaNet/blob/master/examples/XOR.hs">こちら</a>のコードを参考にしています。</p>]]></summary>
 </entry>
 <entry>
     <title>SNMPに取って代わるYANG/NETCONF</title>
@@ -259,17 +285,21 @@ WantedBy=multi-user.target</code></pre>
     <id>http://imokuri123.com/blog/2015/04/snmp-will-be-replaced-by-yang-netconf.html</id>
     <published>2015-04-28T00:00:00Z</published>
     <updated>2015-04-28T00:00:00Z</updated>
-    <summary type="html"><![CDATA[<p><a href="https://tools.ietf.org/html/rfc6241">NETCONF</a>は、IETFによって策定が進められているNetwork管理用のプロトコルです。<br /><a href="https://tools.ietf.org/html/rfc6020">YANG</a>は、NETCONFのデータを表現するための言語です。</p>
+    <summary type="html"><![CDATA[<p><a href="https://tools.ietf.org/html/rfc6241">NETCONF</a>は、IETFによって策定が進められているNetwork管理用のプロトコルです。<br />
+<a href="https://tools.ietf.org/html/rfc6020">YANG</a>は、NETCONFのデータを表現するための言語です。</p>
 <p>これらは、<a href="http://www.ietf.org/iesg/">IESG</a>（IETFの活動と標準化プロセスの、技術的な側面についての責任を担っているグループ）によって使用が推奨され始めています。<a href="http://www.ietf.org/iesg/statement/writable-mib-module.html">こちら</a></p>
 <p>今後、SNMP/SMI2に取って代わるであろうYANG/NETCONFについて、まとめていきます。</p>
 <!--more-->
 <h3 id="概要">概要</h3>
 <p>SNMPとNETCONFの仕組みはかなり似ています。</p>
-<p>SNMPが、SNMP ManagerとSNMP Agentの間を、さまざまなMIB(SMIv2)モジュールの定義に沿って、SNMPのプロトコルでやり取りをするように、<br />NETCONFは、NETCONF clientとNETCONF Serverの間を、さまざまなYANGモジュールの定義に沿って、NETCONFのプロトコルでやりとりします。</p>
-<p><img src="/images/2014-04-snmp-netconf-overview_mini.jpg" alt="SNMP NETCONF overview" /><br /></p>
+<p>SNMPが、SNMP ManagerとSNMP Agentの間を、さまざまなMIB(SMIv2)モジュールの定義に沿って、SNMPのプロトコルでやり取りをするように、<br />
+NETCONFは、NETCONF clientとNETCONF Serverの間を、さまざまなYANGモジュールの定義に沿って、NETCONFのプロトコルでやりとりします。</p>
+<p><img src="/images/2014-04-snmp-netconf-overview_mini.jpg" alt="SNMP NETCONF overview" /><br />
+</p>
 <p>SNMPとNETCONFは、メッセージのやりとりの仕組みもかなり似ています。</p>
 <p>どちらも、「Managerからリクエストし、Deviceが応答する仕組み」と「Deviceが能動的に、Managerに通知する仕組み」があります。</p>
-<p><img src="/images/2014-04-snmp-netconf-messaging-model_mini.jpg" alt="SNMP NETCONF messaging model" /><br /></p>
+<p><img src="/images/2014-04-snmp-netconf-messaging-model_mini.jpg" alt="SNMP NETCONF messaging model" /><br />
+</p>
 <hr />
 <p><strong>では、なぜ、NETCONFを使う必要があるのでしょうか。</strong></p>
 <p>それには、大きく2つの理由があります。</p>
@@ -309,7 +339,8 @@ WantedBy=multi-user.target</code></pre>
 <li>SNMPでは、UDPを使用します。NETCONFでは、SSHもしくは、TLS over TCPを使用します。</li>
 </ul></li>
 </ol>
-<p><img src="/images/2014-04-netconf-protocol-layer_mini.jpg" alt="NETCONF protocol layer" /><br /></p>
+<p><img src="/images/2014-04-netconf-protocol-layer_mini.jpg" alt="NETCONF protocol layer" /><br />
+</p>
 <p>具体的な、要素の比較は以下になります。</p>
 <table>
 <thead>
@@ -354,8 +385,11 @@ WantedBy=multi-user.target</code></pre>
 </table>
 <hr />
 <p><strong>NETCONFの設定、データについて</strong></p>
-<p>NETCONFの設定はデータストアに格納されます。データストアとはその名の通り設定などが格納される場所のことで、ファイルだったり、データベースだったりします。<br />設定データストアにはデバイスの設定など書き込み可能なデータが含まれます。<br />一方、状態データには、設定ではない、機器の状態や統計情報などの読み取り専用の情報が含まれます。</p>
-<p>YANGのXPathでは、この設定データと非設定データ（状態データ）を明確に分けています。<br />それは、設定のダンプやリストアの際にわかりやすいようにするため、などの理由によります。詳細は<a href="https://tools.ietf.org/html/rfc3535#section-3">こちら</a></p>
+<p>NETCONFの設定はデータストアに格納されます。データストアとはその名の通り設定などが格納される場所のことで、ファイルだったり、データベースだったりします。<br />
+設定データストアにはデバイスの設定など書き込み可能なデータが含まれます。<br />
+一方、状態データには、設定ではない、機器の状態や統計情報などの読み取り専用の情報が含まれます。</p>
+<p>YANGのXPathでは、この設定データと非設定データ（状態データ）を明確に分けています。<br />
+それは、設定のダンプやリストアの際にわかりやすいようにするため、などの理由によります。詳細は<a href="https://tools.ietf.org/html/rfc3535#section-3">こちら</a></p>
 <hr />
 <p><strong>YANGとSMIv2の基本的なデータ構成の違い</strong></p>
 <ul>
@@ -386,7 +420,8 @@ WantedBy=multi-user.target</code></pre>
 </ul></li>
 <li>MIBモジュールは、データの定義は1階層ですが、YANGモジュールは、データは複数階層で定義できます。</li>
 </ul>
-<p><img src="/images/2014-04-snmp-netconf-building-data_mini.jpg" alt="MIB YANG building data" /><br /></p>
+<p><img src="/images/2014-04-snmp-netconf-building-data_mini.jpg" alt="MIB YANG building data" /><br />
+</p>
 <ul>
 <li>さらに、YANGには、チョイス／ケースノードという要素もあります。
 <ul>
@@ -398,7 +433,8 @@ WantedBy=multi-user.target</code></pre>
 <hr />
 <p>長くなってきましたので、つづきは、また今度。</p>
 <hr />
-<p>参考：<br /><a href="http://www.ieee802.org/802_tutorials/2014-07/Tutorial_Berman_1407.pdf">A Guide to NETCONF for SNMP Developers</a></p>
+<p>参考：<br />
+<a href="http://www.ieee802.org/802_tutorials/2014-07/Tutorial_Berman_1407.pdf">A Guide to NETCONF for SNMP Developers</a></p>
 <hr />]]></summary>
 </entry>
 <entry>
@@ -524,7 +560,7 @@ _site</code></pre>
 <li><code>.travis.yml</code> ファイルを作成。</li>
 </ul>
 <p><code>vi .travis.yml</code></p>
-<pre class="sourceCode yaml"><code class="sourceCode yaml"><span class="co"># NB: don&#39;t set `language: haskell` here</span>
+<div class="sourceCode"><pre class="sourceCode yaml"><code class="sourceCode yaml"><span class="co"># NB: don&#39;t set `language: haskell` here</span>
 
 <span class="co"># See also https://github.com/hvr/multi-ghc-travis for more information</span>
 
@@ -573,7 +609,7 @@ _site</code></pre>
     git status;
     git commit -m <span class="st">&quot;Built by Travis ( build $TRAVIS_BUILD_NUMBER )&quot;</span>;
     <span class="fu">git push github master:</span>master | grep -v http;
-    fi</code></pre>
+    fi</code></pre></div>
 <hr />
 <p>時は来た。。</p>
 <ul>
@@ -646,13 +682,13 @@ _site</code></pre>
 <p><strong>1. 送信したいSNMP Trapを複数定義した設定ファイルを読み込む</strong></p>
 <p>設定ファイルは iniファイル の形式で、作成します。</p>
 <p>ライブラリは <a href="https://hackage.haskell.org/package/ConfigFile">ConfigFile</a> を使用していきます。</p>
-<pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="ot">readConfig ::</span> <span class="dt">IO</span> <span class="dt">ConfigParser</span>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="ot">readConfig ::</span> <span class="dt">IO</span> <span class="dt">ConfigParser</span>
 readConfig <span class="fu">=</span>
   getCurrentDirectory
   <span class="fu">&gt;&gt;=</span> getDirectoryContents
   <span class="fu">&gt;&gt;=</span> return <span class="fu">.</span> head <span class="fu">.</span> filter (<span class="st">&quot;config.ini&quot;</span> <span class="ot">`isSuffixOf`</span>)
   <span class="fu">&gt;&gt;=</span> readfile emptyCP
-  <span class="fu">&gt;&gt;=</span> return <span class="fu">.</span> either (const emptyCP) id</code></pre>
+  <span class="fu">&gt;&gt;=</span> return <span class="fu">.</span> either (const emptyCP) id</code></pre></div>
 <p>ツールの実行ディレクトリと同じフォルダにある iniファイル を読み込んで、ConfigParserを返します。</p>
 <p>今後、必要な変数などはこのConfigParserから取得していきます。</p>
 <p>＋＋＋</p>
@@ -660,18 +696,18 @@ readConfig <span class="fu">=</span>
 <p>SNMP TrapはASN1という規格でエンコードされます。</p>
 <p>このエンコードには、<a href="http://hackage.haskell.org/package/asn1-encoding">asn1-encoding</a> を使っていきます。</p>
 <p>今回は、簡単に、ということで、v1のトラップで、bind変数もstringを1つだけ、、ということでやっていきます・・・（＞＿＜；）</p>
-<pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="ot">makeASN1TrapMsgs ::</span> <span class="dt">ConfigParser</span> <span class="ot">-&gt;</span> [<span class="dt">SectionSpec</span>] <span class="ot">-&gt;</span> [<span class="dt">B.ByteString</span>]
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="ot">makeASN1TrapMsgs ::</span> <span class="dt">ConfigParser</span> <span class="ot">-&gt;</span> [<span class="dt">SectionSpec</span>] <span class="ot">-&gt;</span> [<span class="dt">B.ByteString</span>]
 makeASN1TrapMsgs _ [] <span class="fu">=</span> []
-makeASN1TrapMsgs cp (s<span class="fu">:</span>ss) <span class="fu">=</span> (B.concat <span class="fu">$</span> BL.toChunks <span class="fu">$</span> encodeASN1 <span class="dt">DER</span> (makeASN1TrapData cp s)) <span class="fu">:</span> makeASN1TrapMsgs cp ss</code></pre>
+makeASN1TrapMsgs cp (s<span class="fu">:</span>ss) <span class="fu">=</span> (B.concat <span class="fu">$</span> BL.toChunks <span class="fu">$</span> encodeASN1 <span class="dt">DER</span> (makeASN1TrapData cp s)) <span class="fu">:</span> makeASN1TrapMsgs cp ss</code></pre></div>
 <p>複数のSNMP Trapを定義するということで、iniファイルのセクションごとに、SNMP Trapを定義して、セクションごとにSNMP Trapのメッセージを組み立てていきます。</p>
 <p>encodeASN1は遅延評価されますが、後の送信処理のところでは正格評価されるので、ここで変換しておきます。</p>
-<pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="ot">makeASN1TrapData ::</span> <span class="dt">ConfigParser</span> <span class="ot">-&gt;</span> <span class="dt">SectionSpec</span> <span class="ot">-&gt;</span> [<span class="dt">ASN1</span>]
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="ot">makeASN1TrapData ::</span> <span class="dt">ConfigParser</span> <span class="ot">-&gt;</span> <span class="dt">SectionSpec</span> <span class="ot">-&gt;</span> [<span class="dt">ASN1</span>]
 makeASN1TrapData cp sec <span class="fu">|</span> version <span class="fu">==</span> <span class="st">&quot;1&quot;</span> <span class="fu">=</span> asn1Trap1Data cp sec
                         <span class="fu">|</span> otherwise <span class="fu">=</span> [<span class="dt">Null</span>]
-  <span class="kw">where</span> version <span class="fu">=</span> forceEither <span class="fu">$</span> get cp sec <span class="st">&quot;snmp_version&quot;</span></code></pre>
+  <span class="kw">where</span> version <span class="fu">=</span> forceEither <span class="fu">$</span> get cp sec <span class="st">&quot;snmp_version&quot;</span></code></pre></div>
 <p>今回は、v1のみ対応ということで。。</p>
 <p>設定値は、forceEitherで取っていきます。iniファイルの設定はちゃんと出来ているということで。。</p>
-<pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="ot">asn1Trap1Data ::</span> <span class="dt">ConfigParser</span> <span class="ot">-&gt;</span> <span class="dt">SectionSpec</span> <span class="ot">-&gt;</span> [<span class="dt">ASN1</span>]
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="ot">asn1Trap1Data ::</span> <span class="dt">ConfigParser</span> <span class="ot">-&gt;</span> <span class="dt">SectionSpec</span> <span class="ot">-&gt;</span> [<span class="dt">ASN1</span>]
 asn1Trap1Data cp sec <span class="fu">=</span> [ <span class="dt">Start</span> <span class="dt">Sequence</span>                   <span class="co">-- SNMP packet start</span>
                        , <span class="dt">IntVal</span> <span class="dv">0</span>                         <span class="co">-- SNMP version: version-1</span>
                        , <span class="dt">OctetString</span> community            <span class="co">-- SNMP community</span>
@@ -700,7 +736,7 @@ asn1Trap1Data cp sec <span class="fu">=</span> [ <span class="dt">Start</span> <
           <span class="dv">0</span> <span class="ot">-&gt;</span> B.pack [<span class="dv">0</span>]
           _ <span class="ot">-&gt;</span> B.dropWhile (<span class="fu">==</span><span class="dv">0</span>) <span class="fu">$</span> encode timeTicks&#39;
         varbindOid <span class="fu">=</span> map (\s <span class="ot">-&gt;</span> read<span class="ot"> s ::</span> <span class="dt">Integer</span>) <span class="fu">$</span> dropWhile (<span class="fu">==</span><span class="st">&quot;&quot;</span>) <span class="fu">$</span> splitOn <span class="st">&quot;.&quot;</span> <span class="fu">$</span> forceEither <span class="fu">$</span> get cp sec <span class="st">&quot;varbind_oid&quot;</span>
-        varbindMsg <span class="fu">=</span> C.pack <span class="fu">$</span> forceEither <span class="fu">$</span> get cp sec <span class="st">&quot;varbind_msg&quot;</span></code></pre>
+        varbindMsg <span class="fu">=</span> C.pack <span class="fu">$</span> forceEither <span class="fu">$</span> get cp sec <span class="st">&quot;varbind_msg&quot;</span></code></pre></div>
 <p>SNMP Trapのパケットを組み立てていきます。</p>
 <p>SNMP Trapのパケットの構造は、RFCや、パケットキャプチャを参照いただくとして、その構造に合わせて、ASN1のリストを作っていきます。</p>
 <p>ASN1は、＜データの型＞、＜データの長さ＞、＜データ本体＞の形式でエンコードされます。そのため、複数のデータをまとめる型の場合、その開始と終了を明示する必要があります。</p>
@@ -709,21 +745,21 @@ asn1Trap1Data cp sec <span class="fu">=</span> [ <span class="dt">Start</span> <
 <p><strong>3. SNMP Trapの定義ごとにスレッドを立てて、SNMP Trapを送信する</strong></p>
 <p>SNMP Trapの送信は <a href="http://hackage.haskell.org/package/network">network</a> を使っていきます。</p>
 <p>また、SNMP Trapの定義ごとに別スレッドを立てていくのには、<a href="https://hackage.haskell.org/package/base-4.7.0.0/docs/Control-Concurrent.html">Control.Concurrent</a> を使います。</p>
-<pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="ot">sendTrap ::</span> <span class="dt">ConfigParser</span> <span class="ot">-&gt;</span> [<span class="dt">B.ByteString</span>] <span class="ot">-&gt;</span> [<span class="dt">ThreadId</span>] <span class="ot">-&gt;</span> <span class="dt">IO</span> [<span class="dt">ThreadId</span>]
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="ot">sendTrap ::</span> <span class="dt">ConfigParser</span> <span class="ot">-&gt;</span> [<span class="dt">B.ByteString</span>] <span class="ot">-&gt;</span> [<span class="dt">ThreadId</span>] <span class="ot">-&gt;</span> <span class="dt">IO</span> [<span class="dt">ThreadId</span>]
 sendTrap _ [] ts <span class="fu">=</span> return ts
 sendTrap cp (msg<span class="fu">:</span>msgs) ts <span class="fu">=</span> <span class="kw">do</span>
   thread <span class="ot">&lt;-</span> forkIO <span class="fu">$</span> sendTrapBy intval server msg
   sendTrap cp msgs (thread<span class="fu">:</span>ts)
   <span class="kw">where</span> intval <span class="fu">=</span> read (forceEither <span class="fu">$</span> get cp <span class="st">&quot;DEFAULT&quot;</span> <span class="st">&quot;trap_send_interval&quot;</span>)<span class="ot"> ::</span> <span class="dt">Int</span>
-        server <span class="fu">=</span> forceEither <span class="fu">$</span> get cp <span class="st">&quot;DEFAULT&quot;</span> <span class="st">&quot;server_ip_address&quot;</span></code></pre>
+        server <span class="fu">=</span> forceEither <span class="fu">$</span> get cp <span class="st">&quot;DEFAULT&quot;</span> <span class="st">&quot;server_ip_address&quot;</span></code></pre></div>
 <p>Control.ConcurrentのforkIOを使ってSNMP Trapの定義ごとにスレッドを起動してきます。</p>
-<pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="ot">sendTrapBy ::</span> <span class="dt">Int</span> <span class="ot">-&gt;</span> <span class="dt">String</span> <span class="ot">-&gt;</span> <span class="dt">B.ByteString</span> <span class="ot">-&gt;</span> <span class="dt">IO</span> ()
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="ot">sendTrapBy ::</span> <span class="dt">Int</span> <span class="ot">-&gt;</span> <span class="dt">String</span> <span class="ot">-&gt;</span> <span class="dt">B.ByteString</span> <span class="ot">-&gt;</span> <span class="dt">IO</span> ()
 sendTrapBy intval server trap <span class="fu">=</span> <span class="kw">do</span>
   sendTrapTo server trap
   threadDelay (intval <span class="fu">*</span> <span class="dv">1000</span>)
-  sendTrapBy intval server trap</code></pre>
+  sendTrapBy intval server trap</code></pre></div>
 <p>threadDelayを使って、SNMP Trapを定期的な間隔で送信していきます。</p>
-<pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="ot">sendTrapTo ::</span> <span class="dt">String</span> <span class="ot">-&gt;</span> <span class="dt">B.ByteString</span> <span class="ot">-&gt;</span> <span class="dt">IO</span> ()
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="ot">sendTrapTo ::</span> <span class="dt">String</span> <span class="ot">-&gt;</span> <span class="dt">B.ByteString</span> <span class="ot">-&gt;</span> <span class="dt">IO</span> ()
 sendTrapTo server trap <span class="fu">=</span> withSocketsDo <span class="fu">$</span> <span class="kw">do</span>
   addrs <span class="ot">&lt;-</span> getAddrInfo <span class="dt">Nothing</span> (<span class="dt">Just</span> server) (<span class="dt">Just</span> <span class="st">&quot;snmptrap&quot;</span>)
   <span class="kw">let</span> addr <span class="fu">=</span> head addrs
@@ -731,11 +767,11 @@ sendTrapTo server trap <span class="fu">=</span> withSocketsDo <span class="fu">
   bind sock (<span class="dt">SockAddrInet</span> aNY_PORT iNADDR_ANY)
   connect sock (addrAddress addr)
   sendAll sock trap
-  close sock</code></pre>
+  close sock</code></pre></div>
 <p>送信処理は、送信先サーバの情報を設定から取得し、UDPで接続するソケットを作成します。</p>
 <p>送信元IPとポートは自動で割り当てにして、接続したら、組み立てたパケットを送信して、ソケットクローズです。</p>
-<pre class="sourceCode haskell"><code class="sourceCode haskell">waitLoadTime <span class="ot">&lt;-</span> loadTime cp
-when waitLoadTime <span class="fu">$</span> mapM_ killThread sendTrapThreads</code></pre>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell">waitLoadTime <span class="ot">&lt;-</span> loadTime cp
+when waitLoadTime <span class="fu">$</span> mapM_ killThread sendTrapThreads</code></pre></div>
 <p>SNMP Trapの送信処理は、指定した時間経過したら終了するようにするため、</p>
 <p>killThreadで停止していきます。</p>
 <p>＋＋＋</p>

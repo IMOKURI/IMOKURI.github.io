@@ -53,17 +53,21 @@
   </div>
 </p>
 
-<p><a href="https://tools.ietf.org/html/rfc6241">NETCONF</a>は、IETFによって策定が進められているNetwork管理用のプロトコルです。<br /><a href="https://tools.ietf.org/html/rfc6020">YANG</a>は、NETCONFのデータを表現するための言語です。</p>
+<p><a href="https://tools.ietf.org/html/rfc6241">NETCONF</a>は、IETFによって策定が進められているNetwork管理用のプロトコルです。<br />
+<a href="https://tools.ietf.org/html/rfc6020">YANG</a>は、NETCONFのデータを表現するための言語です。</p>
 <p>これらは、<a href="http://www.ietf.org/iesg/">IESG</a>（IETFの活動と標準化プロセスの、技術的な側面についての責任を担っているグループ）によって使用が推奨され始めています。<a href="http://www.ietf.org/iesg/statement/writable-mib-module.html">こちら</a></p>
 <p>今後、SNMP/SMI2に取って代わるであろうYANG/NETCONFについて、まとめていきます。</p>
 <!--more-->
 <h3 id="概要">概要</h3>
 <p>SNMPとNETCONFの仕組みはかなり似ています。</p>
-<p>SNMPが、SNMP ManagerとSNMP Agentの間を、さまざまなMIB(SMIv2)モジュールの定義に沿って、SNMPのプロトコルでやり取りをするように、<br />NETCONFは、NETCONF clientとNETCONF Serverの間を、さまざまなYANGモジュールの定義に沿って、NETCONFのプロトコルでやりとりします。</p>
-<p><img src="../../../images/2014-04-snmp-netconf-overview_mini.jpg" alt="SNMP NETCONF overview" /><br /></p>
+<p>SNMPが、SNMP ManagerとSNMP Agentの間を、さまざまなMIB(SMIv2)モジュールの定義に沿って、SNMPのプロトコルでやり取りをするように、<br />
+NETCONFは、NETCONF clientとNETCONF Serverの間を、さまざまなYANGモジュールの定義に沿って、NETCONFのプロトコルでやりとりします。</p>
+<p><img src="../../../images/2014-04-snmp-netconf-overview_mini.jpg" alt="SNMP NETCONF overview" /><br />
+</p>
 <p>SNMPとNETCONFは、メッセージのやりとりの仕組みもかなり似ています。</p>
 <p>どちらも、「Managerからリクエストし、Deviceが応答する仕組み」と「Deviceが能動的に、Managerに通知する仕組み」があります。</p>
-<p><img src="../../../images/2014-04-snmp-netconf-messaging-model_mini.jpg" alt="SNMP NETCONF messaging model" /><br /></p>
+<p><img src="../../../images/2014-04-snmp-netconf-messaging-model_mini.jpg" alt="SNMP NETCONF messaging model" /><br />
+</p>
 <hr />
 <p><strong>では、なぜ、NETCONFを使う必要があるのでしょうか。</strong></p>
 <p>それには、大きく2つの理由があります。</p>
@@ -103,7 +107,8 @@
 <li>SNMPでは、UDPを使用します。NETCONFでは、SSHもしくは、TLS over TCPを使用します。</li>
 </ul></li>
 </ol>
-<p><img src="../../../images/2014-04-netconf-protocol-layer_mini.jpg" alt="NETCONF protocol layer" /><br /></p>
+<p><img src="../../../images/2014-04-netconf-protocol-layer_mini.jpg" alt="NETCONF protocol layer" /><br />
+</p>
 <p>具体的な、要素の比較は以下になります。</p>
 <table>
 <thead>
@@ -148,8 +153,11 @@
 </table>
 <hr />
 <p><strong>NETCONFの設定、データについて</strong></p>
-<p>NETCONFの設定はデータストアに格納されます。データストアとはその名の通り設定などが格納される場所のことで、ファイルだったり、データベースだったりします。<br />設定データストアにはデバイスの設定など書き込み可能なデータが含まれます。<br />一方、状態データには、設定ではない、機器の状態や統計情報などの読み取り専用の情報が含まれます。</p>
-<p>YANGのXPathでは、この設定データと非設定データ（状態データ）を明確に分けています。<br />それは、設定のダンプやリストアの際にわかりやすいようにするため、などの理由によります。詳細は<a href="https://tools.ietf.org/html/rfc3535#section-3">こちら</a></p>
+<p>NETCONFの設定はデータストアに格納されます。データストアとはその名の通り設定などが格納される場所のことで、ファイルだったり、データベースだったりします。<br />
+設定データストアにはデバイスの設定など書き込み可能なデータが含まれます。<br />
+一方、状態データには、設定ではない、機器の状態や統計情報などの読み取り専用の情報が含まれます。</p>
+<p>YANGのXPathでは、この設定データと非設定データ（状態データ）を明確に分けています。<br />
+それは、設定のダンプやリストアの際にわかりやすいようにするため、などの理由によります。詳細は<a href="https://tools.ietf.org/html/rfc3535#section-3">こちら</a></p>
 <hr />
 <p><strong>YANGとSMIv2の基本的なデータ構成の違い</strong></p>
 <ul>
@@ -180,7 +188,8 @@
 </ul></li>
 <li>MIBモジュールは、データの定義は1階層ですが、YANGモジュールは、データは複数階層で定義できます。</li>
 </ul>
-<p><img src="../../../images/2014-04-snmp-netconf-building-data_mini.jpg" alt="MIB YANG building data" /><br /></p>
+<p><img src="../../../images/2014-04-snmp-netconf-building-data_mini.jpg" alt="MIB YANG building data" /><br />
+</p>
 <ul>
 <li>さらに、YANGには、チョイス／ケースノードという要素もあります。
 <ul>
@@ -192,7 +201,8 @@
 <hr />
 <p>長くなってきましたので、つづきは、また今度。</p>
 <hr />
-<p>参考：<br /><a href="http://www.ieee802.org/802_tutorials/2014-07/Tutorial_Berman_1407.pdf">A Guide to NETCONF for SNMP Developers</a></p>
+<p>参考：<br />
+<a href="http://www.ieee802.org/802_tutorials/2014-07/Tutorial_Berman_1407.pdf">A Guide to NETCONF for SNMP Developers</a></p>
 <hr />
 
 </article>
