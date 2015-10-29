@@ -6,9 +6,8 @@ cache:
   - $HOME/.stack
 
 branches:
-  only:
-    - source
-    - stack-for-travis
+  except:
+    - master
 
 env:
   global:

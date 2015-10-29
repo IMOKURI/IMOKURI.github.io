@@ -11,6 +11,7 @@ Sources of my website are in "source" branch.
 Using stack and GHC 7.10.* (lts-3.7)
 
 ~~~
+stack setup
 stack build
 stack exec site build
 ~~~
