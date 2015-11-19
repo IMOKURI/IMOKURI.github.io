@@ -5,6 +5,7 @@ module Main where
 
 import           Control.Monad
 import           Data.Monoid ((<>))
+import           Data.List (isInfixOf)
 import           Hakyll
 import           System.FilePath
 
@@ -35,11 +36,11 @@ main = hakyll $ do
         (sortRecentFirst >=> return . paginateEvery 10)
         "blog/*/*/*"
         (\n -> if n == 1
-               then fromFilePath "blog/index.html"
-               else fromFilePath $ "blog/" ++ show n ++ "/index.html")
+               then fromFilePath "blog"
+               else fromFilePath $ "blog/" ++ show n)
 
     paginateRules blog $ \pageNum pattern -> do
-        route   idRoute
+        route   $ customRoute rootDirIndex
         compile $ do
             posts <- recentFirst =<< loadAll pattern
             let blogCtx = constField "title" "Blog"
@@ -50,6 +51,7 @@ main = hakyll $ do
             makeItem ""
                 >>= loadAndApplyTemplate "templates/blog.html" blogCtx
                 >>= loadAndApplyTemplate "templates/default.html" blogCtx
+                >>= removeIndexHtml
                 >>= relativizeUrls
 
     tagsRules tags $ \tag pattern -> do
@@ -65,11 +67,11 @@ main = hakyll $ do
                 >>= loadAndApplyTemplate "templates/default.html" tagCtx
                 >>= relativizeUrls
 
-    match "pages/index.html" $ do
-        route   $ gsubRoute "pages/" (const "")
+    match "index.html" $ do
+        route   idRoute
         compile $ do
             posts <- fmap (take 5) . recentFirst =<< loadAll "blog/*/*/*"
-            tagCloud <- renderTagCloud 85.0 135.0 tags
+            tagCloud <- renderTagCloud 90.0 135.0 tags
             let indexCtx = listField "posts" postCtx (return posts)
                         <> constField "title" "Home"
                         <> constField "tagcloud" tagCloud
@@ -80,14 +82,14 @@ main = hakyll $ do
                 >>= loadAndApplyTemplate "templates/default.html" indexCtx
                 >>= relativizeUrls
 
-    match "pages/about.markdown" $ do
+    match "about.markdown" $ do
         route   $ customRoute rootDirIndex
         compile $ pandocCompiler
             >>= loadAndApplyTemplate "templates/default.html" defaultContext
             >>= relativizeUrls
 
-    match "pages/404.markdown" $ do
-        route   $ setExtension "html" `composeRoutes` gsubRoute "pages/" (const "")
+    match "404.markdown" $ do
+        route   $ setExtension "html"
         compile $ pandocCompiler
             >>= loadAndApplyTemplate "templates/default.html" defaultContext
 
@@ -134,7 +136,14 @@ postCtxWithTags tags = tagsField "tags" tags
                     <> postCtx
 
 rootDirIndex :: Identifier -> FilePath
-rootDirIndex = (</> "index.html") . dropExtension . takeFileName . toFilePath
+rootDirIndex = (</> "index.html") . dropExtension . toFilePath
+
+removeIndexHtml :: Item String -> Compiler (Item String)
+removeIndexHtml item = return $ fmap (withUrls removeIndexStr) item
+  where
+    removeIndexStr url | takeFileName url == "index.html" && isNotUrl url = dropFileName url
+                       | otherwise                                        = url
+    isNotUrl = not . isInfixOf "://"
 
 feedConfig :: FeedConfiguration
 feedConfig = FeedConfiguration

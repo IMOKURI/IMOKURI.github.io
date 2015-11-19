@@ -1,8 +1,7 @@
 ---
 date: yyyy-mm-dd
-slug: file-name-without-extension
-title: 記事のタイトル
-categories: category
+slug: slug
+title: title
 tags: aaa,bbb,ccc
 ---
 
