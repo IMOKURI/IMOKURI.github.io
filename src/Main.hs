@@ -14,6 +14,8 @@ main :: IO ()
 main = hakyll $ do
     match ( "images/*"
        .||. "fonts/*"
+       .||. "robots.txt"
+       .||. "CNAME"
        .||. "README.md" ) $ do
         route   idRoute
         compile copyFileCompiler
@@ -92,10 +94,6 @@ main = hakyll $ do
         route   $ setExtension "html"
         compile $ pandocCompiler
             >>= loadAndApplyTemplate "templates/default.html" defaultContext
-
-    match "etc/*" $ do
-        route   $ gsubRoute "etc/" (const "")
-        compile copyFileCompiler
 
     create ["sitemap.xml"] $ do
         route   idRoute
