@@ -8,6 +8,7 @@ import           Data.Monoid ((<>))
 import           Data.List (isInfixOf)
 import           Hakyll
 import           System.FilePath
+import qualified Text.Highlighting.Kate as K
 
 --------------------------------------------------------------------------------
 main :: IO ()
@@ -19,6 +20,10 @@ main = hakyll $ do
        .||. "README.md" ) $ do
         route   idRoute
         compile copyFileCompiler
+
+    create ["css/highlight.css"] $ do
+        route   idRoute
+        compile $ makeItem (K.styleToCss K.pygments)
 
     match "css/*" $ do
         route   idRoute

@@ -50,7 +50,7 @@ LambdaNetのライブラリでは、現状、すべてのニューロンを接�
 ソースはこちらです。
 
 
-``` {.haskell}
+```haskell
   g <- newStdGen
   let l   = LayerDefinition sigmoidNeuron 2 connectFully
       l'  = LayerDefinition sigmoidNeuron 2 connectFully
@@ -75,7 +75,7 @@ n回学習ごとに更新するミニバッチ（minibatch n）が用意され�
 
 準備した学習用のデータで1万回学習するソースがこちらです。
 
-``` {.haskell}
+```haskell
   let t = BackpropTrainer 3 quadraticCost quadraticCost'
 
   let dat = [(fromList [0, 1], fromList [1]),
