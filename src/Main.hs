@@ -23,7 +23,7 @@ main = hakyll $ do
 
     create ["css/highlight.css"] $ do
         route   idRoute
-        compile $ makeItem (K.styleToCss K.pygments)
+        compile $ makeItem (compressCss $ K.styleToCss K.pygments)
 
     match "css/*" $ do
         route   idRoute
