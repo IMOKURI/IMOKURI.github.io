@@ -78,7 +78,7 @@ main = hakyll $ do
         route   idRoute
         compile $ do
             posts <- fmap (take 5) . recentFirst =<< loadAll "blog/*/*/*"
-            tagCloud <- renderTagCloud 90.0 135.0 tags
+            tagCloud <- renderTagCloud 90.0 135.0 (sortTagsBy caseInsensitiveTags tags)
             let indexCtx = listField "posts" postCtx (return posts)
                         <> constField "title" "Home"
                         <> constField "tagcloud" tagCloud
