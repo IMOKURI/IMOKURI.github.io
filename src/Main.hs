@@ -35,8 +35,8 @@ main = hakyll $ do
         route   $ setExtension "html"
         compile $ pandocCompiler
             >>= saveSnapshot "contents"
-            >>= loadAndApplyTemplate "templates/post.html"    (postCtxWithTags tags)
-            >>= loadAndApplyTemplate "templates/default.html" postCtx
+            >>= loadAndApplyTemplate "templates/post.html"    (postCtx tags)
+            >>= loadAndApplyTemplate "templates/default.html" (postCtx tags)
             >>= relativizeUrls
 
     blog <- buildPaginateWith
@@ -51,7 +51,7 @@ main = hakyll $ do
         compile $ do
             posts <- recentFirst =<< loadAll pattern
             let blogCtx = constField "title" "Blog"
-                       <> listField "posts" (postCtxWithTags tags) (return posts)
+                       <> listField "posts" (postCtx tags) (return posts)
                        <> paginateContext blog pageNum
                        <> defaultContext
 
@@ -66,7 +66,7 @@ main = hakyll $ do
         compile $ do
             posts <- recentFirst =<< loadAll pattern
             let tagCtx = constField "title" ("Posts tagged " ++ tag)
-                      <> listField "posts" (postCtxWithTags tags) (return posts)
+                      <> listField "posts" (postCtx tags) (return posts)
                       <> defaultContext
 
             makeItem ""
@@ -79,7 +79,7 @@ main = hakyll $ do
         compile $ do
             posts <- fmap (take 5) . recentFirst =<< loadAll "blog/*/*/*"
             tagCloud <- renderTagCloud 90.0 135.0 (sortTagsBy caseInsensitiveTags tags)
-            let indexCtx = listField "posts" postCtx (return posts)
+            let indexCtx = listField "posts" (postCtx tags) (return posts)
                         <> constField "title" "Home"
                         <> constField "tagcloud" tagCloud
                         <> defaultContext
@@ -104,7 +104,7 @@ main = hakyll $ do
         route   idRoute
         compile $ do
             posts <- recentFirst =<< loadAll "blog/*/*/*"
-            let sitemapCtx = listField "posts" postCtx (return posts)
+            let sitemapCtx = listField "posts" (postCtx tags) (return posts)
                           <> defaultContext
 
             makeItem ""
@@ -113,14 +113,16 @@ main = hakyll $ do
     create ["feed/rss.xml"] $ do
         route   idRoute
         compile $ do
-            let feedCtx = postCtx <> bodyField "description"
+            let feedCtx = postCtx tags
+                       <> bodyField "description"
             posts <- fmap (take 10) . recentFirst =<< loadAllSnapshots "blog/*/*/*" "contents"
             renderRss feedConfig feedCtx posts
 
     create ["feed/atom.xml"] $ do
         route   idRoute
         compile $ do
-            let feedCtx = postCtx <> bodyField "description"
+            let feedCtx = postCtx tags
+                       <> bodyField "description"
             posts <- fmap (take 10) . recentFirst =<< loadAllSnapshots "blog/*/*/*" "contents"
             renderAtom feedConfig feedCtx posts
 
@@ -128,15 +130,12 @@ main = hakyll $ do
 
 
 --------------------------------------------------------------------------------
-postCtx :: Context String
-postCtx = dateField "date" "%B %e, %Y"
-       <> teaserField "teaser" "contents"
-       <> constField "host" (feedRoot feedConfig)
-       <> defaultContext
-
-postCtxWithTags :: Tags -> Context String
-postCtxWithTags tags = tagsField "tags" tags
-                    <> postCtx
+postCtx :: Tags -> Context String
+postCtx tags = dateField "date" "%B %e, %Y"
+            <> tagsField "tags" tags
+            <> teaserField "teaser" "contents"
+            <> constField "host" (feedRoot feedConfig)
+            <> defaultContext
 
 rootDirIndex :: Identifier -> FilePath
 rootDirIndex = (</> "index.html") . dropExtension . toFilePath
