@@ -6,6 +6,7 @@ slug: advent-calendar-of-ted
 title: おすすめTED -Advent Calendar-
 wordpressid: 186
 categories: Life
+tags: TED
 ---
 
 

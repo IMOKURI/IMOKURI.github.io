@@ -6,6 +6,7 @@ slug: cpu-benchmark-spec-using-prezi
 title: CPUベンチマーク SPECの見方(Preziを使ってみた)
 wordpressid: 45
 categories: HW/OS
+tags: performance
 ---
 
 Preziというプレゼンテーションツールがあります。

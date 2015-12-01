@@ -6,6 +6,7 @@ slug: mib-definition-file-syntax
 title: MIB定義ファイルの構成
 wordpressid: 17
 categories: Network
+tags: snmp,mib
 ---
 
 新しい機器を導入するとき、MIB定義ファイルを監視用サーバにロードするかと思います。

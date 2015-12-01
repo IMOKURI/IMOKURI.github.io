@@ -6,6 +6,7 @@ slug: for-technical-ability
 title: 技術力を向上するために続けていること
 wordpressid: 80
 categories: Technology
+tags: know-how
 ---
 
 IT企業でもプロジェクトマネージャーなど、マネージメント系の仕事の場合、日常業務にて技術力を向上させるのは簡単ではないと思います。

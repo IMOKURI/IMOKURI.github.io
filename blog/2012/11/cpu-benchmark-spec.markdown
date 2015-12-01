@@ -6,6 +6,7 @@ slug: cpu-benchmark-spec
 title: CPUベンチマーク SPECの見方
 wordpressid: 34
 categories: HW/OS
+tags: performance
 ---
 
 CPUサイジングの際、指標にするベンチマーク、特にSPEC CPU2006についてまとめです。

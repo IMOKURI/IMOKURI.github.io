@@ -6,6 +6,7 @@ slug: project-euler-problem-120
 title: Project Euler Problem 120
 wordpressid: 102
 categories: Programming
+tags: project-euler,mathematics
 ---
 
 このブログで、数式とソースコードを書くテストとして、Project Eulerから1問を問いてみようと思います。
