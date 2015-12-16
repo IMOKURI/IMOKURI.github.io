@@ -3,7 +3,7 @@ title: About
 ---
 <article>
 
-<h3>About</h3>
+### About
 
 数学が好きなインフラ系SEです。  
 最近は、Haskellに興味があります。  
