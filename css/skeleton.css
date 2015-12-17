@@ -31,7 +31,8 @@
   text-align: center;
 }
 
-footer {
+footer,
+.taglist {
   font-size: 80%;
 }
 
