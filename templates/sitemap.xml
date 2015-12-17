@@ -3,6 +3,7 @@
 $for(posts)$
   <url>
     <loc>$host$$url$</loc>
+    <lastmod>$simple-date$</lastmod>
   </url>
 $endfor$
 </urlset>

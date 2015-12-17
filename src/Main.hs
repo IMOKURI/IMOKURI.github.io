@@ -132,6 +132,7 @@ main = hakyll $ do
 --------------------------------------------------------------------------------
 postCtx :: Tags -> Context String
 postCtx tags = dateField "date" "%B %e, %Y"
+            <> dateField "simple-date" "%Y-%m-%d"
             <> tagsField "tags" tags
             <> teaserField "teaser" "contents"
             <> constField "host" (feedRoot feedConfig)
