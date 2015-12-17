@@ -17,19 +17,19 @@ tags: TED
 
 
 
-このAdvent Calendarの中でも[内的モチベーションについての話題](http://www.imokuri123.com/blog/2013/12/puzzle-of-motivation.html)がありました。
+このAdvent Calendarの中でも[内的モチベーションについての話題](/blog/2013/12/puzzle-of-motivation.html)がありました。
 
 Candle Problemを引き合いに、人によりよく働いてもらうための手法について、学びました。
 
 
 
-また、[人の認識の仕方によって、幸福度は変化するという話](http://www.imokuri123.com/blog/2013/12/emotion-moves-behavior.html)もありました。
+また、[人の認識の仕方によって、幸福度は変化するという話](/blog/2013/12/emotion-moves-behavior.html)もありました。
 
 機械的にやっているだけでは、得られない満足度がそこにはありました。
 
 
 
-さらに、[幸福度が上がることで、より良い結果が得られるという結果](http://www.imokuri123.com/blog/2013/12/the-happy-secret-to-better-work.html)もありました。
+さらに、[幸福度が上がることで、より良い結果が得られるという結果](/blog/2013/12/the-happy-secret-to-better-work.html)もありました。
 
 バカみたいな前向きさも良い結果に寄与するということです。
 

@@ -12,7 +12,7 @@ import qualified Text.Highlighting.Kate as K
 
 --------------------------------------------------------------------------------
 main :: IO ()
-main = hakyll $ do
+main = hakyllWith hakyllConfig $ do
     match ( "images/*"
        .||. "fonts/*"
        .||. "robots.txt"
@@ -154,6 +154,12 @@ feedConfig = FeedConfiguration
     , feedDescription = "インフラ系SEのまとめノート"
     , feedAuthorName  = "IMOKURI"
     , feedAuthorEmail = ""
-    , feedRoot        = "http://imokuri123.com"
+    , feedRoot        = "https://imokuri123.com"
+    }
+
+hakyllConfig :: Configuration
+hakyllConfig = defaultConfiguration
+    { previewHost = "0.0.0.0"
+    , previewPort = 8443
     }
 
