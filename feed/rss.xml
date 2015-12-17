@@ -3,14 +3,14 @@
     xmlns:dc="http://purl.org/dc/elements/1.1/">
     <channel>
         <title>Wake up! Good night* - 最近の投稿</title>
-        <link>http://imokuri123.com</link>
+        <link>https://imokuri123.com</link>
         <description><![CDATA[インフラ系SEのまとめノート]]></description>
-        <atom:link href="http://imokuri123.com/feed/rss.xml" rel="self"
+        <atom:link href="https://imokuri123.com/feed/rss.xml" rel="self"
                    type="application/rss+xml" />
         <lastBuildDate>Tue, 27 Oct 2015 00:00:00 UT</lastBuildDate>
         <item>
     <title>Github DesktopとAtomでブログの記事を書いてみる</title>
-    <link>http://imokuri123.com/blog/2015/10/write-blog-with-atom-and-github-desktop.html</link>
+    <link>https://imokuri123.com/blog/2015/10/write-blog-with-atom-and-github-desktop.html</link>
     <description><![CDATA[<p>このブログはgithub pagesで運営しています。</p>
 <p>いつもは、Linuxから記事を書いているのですが、ちょっと趣向をかえて、Github DesktopとAtomを使って、Windows上から記事を書いてみたいと思います。</p>
 <p>使ってみたのは、こちらです。</p>
@@ -58,12 +58,12 @@
 <p>Windows環境だと、普段はSJISで書いている人も多いと思いますので、記事を書き始める前に、AtomのワークスペースをUTF-8にしてくださいませ。(ステータスバーの右下の方をクリック。もしくは[Ctrl+Shift+U]からのUTF-8)</p>
 <p>快適なブログ書きを～</p>]]></description>
     <pubDate>Tue, 27 Oct 2015 00:00:00 UT</pubDate>
-    <guid>http://imokuri123.com/blog/2015/10/write-blog-with-atom-and-github-desktop.html</guid>
+    <guid>https://imokuri123.com/blog/2015/10/write-blog-with-atom-and-github-desktop.html</guid>
     <dc:creator>IMOKURI</dc:creator>
 </item>
 <item>
     <title>DNFを使ってFedoraをアップグレードする（Fedora22->23）</title>
-    <link>http://imokuri123.com/blog/2015/10/upgrade-fedora-using-dnf.html</link>
+    <link>https://imokuri123.com/blog/2015/10/upgrade-fedora-using-dnf.html</link>
     <description><![CDATA[<p>Fedora 23から DNF を使って、Fedoraをアップグレードするのが<a href="https://fedoraproject.org/wiki/DNF_system_upgrade">推奨</a>となるようですので、早速試してみたいと思います。</p>
 <p>Fedora 23はこの記事を書いている時点ではベータ版ですが、DNFでのアップグレードができました。</p>
 <!--more-->
@@ -79,12 +79,12 @@
 <pre><code>$ cat /etc/fedora-release
 Fedora release 23 (Twenty Three)</code></pre>]]></description>
     <pubDate>Mon, 26 Oct 2015 00:00:00 UT</pubDate>
-    <guid>http://imokuri123.com/blog/2015/10/upgrade-fedora-using-dnf.html</guid>
+    <guid>https://imokuri123.com/blog/2015/10/upgrade-fedora-using-dnf.html</guid>
     <dc:creator>IMOKURI</dc:creator>
 </item>
 <item>
     <title>KeterでYesodを動かす。</title>
-    <link>http://imokuri123.com/blog/2015/09/yesod-deployments-with-keter.html</link>
+    <link>https://imokuri123.com/blog/2015/09/yesod-deployments-with-keter.html</link>
     <description><![CDATA[<p>KeterとNginxを使って、Yesodをdaemonとして起動してみたので、まとめです。</p>
 <p>結果として、</p>
 <ul>
@@ -180,12 +180,12 @@ WantedBy=multi-user.target</code></pre>
 <p><a href="https://pbrisbin.com/posts/yesod_deployments_with_keter/">Yesod Deployments with Keter</a><br />
 <a href="http://www.yesodweb.com/book/deploying-your-webapp">Deploying your Webapp</a></p>]]></description>
     <pubDate>Fri, 25 Sep 2015 00:00:00 UT</pubDate>
-    <guid>http://imokuri123.com/blog/2015/09/yesod-deployments-with-keter.html</guid>
+    <guid>https://imokuri123.com/blog/2015/09/yesod-deployments-with-keter.html</guid>
     <dc:creator>IMOKURI</dc:creator>
 </item>
 <item>
     <title>Haskellでニューラルネットワーク</title>
-    <link>http://imokuri123.com/blog/2015/07/neural-network-in-haskell.html</link>
+    <link>https://imokuri123.com/blog/2015/07/neural-network-in-haskell.html</link>
     <description><![CDATA[<p>Haskellの<a href="https://ja.wikipedia.org/wiki/ニューラルネットワーク">ニューラルネットワーク</a>のライブラリの<a href="https://hackage.haskell.org/package/LambdaNet">LambdaNet</a>を使って、ニューラルネットワークを構築してみたいと思います。</p>
 <p>題材は、ニューラルネットワークの例としてよく使用されるXORをシュミレーションしてみたいと思います。</p>
 <table>
@@ -275,12 +275,12 @@ n回学習ごとに更新するミニバッチ（minibatch n）が用意され�
 <p>今回作成したコードは<a href="https://github.com/IMOKURI/nn-sample">こちら</a>です。<br />
 LambdaNetの<a href="https://github.com/jbarrow/LambdaNet/blob/master/examples/XOR.hs">こちら</a>のコードを参考にしています。</p>]]></description>
     <pubDate>Wed, 15 Jul 2015 00:00:00 UT</pubDate>
-    <guid>http://imokuri123.com/blog/2015/07/neural-network-in-haskell.html</guid>
+    <guid>https://imokuri123.com/blog/2015/07/neural-network-in-haskell.html</guid>
     <dc:creator>IMOKURI</dc:creator>
 </item>
 <item>
     <title>SNMPに取って代わるYANG/NETCONF</title>
-    <link>http://imokuri123.com/blog/2015/04/snmp-will-be-replaced-by-yang-netconf.html</link>
+    <link>https://imokuri123.com/blog/2015/04/snmp-will-be-replaced-by-yang-netconf.html</link>
     <description><![CDATA[<p><a href="https://tools.ietf.org/html/rfc6241">NETCONF</a>は、IETFによって策定が進められているNetwork管理用のプロトコルです。<br />
 <a href="https://tools.ietf.org/html/rfc6020">YANG</a>は、NETCONFのデータを表現するための言語です。</p>
 <p>これらは、<a href="http://www.ietf.org/iesg/">IESG</a>（IETFの活動と標準化プロセスの、技術的な側面についての責任を担っているグループ）によって使用が推奨され始めています。<a href="http://www.ietf.org/iesg/statement/writable-mib-module.html">こちら</a></p>
@@ -438,12 +438,12 @@ NETCONFは、NETCONF clientとNETCONF Serverの間を、さまざまなYANGモ�
 <a href="http://www.ieee802.org/802_tutorials/2014-07/Tutorial_Berman_1407.pdf">A Guide to NETCONF for SNMP Developers</a></p>
 <hr />]]></description>
     <pubDate>Tue, 28 Apr 2015 00:00:00 UT</pubDate>
-    <guid>http://imokuri123.com/blog/2015/04/snmp-will-be-replaced-by-yang-netconf.html</guid>
+    <guid>https://imokuri123.com/blog/2015/04/snmp-will-be-replaced-by-yang-netconf.html</guid>
     <dc:creator>IMOKURI</dc:creator>
 </item>
 <item>
     <title>Hakyllを使ってGitHub Pagesを作成して、そのソースも管理して、Travis CIで自動デプロイする。</title>
-    <link>http://imokuri123.com/blog/2015/04/create-github-pages-with-hakyll.html</link>
+    <link>https://imokuri123.com/blog/2015/04/create-github-pages-with-hakyll.html</link>
     <description><![CDATA[<p><a href="https://pages.github.com/">GitHub Pages</a>は、レポジトリに配置されたファイルにそって、Webページが生成されます。そのため、<code>index.html</code> などは、レポジトリのルートに配置されている必要があります。</p>
 <p>一方、<a href="http://jaspervdj.be/hakyll/">Hakyll</a>は、公開用の <code>index.html</code> などのファイルが、ルートディレクトリではなく、 <code>_site</code> というディレクトリ配下に生成されます。</p>
 <p>そのため、HakyllのソースのルートディレクトリからGithub Pagesのレポジトリにソースをアップロードしてしまうと、正しくWebページが表示されません。</p>
@@ -629,12 +629,12 @@ _site</code></pre>
 <p><a href="http://begriffs.com/posts/2014-08-12-create-static-site-with-hakyll-github.html">Create a static site with Hakyll, Github and Travis CI</a></p>
 <p><a href="http://timbaumann.info/posts/2013-08-04-hakyll-github-and-travis.html">Hakyll, Github and building a static site with Travis CI</a></p>]]></description>
     <pubDate>Sun, 05 Apr 2015 20:07:53 UT</pubDate>
-    <guid>http://imokuri123.com/blog/2015/04/create-github-pages-with-hakyll.html</guid>
+    <guid>https://imokuri123.com/blog/2015/04/create-github-pages-with-hakyll.html</guid>
     <dc:creator>IMOKURI</dc:creator>
 </item>
 <item>
     <title>Docker ユースケース【監視対象としてのSNMP Agent】</title>
-    <link>http://imokuri123.com/blog/2014/10/docker-use-case-snmp-agent.html</link>
+    <link>https://imokuri123.com/blog/2014/10/docker-use-case-snmp-agent.html</link>
     <description><![CDATA[<p>物理サーバでも、仮想マシンでもない、Dockerを始めとしたコンテナ型の仮想化が有効なユースケースがあります。</p>
 <p>それは、SNMP Agentとしてです。</p>
 <p>具体的には、SNMP Agentを監視するSNMP Managerの試験などの用途として、大量のSNMP Agentが必要な場合、に効果的だと思います。</p>
@@ -663,12 +663,12 @@ _site</code></pre>
 <p>DockerはそのDeployの容易性などの目的のため？、固定IPアドレスを明確に割り振る手段が備わっていない(v1.3.0時点)ので、固定IPアドレスを割り当てたい場合は、それ用のツールを使用する必要があります。</p>
 <p>Dockerの機能として、実現できるといいなぁと思っているのですが、もう少し時間がかかりそうですかね。</p>]]></description>
     <pubDate>Sun, 19 Oct 2014 00:35:41 UT</pubDate>
-    <guid>http://imokuri123.com/blog/2014/10/docker-use-case-snmp-agent.html</guid>
+    <guid>https://imokuri123.com/blog/2014/10/docker-use-case-snmp-agent.html</guid>
     <dc:creator>IMOKURI</dc:creator>
 </item>
 <item>
     <title>HaskellでSNMP Trapを投げる</title>
-    <link>http://imokuri123.com/blog/2014/06/send-snmptrap-using-haskell.html</link>
+    <link>https://imokuri123.com/blog/2014/06/send-snmptrap-using-haskell.html</link>
     <description><![CDATA[<p>Haskellには、SNMP Trapを送信するライブラリがないですかね。</p>
 <p>ということで、簡単なものだけ作ってみました。</p>
 <p>目指したものとしては、</p>
@@ -782,12 +782,12 @@ when waitLoadTime <span class="fu">$</span> mapM_ killThread sendTrapThreads</co
 <p>追記:</p>
 <p>ソースは<a href="https://github.com/IMOKURI/snmptrapper">こちら</a>にあります。</p>]]></description>
     <pubDate>Sun, 29 Jun 2014 16:58:25 UT</pubDate>
-    <guid>http://imokuri123.com/blog/2014/06/send-snmptrap-using-haskell.html</guid>
+    <guid>https://imokuri123.com/blog/2014/06/send-snmptrap-using-haskell.html</guid>
     <dc:creator>IMOKURI</dc:creator>
 </item>
 <item>
     <title>交渉で良い結果を得る方法7つ</title>
-    <link>http://imokuri123.com/blog/2014/05/how-to-create-good-outcomes-when-negotiating.html</link>
+    <link>https://imokuri123.com/blog/2014/05/how-to-create-good-outcomes-when-negotiating.html</link>
     <description><![CDATA[<p>交渉でのミスを避けるための7つのポイントが、参考になったので、まとめます。</p>
 <!--more-->
 <ol style="list-style-type: decimal">
@@ -804,20 +804,20 @@ when waitLoadTime <span class="fu">$</span> mapM_ killThread sendTrapThreads</co
 <p>ひとまず、恐い顔で過ごすことを心がけるようにします。（違</p>
 <p>参考： <a href="http://www.aaronkharris.com/guidelines-when-negotiating">How to create good outcomes when negotiating</a></p>]]></description>
     <pubDate>Thu, 08 May 2014 19:54:09 UT</pubDate>
-    <guid>http://imokuri123.com/blog/2014/05/how-to-create-good-outcomes-when-negotiating.html</guid>
+    <guid>https://imokuri123.com/blog/2014/05/how-to-create-good-outcomes-when-negotiating.html</guid>
     <dc:creator>IMOKURI</dc:creator>
 </item>
 <item>
     <title>何が人を動かすのか</title>
-    <link>http://imokuri123.com/blog/2013/12/why-we-do-what-we-do.html</link>
+    <link>https://imokuri123.com/blog/2013/12/why-we-do-what-we-do.html</link>
     <description><![CDATA[<p>人を動かすものは何か。</p>
 <p>客観的に、論理的に、考え、行動せよ、、、云々、とよく言われます。</p>
 <p>それは、もともと人がそう動けないからでしょうか。</p>
-<p>このAdvent Calendarの中でも<a href="http://www.imokuri123.com/blog/2013/12/puzzle-of-motivation.html">内的モチベーションについての話題</a>がありました。</p>
+<p>このAdvent Calendarの中でも<a href="/blog/2013/12/puzzle-of-motivation.html">内的モチベーションについての話題</a>がありました。</p>
 <p>Candle Problemを引き合いに、人によりよく働いてもらうための手法について、学びました。</p>
-<p>また、<a href="http://www.imokuri123.com/blog/2013/12/emotion-moves-behavior.html">人の認識の仕方によって、幸福度は変化するという話</a>もありました。</p>
+<p>また、<a href="/blog/2013/12/emotion-moves-behavior.html">人の認識の仕方によって、幸福度は変化するという話</a>もありました。</p>
 <p>機械的にやっているだけでは、得られない満足度がそこにはありました。</p>
-<p>さらに、<a href="http://www.imokuri123.com/blog/2013/12/the-happy-secret-to-better-work.html">幸福度が上がることで、より良い結果が得られるという結果</a>もありました。</p>
+<p>さらに、<a href="/blog/2013/12/the-happy-secret-to-better-work.html">幸福度が上がることで、より良い結果が得られるという結果</a>もありました。</p>
 <p>バカみたいな前向きさも良い結果に寄与するということです。</p>
 <p>これらに共通するのは何でしょうか。</p>
 <!--more-->
@@ -846,7 +846,7 @@ when waitLoadTime <span class="fu">$</span> mapM_ killThread sendTrapThreads</co
 <p>+++</p>
 <p>この投稿は、「<a href="http://www.adventar.org/calendars/158">TED 広める価値のあるアイデア Advent Calendar 2013</a>」に向けた投稿です。</p>]]></description>
     <pubDate>Wed, 25 Dec 2013 00:26:34 UT</pubDate>
-    <guid>http://imokuri123.com/blog/2013/12/why-we-do-what-we-do.html</guid>
+    <guid>https://imokuri123.com/blog/2013/12/why-we-do-what-we-do.html</guid>
     <dc:creator>IMOKURI</dc:creator>
 </item>
 
