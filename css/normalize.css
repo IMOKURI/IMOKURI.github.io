@@ -8,10 +8,10 @@
 
 @font-face{
   font-family:"Koku Mincho";
-  src:url("../fonts/font_1_kokumr_1.00_rls.eot");
-  src:url("../fonts/font_1_kokumr_1.00_rls.eot?#iefix")format("embedded-opentype"),
-      url("../fonts/font_1_kokumr_1.00_rls.woff")format("woff"),
-      url("../fonts/font_1_kokumr_1.00_rls.ttf")format("truetype");
+  src:url("../fonts/font_1_kokumr_1.00_rls_sub01.eot");
+  src:url("../fonts/font_1_kokumr_1.00_rls_sub01.eot?#iefix")format("embedded-opentype"),
+      url("../fonts/font_1_kokumr_1.00_rls_sub01.woff")format("woff"),
+      url("../fonts/font_1_kokumr_1.00_rls_sub01.ttf")format("truetype");
 }
 
 html {
