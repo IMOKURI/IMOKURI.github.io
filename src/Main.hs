@@ -160,6 +160,5 @@ feedConfig = FeedConfiguration
 hakyllConfig :: Configuration
 hakyllConfig = defaultConfiguration
     { previewHost = "0.0.0.0"
-    , previewPort = 8443
     }
 
