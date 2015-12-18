@@ -7,7 +7,7 @@
         <description><![CDATA[インフラ系SEのまとめノート]]></description>
         <atom:link href="https://imokuri123.com/feed/rss.xml" rel="self"
                    type="application/rss+xml" />
-        <lastBuildDate>Fri, 18 Dec 2015 15:03:00 UT</lastBuildDate>
+        <lastBuildDate>Sat, 19 Dec 2015 00:03:00 UT</lastBuildDate>
         <item>
     <title>Hakyllでブログを作る(実践編4)</title>
     <link>https://imokuri123.com/blog/2015/12/how-to-create-blog-with-hakyll-part4.html</link>
@@ -63,7 +63,7 @@
 <a href="http://jaspervdj.be/hakyll/tutorials/using-teasers-in-hakyll.html">TUTORIAL: USING TEASERS IN HAKYLL</a><br />
 <a href="http://javran.github.io/posts/2014-03-01-add-tags-to-your-hakyll-blog.html">Add tags to your Hakyll blog</a><br />
 <a href="http://philopon.github.io/posts/2014/hakyll_tips.html">Hakyll tips</a></p>]]></description>
-    <pubDate>Fri, 18 Dec 2015 15:03:00 UT</pubDate>
+    <pubDate>Sat, 19 Dec 2015 00:03:00 UT</pubDate>
     <guid>https://imokuri123.com/blog/2015/12/how-to-create-blog-with-hakyll-part4.html</guid>
     <dc:creator>IMOKURI</dc:creator>
 </item>
@@ -173,7 +173,7 @@ postCtx tags <span class="fu">=</span>
 </blockquote>
 <p>あとはタグクラウドを表示したい場所に、「$tagcloud$」を入れておきましょう。</p>
 <p>さて、<a href="/blog/2015/12/how-to-create-blog-with-hakyll-part4.html">次回</a>、最終回に続きますー。</p>]]></description>
-    <pubDate>Fri, 18 Dec 2015 15:02:00 UT</pubDate>
+    <pubDate>Sat, 19 Dec 2015 00:02:00 UT</pubDate>
     <guid>https://imokuri123.com/blog/2015/12/how-to-create-blog-with-hakyll-part3.html</guid>
     <dc:creator>IMOKURI</dc:creator>
 </item>
@@ -288,7 +288,7 @@ myFeedConfiguration <span class="fu">=</span> <span class="dt">FeedConfiguration
     }</code></pre></div>
 <p>ということで、だいぶブログっぽくなってきました。</p>
 <p><a href="/blog/2015/12/how-to-create-blog-with-hakyll-part3.html">次回</a>は、カスタマイズ後半戦です。</p>]]></description>
-    <pubDate>Fri, 18 Dec 2015 15:01:00 UT</pubDate>
+    <pubDate>Sat, 19 Dec 2015 00:01:00 UT</pubDate>
     <guid>https://imokuri123.com/blog/2015/12/how-to-create-blog-with-hakyll-part2.html</guid>
     <dc:creator>IMOKURI</dc:creator>
 </item>
@@ -410,7 +410,7 @@ postCtx <span class="fu">=</span>
 <p>それぞれの関数がどんな役割をしているか、を確認するには、<a href="https://hackage.haskell.org/package/hakyll-4.7.4.0/docs/doc-index-All.html">HackageのIndexのページ</a>で検索するのが、便利です。</p>
 <p>さて、ここまでで、デフォルトのテンプレートの中身がだいたい把握できたかと思います。<a href="/blog/2015/12/how-to-create-blog-with-hakyll-part2.html">次の記事</a>では、脱テンプレートということで、いろいろカスタマイズしていきたいと思います。</p>
 <p>よくわからないところなどあれば、コメントいただければと思います。</p>]]></description>
-    <pubDate>Fri, 18 Dec 2015 15:00:00 UT</pubDate>
+    <pubDate>Sat, 19 Dec 2015 00:00:00 UT</pubDate>
     <guid>https://imokuri123.com/blog/2015/12/how-to-create-blog-with-hakyll-part1.html</guid>
     <dc:creator>IMOKURI</dc:creator>
 </item>
