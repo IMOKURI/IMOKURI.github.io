@@ -1,5 +1,5 @@
 ---
-date: 2015-12-19 00:03:00+0900
+date: 2015-12-19 00:03:00
 slug: how-to-create-blog-with-hakyll-part4
 title: Hakyllでブログを作る(実践編4)
 tags: haskell,hakyll,github,github-pages
