@@ -2,6 +2,26 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
   <url>
+    <loc>https://imokuri123.com/blog/2015/12/how-to-create-blog-with-hakyll-part4.html</loc>
+    <lastmod>2015-12-18</lastmod>
+  </url>
+
+  <url>
+    <loc>https://imokuri123.com/blog/2015/12/how-to-create-blog-with-hakyll-part3.html</loc>
+    <lastmod>2015-12-18</lastmod>
+  </url>
+
+  <url>
+    <loc>https://imokuri123.com/blog/2015/12/how-to-create-blog-with-hakyll-part2.html</loc>
+    <lastmod>2015-12-18</lastmod>
+  </url>
+
+  <url>
+    <loc>https://imokuri123.com/blog/2015/12/how-to-create-blog-with-hakyll-part1.html</loc>
+    <lastmod>2015-12-18</lastmod>
+  </url>
+
+  <url>
     <loc>https://imokuri123.com/blog/2015/10/write-blog-with-atom-and-github-desktop.html</loc>
     <lastmod>2015-10-27</lastmod>
   </url>

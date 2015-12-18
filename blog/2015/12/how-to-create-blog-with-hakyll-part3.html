@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<script>
+var host = "imokuri123.com"
+if (window.location.host == host && window.location.protocol != "https:") {
+  window.location.protocol = "https:"
+}
+</script>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="description" content="Blog" />
+<meta name="author" content="IMOKURI" />
+<title>Hakyllでブログを作る(実践編3) - Wake up! Good night*</title>
+<link rel="stylesheet" href="../../../css/normalize.css">
+<link rel="stylesheet" href="../../../css/skeleton.css">
+<link rel="stylesheet" href="../../../css/highlight.css">
+<link rel="shortcut icon" href="../../../images/favicon.ico">
+<link rel="alternate" type="application/rss+xml" title="RSS" href="https://imokuri123.com/feed/rss.xml">
+<link rel="alternate" type="application/atom+xml" title="Atom" href="https://imokuri123.com/feed/atom.xml">
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-62022693-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+<div class="section header">
+  <header class="container">
+    <img src="../../../images/title.png" alt="Title - Wake Up! Good Night*">
+  </header>
+  <nav class="container">
+    <ul>
+      <li><a href="../../../">Home</a></li>
+      <li><a href="../../../blog/">Blog</a></li>
+      <li><a href="../../../about/">About</a></li>
+    </ul>
+  </nav>
+</div>
+
+<div class="section body">
+  <div class="container">
+    <article>
+<h3>Hakyllでブログを作る(実践編3)</h3>
+
+<p>
+  <div class="info">
+    Posted on December 18, 2015
+    
+  </div>
+  <div class="info">
+    
+      Tags: <a href="../../../tags/haskell.html">haskell</a>, <a href="../../../tags/hakyll.html">hakyll</a>, <a href="../../../tags/github.html">github</a>, <a href="../../../tags/github-pages.html">github-pages</a>
+    
+  </div>
+</p>
+
+<p>さて、<a href="../../../blog/2015/12/how-to-create-blog-with-hakyll-part2.html">前回</a>の続きになります。</p>
+<p>今回は、カスタマイズ後半戦です。</p>
+<p>カスタマイズしたソースは<a href="https://github.com/IMOKURI/hakyll-blog-example">こちら</a>に公開していますので、適宜ご参照ください。</p>
+<h4 id="目次">目次</h4>
+<ul>
+<li><a href="../../../blog/2015/12/how-to-create-blog-with-hakyll-part1.html#テンプレ展開">テンプレ展開</a></li>
+<li><a href="../../../blog/2015/12/how-to-create-blog-with-hakyll-part1.html#ページ作成の流れ">ページ作成の流れ</a></li>
+<li><a href="../../../blog/2015/12/how-to-create-blog-with-hakyll-part2.html#ページネーション">記事一覧を5記事ごとに分割(ページネーション)</a></li>
+<li><a href="../../../blog/2015/12/how-to-create-blog-with-hakyll-part2.html#feed作成">RSS/Atom Feed作成</a></li>
+<li><a href="#ティーザー">「続きを読む」のリンク(ティーザー)</a></li>
+<li><a href="#タグ付け記事一覧">タグ付けされた記事一覧</a></li>
+<li><a href="../../../blog/2015/12/how-to-create-blog-with-hakyll-part4.html#シンタックスハイライト">シンタックスハイライト</a></li>
+<li><a href="../../../blog/2015/12/how-to-create-blog-with-hakyll-part4.html#ブログ公開">【リンク】github pagesで作ったブログを公開</a></li>
+</ul>
+<p>それでは、さっそくいってみましょう。</p>
+<!--more-->
+<h3 id="ティーザー">ティーザー</h3>
+<p>ブログでは、ときどき、記事の冒頭部分が見えていて、「続きを読む」的なリンクが付いていることがあります。それもやってみましょう。</p>
+<p>まずは、ブログの記事に、「どこまで見せておくか」のしるしとして「&lt;!--more--&gt;」を入れておきます。</p>
+<p>ここまでのチュートリアルで、記事の本文は、「$body$」の情報で、埋め込まれていました。ティーザーでは、同じように「&lt;!--more--&gt; までの記事」を「$teaser$」として埋め込むことになります。</p>
+<p>このとき、記事の内容は、前回つかったスナップショットで保存した記事を使います。</p>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="ot">postCtx ::</span> <span class="dt">Context</span> <span class="dt">String</span>
+postCtx <span class="fu">=</span>
+    dateField <span class="st">&quot;date&quot;</span> <span class="st">&quot;%B %e, %Y&quot;</span> <span class="ot">`mappend`</span>
+    teaserField <span class="st">&quot;teaser&quot;</span> <span class="st">&quot;content&quot;</span> <span class="ot">`mappend`</span>
+    defaultContext</code></pre></div>
+<p>埋め込まれた情報を使うには、「テンプレートに反映」ということで、「$teaser$」をテンプレートに埋め込めば、ちょいだし記事の完成です。</p>
+<div class="sourceCode"><pre class="sourceCode html"><code class="sourceCode html"><span class="kw">&lt;ul&gt;</span>
+    $for(posts)$
+        <span class="kw">&lt;li&gt;</span>
+            $title$ - $date$
+            $teaser$...<span class="kw">&lt;a</span><span class="ot"> href=</span><span class="st">&quot;$url$&quot;</span><span class="kw">&gt;</span>(続きを読む)<span class="kw">&lt;/a&gt;</span>
+        <span class="kw">&lt;/li&gt;</span>
+    $endfor$
+<span class="kw">&lt;/ul&gt;</span></code></pre></div>
+<h3 id="タグ付け記事一覧">タグ付け記事一覧</h3>
+<p>記事にどんな情報が載っているか、をタグとしてつけておくのもよくあります。記事にタグをつけつつ、その一覧ページも作ってみましょう。</p>
+<p>付与するタグは、記事の冒頭に書いておきます。</p>
+<div class="sourceCode"><pre class="sourceCode markdown"><code class="sourceCode markdown">---
+title: example post
+tags: example, hakyll
+---</code></pre></div>
+<p>続いて、Haskellのソースの方で、タグのルールを設定します。</p>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell">tags <span class="ot">&lt;-</span> buildTags <span class="st">&quot;posts/*&quot;</span> (fromCapture <span class="st">&quot;tags/*.html&quot;</span>)</code></pre></div>
+<blockquote>
+<p>「&quot;posts/*&quot;」にマッチする記事からタグ情報を収集して、<br />
+タグごとのURLは、「tag/*.html」の形にする。<br />
+収集したタグの情報は「tags」に入れておく。</p>
+</blockquote>
+<p>ルールが決まって、タグの情報を収集したので、まずは、記事の方にタグの情報を表示してみましょう。</p>
+<p>例によって、タグの情報を埋め込むことになります。</p>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="ot">postCtx ::</span> <span class="dt">Tags</span> <span class="ot">-&gt;</span> <span class="dt">Context</span> <span class="dt">String</span>
+postCtx tags <span class="fu">=</span>
+    dateField <span class="st">&quot;date&quot;</span> <span class="st">&quot;%B %e, %Y&quot;</span>   <span class="ot">`mappend`</span>
+    teaserField <span class="st">&quot;teaser&quot;</span> <span class="st">&quot;content&quot;</span> <span class="ot">`mappend`</span>
+    tagsField <span class="st">&quot;tags&quot;</span> tags          <span class="ot">`mappend`</span>
+    defaultContext</code></pre></div>
+<p>「tagsField」を使って埋め込みましょう。この時、タグの情報を「postCtx」の引数に指定する必要があるので、注意しましょう。</p>
+<p>埋め込んだ情報を使うためにテンプレートを更新します。</p>
+<div class="sourceCode"><pre class="sourceCode html"><code class="sourceCode html"><span class="kw">&lt;div</span><span class="ot"> class=</span><span class="st">&quot;info&quot;</span><span class="kw">&gt;</span>
+    $if(tags)$
+        Tags: $tags$
+    $endif$
+<span class="kw">&lt;/div&gt;</span></code></pre></div>
+<p>続いて、タグ一覧ページを作りましょう。</p>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell">tagsRules tags <span class="fu">$</span> \tag pattern <span class="ot">-&gt;</span> <span class="kw">do</span>
+    route   idRoute
+    compile <span class="fu">$</span> <span class="kw">do</span>
+        posts <span class="ot">&lt;-</span> recentFirst <span class="fu">=&lt;&lt;</span> loadAll pattern
+        <span class="kw">let</span> tagCtx <span class="fu">=</span>
+                constField <span class="st">&quot;title&quot;</span> (<span class="st">&quot;Posts tagged &quot;</span> <span class="fu">++</span> tag)     <span class="ot">`mappend`</span>
+                listField <span class="st">&quot;posts&quot;</span> (postCtx tags) (return posts) <span class="ot">`mappend`</span>
+                defaultContext
+
+        makeItem <span class="st">&quot;&quot;</span>
+            <span class="fu">&gt;&gt;=</span> loadAndApplyTemplate <span class="st">&quot;templates/tag.html&quot;</span> tagCtx
+            <span class="fu">&gt;&gt;=</span> loadAndApplyTemplate <span class="st">&quot;templates/default.html&quot;</span> tagCtx
+            <span class="fu">&gt;&gt;=</span> relativizeUrls</code></pre></div>
+<p>・・・ページネーションのにそっくりですね♪</p>
+<p>ということで、残りは、「tag.html」のテンプレートの準備です。 対象となる記事をリストすればよいので、こんな感じで十分ですね。</p>
+<div class="sourceCode"><pre class="sourceCode html"><code class="sourceCode html">$partial(&quot;templates/post-list.html&quot;)$</code></pre></div>
+<p>おまけで、タグといえば、タグのリストや、タグクラウドも欲しくなります。作り方はほぼ同じなので、ここでは、タグクラウドを作って、トップページに貼り付けておきたいと思います。</p>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell">match <span class="st">&quot;index.html&quot;</span> <span class="fu">$</span> <span class="kw">do</span>
+    route   idRoute
+    compile <span class="fu">$</span> <span class="kw">do</span>
+        posts <span class="ot">&lt;-</span> fmap (take <span class="dv">3</span>) <span class="fu">.</span> recentFirst <span class="fu">=&lt;&lt;</span> loadAll <span class="st">&quot;posts/*&quot;</span>
+        tagCloud <span class="ot">&lt;-</span> renderTagCloud <span class="fl">80.0</span> <span class="fl">120.0</span> tags
+        <span class="kw">let</span> indexCtx <span class="fu">=</span>
+                listField <span class="st">&quot;posts&quot;</span> (postCtx tags) (return posts) <span class="ot">`mappend`</span>
+                constField <span class="st">&quot;title&quot;</span> <span class="st">&quot;Home&quot;</span>                       <span class="ot">`mappend`</span>
+                constField <span class="st">&quot;tagcloud&quot;</span> tagCloud                  <span class="ot">`mappend`</span>
+                defaultContext
+
+        getResourceBody
+            <span class="fu">&gt;&gt;=</span> applyAsTemplate indexCtx
+            <span class="fu">&gt;&gt;=</span> loadAndApplyTemplate <span class="st">&quot;templates/default.html&quot;</span> indexCtx
+            <span class="fu">&gt;&gt;=</span> relativizeUrls</code></pre></div>
+<blockquote>
+<p>タグの情報を読み込み、最小のフォントが80%、最大が120%で、タグクラウドの情報を生成します。 (tagCloud &lt;- renderTagCloud 80.0 120.0 tags)<br />
+生成したタグクラウドの情報を「tagcloud」の名前で埋め込んでおきます。 (constField &quot;tagcloud&quot; tagCloud)</p>
+</blockquote>
+<p>あとはタグクラウドを表示したい場所に、「$tagcloud$」を入れておきましょう。</p>
+<p>さて、<a href="../../../blog/2015/12/how-to-create-blog-with-hakyll-part4.html">次回</a>、最終回に続きますー。</p>
+
+</article>
+
+
+<a href="https://twitter.com/share" class="twitter-share-button" data-related="rouge_pawn">Tweet</a>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+
+
+<a href="http://b.hatena.ne.jp/entry/imokuri123.com/blog/2015/12/how-to-create-blog-with-hakyll-part3.html" class="hatena-bookmark-button" data-hatena-bookmark-title="Hakyllでブログを作る(実践編3) - Wake up! Good night*" data-hatena-bookmark-layout="standard-noballoon" data-hatena-bookmark-lang="ja" title="このエントリーをはてなブックマークに追加"><img src="https://b.st-hatena.com/images/entry-button/button-only@2x.png" alt="このエントリーをはてなブックマークに追加" width="20" height="20" style="border: none;" /></a><script type="text/javascript" src="https://b.st-hatena.com/js/bookmark_button.js" charset="utf-8" async="async"></script>
+
+
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+  /* * * CONFIGURATION VARIABLES * * */
+  var disqus_shortname = 'IMOKURI';
+  var disqus_identifier = "/blog/2015/12/how-to-create-blog-with-hakyll-part3.html";
+  var disqus_title = "Hakyllでブログを作る(実践編3)";
+  var disqus_url = "https://imokuri123.com/blog/2015/12/how-to-create-blog-with-hakyll-part3.html";
+
+  /* * * DON'T EDIT BELOW THIS LINE * * */
+  (function() {
+    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+
+
+  </div>
+</div>
+
+<div class="section footer">
+  <footer class="container">
+    Site proudly generated by <a href="http://jaspervdj.be/hakyll">Hakyll</a> and <a href="http://getskeleton.com/">Skeleton</a>. The entire source code of this website is <a href="https://github.com/IMOKURI/IMOKURI.github.io">available at Github</a>.
+  </footer>
+</div>

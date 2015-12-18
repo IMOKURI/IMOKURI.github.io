@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<script>
+var host = "imokuri123.com"
+if (window.location.host == host && window.location.protocol != "https:") {
+  window.location.protocol = "https:"
+}
+</script>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="description" content="Blog" />
+<meta name="author" content="IMOKURI" />
+<title>Hakyllでブログを作る(実践編) - Wake up! Good night*</title>
+<link rel="stylesheet" href="../../../css/normalize.css">
+<link rel="stylesheet" href="../../../css/skeleton.css">
+<link rel="stylesheet" href="../../../css/highlight.css">
+<link rel="shortcut icon" href="../../../images/favicon.ico">
+<link rel="alternate" type="application/rss+xml" title="RSS" href="https://imokuri123.com/feed/rss.xml">
+<link rel="alternate" type="application/atom+xml" title="Atom" href="https://imokuri123.com/feed/atom.xml">
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-62022693-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+<div class="section header">
+  <header class="container">
+    <img src="../../../images/title.png" alt="Title - Wake Up! Good Night*">
+  </header>
+  <nav class="container">
+    <ul>
+      <li><a href="../../../">Home</a></li>
+      <li><a href="../../../blog/">Blog</a></li>
+      <li><a href="../../../about/">About</a></li>
+    </ul>
+  </nav>
+</div>
+
+<div class="section body">
+  <div class="container">
+    <article>
+<h3>Hakyllでブログを作る(実践編)</h3>
+
+<p>
+  <div class="info">
+    Posted on December 18, 2015
+    
+  </div>
+  <div class="info">
+    
+      Tags: <a href="../../../tags/haskell.html">haskell</a>, <a href="../../../tags/hakyll.html">hakyll</a>, <a href="../../../tags/github.html">github</a>, <a href="../../../tags/github-pages.html">github-pages</a>
+    
+  </div>
+</p>
+
+<p>Haskellのアドベントカレンダー初参加です。よろしくお願いします。</p>
+<p>このサイトは<a href="http://jaspervdj.be/hakyll/">Hakyll</a>で運営しています。</p>
+<p>少しずつノウハウが溜まってきたのでまとめてみたいと思います。</p>
+<p>Hakyllのチュートリアル的な内容になっています。</p>
+<h4 id="目次">目次</h4>
+<ul>
+<li><a href="#テンプレ展開">テンプレ展開</a></li>
+<li><a href="#ページ作成の流れ">ページ作成の流れ</a></li>
+<li><a href="../../../blog/2015/12/how-to-create-blog-with-hakyll-part2.html#ページネーション">記事一覧を5記事ごとに分割(ページネーション)</a></li>
+<li><a href="../../../blog/2015/12/how-to-create-blog-with-hakyll-part2.html#feed作成">RSS/Atom Feed作成</a></li>
+<li><a href="../../../blog/2015/12/how-to-create-blog-with-hakyll-part3.html#ティーザー">「続きを読む」のリンク(ティーザー)</a></li>
+<li><a href="../../../blog/2015/12/how-to-create-blog-with-hakyll-part3.html#タグ付け記事一覧">タグ付けされた記事一覧</a></li>
+<li><a href="../../../blog/2015/12/how-to-create-blog-with-hakyll-part4.html#シンタックスハイライト">シンタックスハイライト</a></li>
+<li><a href="../../../blog/2015/12/how-to-create-blog-with-hakyll-part4.html#ブログ公開">【リンク】github pagesで作ったブログを公開</a></li>
+</ul>
+<p>それでは、さっそくいってみましょう。</p>
+<!--more-->
+<h3 id="テンプレ展開">テンプレ展開</h3>
+<p>stackには、hakyll用のテンプレートが準備されていますので、それを使っていきます。</p>
+<p><code>stack new</code> を打つ前に、 「~/.stack/config.yaml」 に以下の様な情報を書いておくとテンプレに載せてくれます。</p>
+<div class="sourceCode"><pre class="sourceCode yaml"><code class="sourceCode yaml"><span class="fu">templates:</span>
+  <span class="fu">params:</span>
+    <span class="fu">author-email:</span> &lt; mail address &gt;
+    <span class="fu">author-name:</span> &lt; your name &gt;
+    <span class="fu">copyright:</span> 2015, &lt; your name &gt;
+    <span class="fu">github-username:</span> &lt; github user name &gt;
+    <span class="fu">category:</span> Web <span class="co"># なんでも良いです。</span></code></pre></div>
+<p>テンプレを展開してみましょう。</p>
+<p><code>stack new &lt;プロジェクト名&gt; hakyll-template</code></p>
+<p>プロジェクト名は何でも良いので、おためしだったら 「myblog」 とか、github pagesで公開するなら 「githubのユーザ名-github-io」 みたいなのが良いかと思います。ここでは、 「user-github-io」 として進めていきます。</p>
+<p>テンプレを展開したら、cabalファイル 「user-github-io.cabal」 内の 「executable」 の名称を 「site」 などタイピングしやすい単語にしておきましょう。<br />
+webページをビルドするときに実行するので、あとあとハッピーです。ここでは、 「site」 に変更したとして進めていきます。</p>
+<p><code>stack build</code> でhakyllをセットアップしておきましょう。</p>
+<p>以降、Haskellのソースを修正した時は <code>stack build</code> をして、</p>
+<p><code>stack exec site build</code> (2回目以降は、 「rebuild」 )で、webページをビルドして、</p>
+<p><code>stack exec site watch</code> で、テスト用のサーバが、 http://127.0.0.1:8000 で立ち上がります。</p>
+<h3 id="ページ作成の流れ">ページ作成の流れ</h3>
+<p>Hakyllで、webページを作るときは、</p>
+<ol style="list-style-type: decimal">
+<li>markdownなどで、記事を書き、</li>
+<li>それが、htmlに変換されて、</li>
+<li>テンプレートに埋め込まれる。</li>
+</ol>
+<p>のが基本イメージです。</p>
+<p><img src="../../../images/2015-12-hakyll-page-structure.png" alt="Hakyll page structure" /><br />
+ 「どの記事と、どのテンプレートをあわせて、webサイトのどこに表示する」とか、「この記事にこの情報を埋め込む」とか、をHaskellのプログラム(デフォルトは 「site.hs」 )で作っていきます。</p>
+<p>たとえば、 「site.hs」 をのぞいてみると、以下の様なソースがあります。</p>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell">match <span class="st">&quot;images/*&quot;</span> <span class="fu">$</span> <span class="kw">do</span>
+    route   idRoute
+    compile copyFileCompiler</code></pre></div>
+<p>これは、</p>
+<blockquote>
+<p>「images/*」 にマッチするファイルを、<br />
+webサイトの同じパス 「http://user.github.io/images/*」 に (idRoute)<br />
+そのままコピーする。 (copyFileCompiler)</p>
+</blockquote>
+<p>ということです。</p>
+<p>はたまた、以下の様なソースは、</p>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell">match (fromList [<span class="st">&quot;about.rst&quot;</span>, <span class="st">&quot;contact.markdown&quot;</span>]) <span class="fu">$</span> <span class="kw">do</span>
+    route   <span class="fu">$</span> setExtension <span class="st">&quot;html&quot;</span>
+    compile <span class="fu">$</span> pandocCompiler
+        <span class="fu">&gt;&gt;=</span> loadAndApplyTemplate <span class="st">&quot;templates/default.html&quot;</span> defaultContext
+        <span class="fu">&gt;&gt;=</span> relativizeUrls</code></pre></div>
+<blockquote>
+<p>「abount.rst」 と 「contact.markdown」 を、<br />
+拡張子を 「html」 に変換して、 (setExtension &quot;html&quot;)<br />
+中身は、pandocでhtmlに変換して、 (pandocCompiler)<br />
+「default.html」 のテンプレートを適用して、 (loadAndApplyTemplate &quot;templates/default.html&quot; defaultContext)<br />
+記事の中のURLを相対パスに書き換える。 (relativizeUrls)</p>
+</blockquote>
+<p>となります。</p>
+<blockquote>
+<p>テンプレートを適用するときの 「defaultContext」 には、本文やタイトルを表す 「$body$」 や 「$title$」 などの情報が埋め込まれるようになっています。</p>
+</blockquote>
+<p>追加で、情報を埋め込むときは、 Context に埋め込む情報をまとめて、テンプレートに合わせる、というやり方になります。</p>
+<p>例えば、以下は、 「defaultContext」 の情報に、「ブログ記事の日時」の情報を(ファイル名などから)抽出して、追加しています。すると、テンプレート内の 「$date$」 がブログ記事の日時の情報に変換されます。</p>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="ot">postCtx ::</span> <span class="dt">Context</span> <span class="dt">String</span>
+postCtx <span class="fu">=</span>
+    dateField <span class="st">&quot;date&quot;</span> <span class="st">&quot;%B %e, %Y&quot;</span> <span class="ot">`mappend`</span>
+    defaultContext</code></pre></div>
+<p>他にも、複数の記事をまとめて、新たに一覧のページを作ることもできます。</p>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell">create [<span class="st">&quot;archive.html&quot;</span>] <span class="fu">$</span> <span class="kw">do</span>
+    route idRoute
+    compile <span class="fu">$</span> <span class="kw">do</span>
+        posts <span class="ot">&lt;-</span> recentFirst <span class="fu">=&lt;&lt;</span> loadAll <span class="st">&quot;posts/*&quot;</span>
+        <span class="kw">let</span> archiveCtx <span class="fu">=</span>
+                listField <span class="st">&quot;posts&quot;</span> postCtx (return posts) <span class="ot">`mappend`</span>
+                constField <span class="st">&quot;title&quot;</span> <span class="st">&quot;Archives&quot;</span>            <span class="ot">`mappend`</span>
+                defaultContext
+
+        makeItem <span class="st">&quot;&quot;</span>
+            <span class="fu">&gt;&gt;=</span> loadAndApplyTemplate <span class="st">&quot;templates/archive.html&quot;</span> archiveCtx
+            <span class="fu">&gt;&gt;=</span> loadAndApplyTemplate <span class="st">&quot;templates/default.html&quot;</span> archiveCtx
+            <span class="fu">&gt;&gt;=</span> relativizeUrls</code></pre></div>
+<p>こちらは、次のようになります。</p>
+<blockquote>
+<p>「archive.html」 というページを以下の通り作ります。(一部省略)<br />
+「posts/」 配下の記事を全て読み込んで、日付が新しい順に並べて 「posts」 に格納。 (posts &lt;- recentFirst =&lt;&lt; loadAll &quot;posts/*&quot;)<br />
+記事の情報を 「$posts$」 として使えるよう情報を埋め込み。 (listField &quot;posts&quot; postCtx (return posts))<br />
+「archive.html」 と 「default.html」 のテンプレートを反映させる。</p>
+</blockquote>
+<p>テンプレートの方は、どうなっているかというと、 「archive.html」 では、 「<span class="math inline">$partial(&quot;templates/post-list.html&quot;)$</span>」 となっていて、これは、 「post-list.html」 の内容を埋め込むということなので、</p>
+<p>「post-list.html」 の方を見ると、以下のようになっていて、</p>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="fu">$</span>for(posts)<span class="fu">$</span>
+    <span class="fu">&lt;</span>li<span class="fu">&gt;</span>
+        <span class="fu">&lt;</span>a href<span class="fu">=</span><span class="st">&quot;$url$&quot;</span><span class="fu">&gt;$</span>title<span class="fu">$&lt;/</span>a<span class="fu">&gt;</span> <span class="fu">-</span> <span class="fu">$</span>date<span class="fu">$</span>
+    <span class="fu">&lt;/</span>li<span class="fu">&gt;</span>
+<span class="fu">$</span>endfor<span class="fu">$</span></code></pre></div>
+<blockquote>
+<p>「$posts$」 に埋め込まれた記事の情報分繰り返す。 ($for(posts)$)</p>
+</blockquote>
+<p>という使い方ができるようになっています。</p>
+<p>それぞれの関数がどんな役割をしているか、を確認するには、<a href="https://hackage.haskell.org/package/hakyll-4.7.4.0/docs/doc-index-All.html">HackageのIndexのページ</a>で検索するのが、便利です。</p>
+<p>さて、ここまでで、デフォルトのテンプレートの中身がだいたい把握できたかと思います。<a href="../../../blog/2015/12/how-to-create-blog-with-hakyll-part2.html">次の記事</a>では、脱テンプレートということで、いろいろカスタマイズしていきたいと思います。</p>
+<p>よくわからないところなどあれば、コメントいただければと思います。</p>
+
+</article>
+
+
+<a href="https://twitter.com/share" class="twitter-share-button" data-related="rouge_pawn">Tweet</a>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+
+
+<a href="http://b.hatena.ne.jp/entry/imokuri123.com/blog/2015/12/how-to-create-blog-with-hakyll-part1.html" class="hatena-bookmark-button" data-hatena-bookmark-title="Hakyllでブログを作る(実践編) - Wake up! Good night*" data-hatena-bookmark-layout="standard-noballoon" data-hatena-bookmark-lang="ja" title="このエントリーをはてなブックマークに追加"><img src="https://b.st-hatena.com/images/entry-button/button-only@2x.png" alt="このエントリーをはてなブックマークに追加" width="20" height="20" style="border: none;" /></a><script type="text/javascript" src="https://b.st-hatena.com/js/bookmark_button.js" charset="utf-8" async="async"></script>
+
+
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+  /* * * CONFIGURATION VARIABLES * * */
+  var disqus_shortname = 'IMOKURI';
+  var disqus_identifier = "/blog/2015/12/how-to-create-blog-with-hakyll-part1.html";
+  var disqus_title = "Hakyllでブログを作る(実践編)";
+  var disqus_url = "https://imokuri123.com/blog/2015/12/how-to-create-blog-with-hakyll-part1.html";
+
+  /* * * DON'T EDIT BELOW THIS LINE * * */
+  (function() {
+    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+
+
+  </div>
+</div>
+
+<div class="section footer">
+  <footer class="container">
+    Site proudly generated by <a href="http://jaspervdj.be/hakyll">Hakyll</a> and <a href="http://getskeleton.com/">Skeleton</a>. The entire source code of this website is <a href="https://github.com/IMOKURI/IMOKURI.github.io">available at Github</a>.
+  </footer>
+</div>

@@ -48,6 +48,117 @@ if (window.location.host == host && window.location.protocol != "https:") {
 
 
 
+  <h4>Docker ユースケース【監視対象としてのSNMP Agent】</h4>
+
+  <p>
+    <div class="info">
+      Posted on October 19, 2014
+      
+    </div>
+    <div class="info">
+      
+        Tags: <a href="../../tags/docker.html">docker</a>, <a href="../../tags/snmp.html">snmp</a>
+      
+    </div>
+  </p>
+
+  
+    <p>物理サーバでも、仮想マシンでもない、Dockerを始めとしたコンテナ型の仮想化が有効なユースケースがあります。</p>
+<p>それは、SNMP Agentとしてです。</p>
+<p>具体的には、SNMP Agentを監視するSNMP Managerの試験などの用途として、大量のSNMP Agentが必要な場合、に効果的だと思います。</p>
+...<a href="../../blog/2014/10/docker-use-case-snmp-agent.html">(続きを読む)</a>
+  
+
+  <hr>
+
+
+
+  <h4>HaskellでSNMP Trapを投げる</h4>
+
+  <p>
+    <div class="info">
+      Posted on June 29, 2014
+      
+    </div>
+    <div class="info">
+      
+        Tags: <a href="../../tags/haskell.html">haskell</a>, <a href="../../tags/snmp.html">snmp</a>
+      
+    </div>
+  </p>
+
+  
+    <p>Haskellには、SNMP Trapを送信するライブラリがないですかね。</p>
+<p>ということで、簡単なものだけ作ってみました。</p>
+<p>目指したものとしては、</p>
+<ol style="list-style-type: decimal">
+<li><p>送信したいSNMP Trapを複数定義した設定ファイルを読み込む</p></li>
+<li><p>SNMP Trapの定義ごとにSNMP Trapのパケットを組み立てる</p></li>
+<li><p>SNMP Trapの定義ごとにスレッドを立てて、SNMP Trapを送信する（指定した間隔で投げ続ける）</p></li>
+</ol>
+<p>と言った感じです。</p>
+...<a href="../../blog/2014/06/send-snmptrap-using-haskell.html">(続きを読む)</a>
+  
+
+  <hr>
+
+
+
+  <h4>交渉で良い結果を得る方法7つ</h4>
+
+  <p>
+    <div class="info">
+      Posted on May  8, 2014
+      
+    </div>
+    <div class="info">
+      
+        Tags: <a href="../../tags/know-how.html">know-how</a>, <a href="../../tags/negotiating.html">negotiating</a>
+      
+    </div>
+  </p>
+
+  
+    <p>交渉でのミスを避けるための7つのポイントが、参考になったので、まとめます。</p>
+...<a href="../../blog/2014/05/how-to-create-good-outcomes-when-negotiating.html">(続きを読む)</a>
+  
+
+  <hr>
+
+
+
+  <h4>何が人を動かすのか</h4>
+
+  <p>
+    <div class="info">
+      Posted on December 25, 2013
+      
+    </div>
+    <div class="info">
+      
+        Tags: <a href="../../tags/TED.html">TED</a>
+      
+    </div>
+  </p>
+
+  
+    <p>人を動かすものは何か。</p>
+<p>客観的に、論理的に、考え、行動せよ、、、云々、とよく言われます。</p>
+<p>それは、もともと人がそう動けないからでしょうか。</p>
+<p>このAdvent Calendarの中でも<a href="../../blog/2013/12/puzzle-of-motivation.html">内的モチベーションについての話題</a>がありました。</p>
+<p>Candle Problemを引き合いに、人によりよく働いてもらうための手法について、学びました。</p>
+<p>また、<a href="../../blog/2013/12/emotion-moves-behavior.html">人の認識の仕方によって、幸福度は変化するという話</a>もありました。</p>
+<p>機械的にやっているだけでは、得られない満足度がそこにはありました。</p>
+<p>さらに、<a href="../../blog/2013/12/the-happy-secret-to-better-work.html">幸福度が上がることで、より良い結果が得られるという結果</a>もありました。</p>
+<p>バカみたいな前向きさも良い結果に寄与するということです。</p>
+<p>これらに共通するのは何でしょうか。</p>
+...<a href="../../blog/2013/12/why-we-do-what-we-do.html">(続きを読む)</a>
+  
+
+  <hr>
+
+
+
   <h4>指揮者に学ぶリーダーシップ</h4>
 
   <p>
@@ -213,112 +324,6 @@ if (window.location.host == host && window.location.protocol != "https:") {
 
 
 
-  <h4>選択のパラドックスについて</h4>
-
-  <p>
-    <div class="info">
-      Posted on December 18, 2013
-      
-    </div>
-    <div class="info">
-      
-        Tags: <a href="../../tags/TED.html">TED</a>
-      
-    </div>
-  </p>
-
-  
-    <p>何かを選ぶことは、何かを選ばなかったことでもある。</p>
-<p>選択肢が多いほど、恵まれている、というのは本当でしょうか。</p>
-<p>選べるものは多いほどいい。</p>
-<p>というのは直感的に、そうだろう、と思うところです。</p>
-<p>それは、必ずしもそうではない。ということを皮切りに、</p>
-<p>選択肢が多い世界で、幸せに生きる秘訣を伝授してくれています。</p>
-...<a href="../../blog/2013/12/the-paradox-of-choice.html">(続きを読む)</a>
-  
-
-  <hr>
-
-
-
-  <h4>タトゥーのように残るあなたのオンラインライフ</h4>
-
-  <p>
-    <div class="info">
-      Posted on December 17, 2013
-      
-    </div>
-    <div class="info">
-      
-        Tags: <a href="../../tags/TED.html">TED</a>
-      
-    </div>
-  </p>
-
-  
-    <p>SNSやGOOGLEを利用したオンラインの活動は、</p>
-<p>記録されています。</p>
-<p>そして、予想以上にたやすくアクセスされます。</p>
-<p>意識し過ぎると、息苦しいかもしれませんが、</p>
-<p>無頓着にはならないようにしたいものです。</p>
-...<a href="../../blog/2013/12/how-to-think-about-digital-tattoos.html">(続きを読む)</a>
-  
-
-  <hr>
-
-
-
-  <h4>何が電気代を下げるのか</h4>
-
-  <p>
-    <div class="info">
-      Posted on December 16, 2013
-      
-    </div>
-    <div class="info">
-      
-        Tags: <a href="../../tags/TED.html">TED</a>
-      
-    </div>
-  </p>
-
-  
-    <p>地球の資源を大切に使うことは大事ですが（棒読み）</p>
-<p>なかなかそうは出来ないのが実際のところです。</p>
-<p>どうすれば、それができるのか。</p>
-...<a href="../../blog/2013/12/what-saves-your-money.html">(続きを読む)</a>
-  
-
-  <hr>
-
-
-
-  <h4>人型ロボットが人間の仕事をする時代の問題</h4>
-
-  <p>
-    <div class="info">
-      Posted on December 15, 2013
-      
-    </div>
-    <div class="info">
-      
-        Tags: <a href="../../tags/TED.html">TED</a>
-      
-    </div>
-  </p>
-
-  
-    <p>コンピュータの技術がめざましく発展し、</p>
-<p>どんどんコンピュータが出来る仕事が増えています。</p>
-<p>そうなると、何が起きるのか。</p>
-<p>何が問題になるのか。</p>
-...<a href="../../blog/2013/12/what-will-future-jobs-look-like.html">(続きを読む)</a>
-  
-
-  <hr>
-
-
-
 </article>
 
 <div class="pagination">
@@ -347,6 +352,6 @@ if (window.location.host == host && window.location.protocol != "https:") {
 
 <div class="section footer">
   <footer class="container">
-    Site proudly generated by <a href="http://jaspervdj.be/hakyll">Hakyll</a> and <a href="http://getskeleton.com/">Skeleton</a>. The entire source code of this website is <a href="https://github.com/IMOKURI/IMOKURI.github.io">available at github</a>.
+    Site proudly generated by <a href="http://jaspervdj.be/hakyll">Hakyll</a> and <a href="http://getskeleton.com/">Skeleton</a>. The entire source code of this website is <a href="https://github.com/IMOKURI/IMOKURI.github.io">available at Github</a>.
   </footer>
 </div>
