@@ -48,6 +48,32 @@ if (window.location.host == host && window.location.protocol != "https:") {
 
 
 
+  <h4>Github PagesのDefault branchを変えてみた。</h4>
+
+  <p>
+    <div class="info">
+      Posted on December 25, 2015
+      
+    </div>
+    <div class="info">
+      
+        Tags: <a href="../tags/github.html">github</a>, <a href="../tags/github-pages.html">github-pages</a>, <a href="../tags/hakyll.html">hakyll</a>, <a href="../tags/travis-ci.html">travis-ci</a>
+      
+    </div>
+  </p>
+
+  
+    <p><a href="https://github.com/IMOKURI">GithubのProfileのページ</a>で、草が生えないなぁと思っていたのです。<br />
+Github Pagesのレポジトリを結構更新しているのになぁです。</p>
+<p>調べてみると、<a href="https://help.github.com/articles/why-are-my-contributions-not-showing-up-on-my-profile/#commits">草を生やすには、Default branchへの更新でないとダメ</a>と判明。。</p>
+<p>であれば、Github PagesのDefault branchを変えてみたらどうだろうか、をやってみました。</p>
+...<a href="../blog/2015/12/modify-default-branch.html">(続きを読む)</a>
+  
+
+  <hr>
+
+
+
   <h4>Hakyllでブログを作る(実践編4)</h4>
 
   <p>
@@ -352,33 +378,6 @@ if (window.location.host == host && window.location.protocol != "https:") {
 <p>これらは、<a href="http://www.ietf.org/iesg/">IESG</a>（IETFの活動と標準化プロセスの、技術的な側面についての責任を担っているグループ）によって使用が推奨され始めています。<a href="http://www.ietf.org/iesg/statement/writable-mib-module.html">こちら</a></p>
 <p>今後、SNMP/SMI2に取って代わるであろうYANG/NETCONFについて、まとめていきます。</p>
 ...<a href="../blog/2015/04/snmp-will-be-replaced-by-yang-netconf.html">(続きを読む)</a>
-  
-
-  <hr>
-
-
-
-  <h4>Hakyllを使ってGitHub Pagesを作成して、そのソースも管理して、Travis CIで自動デプロイする。</h4>
-
-  <p>
-    <div class="info">
-      Posted on April  5, 2015
-      
-    </div>
-    <div class="info">
-      
-        Tags: <a href="../tags/github.html">github</a>, <a href="../tags/github-pages.html">github-pages</a>, <a href="../tags/hakyll.html">hakyll</a>, <a href="../tags/haskell.html">haskell</a>, <a href="../tags/travis-ci.html">travis-ci</a>
-      
-    </div>
-  </p>
-
-  
-    <p><a href="https://pages.github.com/">GitHub Pages</a>は、レポジトリに配置されたファイルにそって、Webページが生成されます。そのため、<code>index.html</code> などは、レポジトリのルートに配置されている必要があります。</p>
-<p>一方、<a href="http://jaspervdj.be/hakyll/">Hakyll</a>は、公開用の <code>index.html</code> などのファイルが、ルートディレクトリではなく、 <code>_site</code> というディレクトリ配下に生成されます。</p>
-<p>そのため、HakyllのソースのルートディレクトリからGithub Pagesのレポジトリにソースをアップロードしてしまうと、正しくWebページが表示されません。</p>
-<p>そこで、レポジトリのmasterブランチでは、公開用にHakyllで生成したファイル( <code>_site</code> 配下の <code>index.html</code> など)が配置され、sourceブランチに、Webページ生成元となるソースを含めたファイルを配置するようにレポジトリを作成したいと思います。</p>
-<p>その際、sourceブランチを修正、プッシュしたら、自動でmasterブランチが更新されるよう、<a href="https://travis-ci.org/">Travis CI</a>を使用して自動化したいと思います。</p>
-...<a href="../blog/2015/04/create-github-pages-with-hakyll.html">(続きを読む)</a>
   
 
   <hr>

@@ -8,8 +8,29 @@
         <name>IMOKURI</name>
         <email></email>
     </author>
-    <updated>2015-12-19T00:03:00Z</updated>
+    <updated>2015-12-25T18:00:00Z</updated>
     <entry>
+    <title>Github PagesのDefault branchを変えてみた。</title>
+    <link href="https://imokuri123.com/blog/2015/12/modify-default-branch.html" />
+    <id>https://imokuri123.com/blog/2015/12/modify-default-branch.html</id>
+    <published>2015-12-25T18:00:00Z</published>
+    <updated>2015-12-25T18:00:00Z</updated>
+    <summary type="html"><![CDATA[<p><a href="https://github.com/IMOKURI">GithubのProfileのページ</a>で、草が生えないなぁと思っていたのです。<br />
+Github Pagesのレポジトリを結構更新しているのになぁです。</p>
+<p>調べてみると、<a href="https://help.github.com/articles/why-are-my-contributions-not-showing-up-on-my-profile/#commits">草を生やすには、Default branchへの更新でないとダメ</a>と判明。。</p>
+<p>であれば、Github PagesのDefault branchを変えてみたらどうだろうか、をやってみました。</p>
+<!--more-->
+<hr />
+<p>このブログはHakyllを使って、作っています。作り方は、「source」ブランチでHakyllのソースを作って、commit &amp; pushすると、Travis CIがbuildして、「master」ブランチにpushしてくれます。</p>
+<p>そのため、「master」ブランチへの貢献度は、私 0%、Travis CI君 100%、みたいな感じで、Default branchが「master」だとそりゃ草 生えんわ、って感じです。</p>
+<p>もともと、Default branchは、「プルリクなどを受けるベースとなるブランチ」ということで、Hakyllのブログとしては、当然「source」ブランチがデフォルトになって然るべきだろう、ということで、Default branch変更です！</p>
+<p>（個人のブログのソースでプルリクなんて考える必要なかと。）</p>
+<p>（そりゃいっちゃあおしまいだ）</p>
+<p>変更の仕方は簡単で、「Settings」→「Branches」で、「Default branch」を変更すればOKです。</p>
+<p>一応、Travis CIでの自動化に影響がないかは確認しました。</p>
+<p>これで、また、ちょいちょい草が生えるはず。</p>]]></summary>
+</entry>
+<entry>
     <title>Hakyllでブログを作る(実践編4)</title>
     <link href="https://imokuri123.com/blog/2015/12/how-to-create-blog-with-hakyll-part4.html" />
     <id>https://imokuri123.com/blog/2015/12/how-to-create-blog-with-hakyll-part4.html</id>
@@ -847,197 +868,6 @@ NETCONFは、NETCONF clientとNETCONF Serverの間を、さまざまなYANGモ�
 <p>参考：<br />
 <a href="http://www.ieee802.org/802_tutorials/2014-07/Tutorial_Berman_1407.pdf">A Guide to NETCONF for SNMP Developers</a></p>
 <hr />]]></summary>
-</entry>
-<entry>
-    <title>Hakyllを使ってGitHub Pagesを作成して、そのソースも管理して、Travis CIで自動デプロイする。</title>
-    <link href="https://imokuri123.com/blog/2015/04/create-github-pages-with-hakyll.html" />
-    <id>https://imokuri123.com/blog/2015/04/create-github-pages-with-hakyll.html</id>
-    <published>2015-04-05T20:07:53Z</published>
-    <updated>2015-04-05T20:07:53Z</updated>
-    <summary type="html"><![CDATA[<p><a href="https://pages.github.com/">GitHub Pages</a>は、レポジトリに配置されたファイルにそって、Webページが生成されます。そのため、<code>index.html</code> などは、レポジトリのルートに配置されている必要があります。</p>
-<p>一方、<a href="http://jaspervdj.be/hakyll/">Hakyll</a>は、公開用の <code>index.html</code> などのファイルが、ルートディレクトリではなく、 <code>_site</code> というディレクトリ配下に生成されます。</p>
-<p>そのため、HakyllのソースのルートディレクトリからGithub Pagesのレポジトリにソースをアップロードしてしまうと、正しくWebページが表示されません。</p>
-<p>そこで、レポジトリのmasterブランチでは、公開用にHakyllで生成したファイル( <code>_site</code> 配下の <code>index.html</code> など)が配置され、sourceブランチに、Webページ生成元となるソースを含めたファイルを配置するようにレポジトリを作成したいと思います。</p>
-<p>その際、sourceブランチを修正、プッシュしたら、自動でmasterブランチが更新されるよう、<a href="https://travis-ci.org/">Travis CI</a>を使用して自動化したいと思います。</p>
-<!--more-->
-<hr />
-<p>はじめに、GitHub Pagesを作成するレポジトリを作成します。</p>
-<p>GitHub Pagesのレポジトリは、 <code>&lt;account name&gt;.github.io</code> で<a href="https://github.com/IMOKURI/IMOKURI.github.io">作成します</a>。</p>
-<p>レポジトリ作成の時点では、 <code>Initialize this repository with a README</code> はチェック <strong>しない</strong> ことを想定しています。</p>
-<hr />
-<p>まずは、Hakyllをsandboxにインストールして、Webページのソースを生成します。</p>
-<ul>
-<li>Webページを生成するためのディレクトリを作成。</li>
-</ul>
-<p><code>mkdir $HOME/hakyll; cd $HOME/hakyll</code></p>
-<ul>
-<li>sandboxを初期化。</li>
-</ul>
-<p><code>cabal sandbox init</code></p>
-<ul>
-<li>Hakyllをインストール（ちょっと時間かかる）。</li>
-</ul>
-<p><code>cabal install -j --disable-documentation hakyll</code></p>
-<ul>
-<li>Webページのソースを生成。</li>
-</ul>
-<p><code>cabal exec hakyll-init &lt;account name&gt;.github.io</code></p>
-<ul>
-<li>あとで、buildの確認にsandoboxを使いたいので、移動。</li>
-</ul>
-<p><code>mv .cabal-sandbox &lt;account name&gt;.github.io/</code></p>
-<hr />
-<p>続いて、GitHubのレポジトリに空のmasterブランチを作成します。</p>
-<ul>
-<li>gitを初期化。</li>
-</ul>
-<p><code>git init</code></p>
-<ul>
-<li>remoteブランチを登録。</li>
-</ul>
-<p><code>git remote add origin git@github.com:&lt;account name&gt;/&lt;account name&gt;.github.io.git</code></p>
-<ul>
-<li>masterブランチを空コミット。</li>
-</ul>
-<p><code>git commit --allow-empty -m &quot;Initial commit&quot;</code></p>
-<ul>
-<li>GitHubのレポジトリにアップロード。</li>
-</ul>
-<p><code>git push origin master</code></p>
-<hr />
-<p>sourceブランチを作成し、 <code>_site</code> ディレクトリをサブモジュールに登録します。</p>
-<ul>
-<li>sourceブランチを作成。</li>
-</ul>
-<p><code>git checkout -b source</code></p>
-<ul>
-<li><code>_site</code> ディレクトリをサブモジュールに登録。</li>
-</ul>
-<p><code>git submodule add git@github.com:&lt;account name&gt;/&lt;account name&gt;.github.io.git _site</code></p>
-<ul>
-<li>.gitmodulesファイルをTravisからアクセスできるように修正。</li>
-</ul>
-<p><code>vi .gitmodules</code></p>
-<p><code>url</code> を <code>https://github.com/&lt;account name&gt;/&lt;account name&gt;.github.io.git</code> に修正。</p>
-<ul>
-<li>.gitignoreファイルを作成。</li>
-</ul>
-<p><code>vi .gitignore</code></p>
-<pre><code>.cabal-sandbox
-cabal.sandbox.config
-dist/
-_cache
-_site</code></pre>
-<ul>
-<li>Hakyllのソースをbuild確認。</li>
-</ul>
-<p><code>cabal sandbox init</code></p>
-<p><code>cabal run -j build</code></p>
-<hr />
-<p>Travis CIがGitHubのレポジトリを更新できるようTokenを取得します。</p>
-<ul>
-<li><p>GitHubの<a href="https://github.com/settings/applications">Tokenを生成するページ</a>にアクセス。</p></li>
-<li><p><code>Generate new token</code> をクリック。</p></li>
-<li><p><code>Select scopes</code> は、デフォルトのに追加して、 <code>read:org</code> 、 <code>write:repo_hook</code> をチェック。</p></li>
-<li><p>生成されたTokenは控えておく。</p></li>
-</ul>
-<hr />
-<p>Travis CIでGitHubと連携する設定を追加します。</p>
-<ul>
-<li><a href="https://travis-ci.org/profile/">Travis CIのアカウント管理画面</a>で、GitHubのレポジトリの情報を取得。</li>
-</ul>
-<p><code>sync</code> ボタンをクリック。</p>
-<p><code>&lt;account name&gt;/&lt;account name&gt;.github.io</code> のスイッチをON。</p>
-<p>歯車アイコンを押して、設定画面へ。</p>
-<p><code>Build only if .travis.yml is present</code> のスイッチをON。</p>
-<hr />
-<p>TokenをTravisの設定に追加するため、暗号化します。</p>
-<ul>
-<li>Rubyのgemが必要なのでインストール。</li>
-</ul>
-<p><code>sudo yum install rubygems ruby-devel</code></p>
-<ul>
-<li>Travisをインストール。</li>
-</ul>
-<p><code>sudo gem install travis</code></p>
-<ul>
-<li>Tokenの情報と、メールアドレスの情報を暗号化。情報を控える。</li>
-</ul>
-<p><code>travis encrypt -r &lt;account name&gt;/&lt;account name&gt;.github.io GH_EMAIL=&lt;your email&gt;@&lt;your domain&gt;.&lt;tld&gt;</code></p>
-<p><code>travis encrypt -r &lt;account name&gt;/&lt;account name&gt;.github.io GH_TOKEN=&lt;the token that is used to access github&gt;</code></p>
-<hr />
-<p>Travis CIとの連携を <code>.travis.yml</code> に記載します。</p>
-<ul>
-<li><code>.travis.yml</code> ファイルを作成。</li>
-</ul>
-<p><code>vi .travis.yml</code></p>
-<div class="sourceCode"><pre class="sourceCode yaml"><code class="sourceCode yaml"><span class="co"># NB: don&#39;t set `language: haskell` here</span>
-
-<span class="co"># See also https://github.com/hvr/multi-ghc-travis for more information</span>
-
-<span class="fu">branches:</span>
-  <span class="fu">only:</span>
-    <span class="kw">-</span> source
-
-<span class="fu">env:</span>
-  <span class="fu">global:</span>
-    <span class="kw">-</span> GH_NAME=<span class="st">&quot;Travis on behalf of IMOKURI&quot;</span>
-    <span class="kw">-</span> <span class="fu">secure:</span> <span class="st">&quot;&lt;text that encrypts your email address&gt;&quot;</span>
-    <span class="kw">-</span> <span class="fu">secure:</span> <span class="st">&quot;&lt;text that encrypts github token&gt;&quot;</span>
-
-  <span class="fu">matrix:</span>
-    <span class="kw">-</span> CABALVER=1.20 GHCVER=7.8.3
-<span class="co">#    - CABALVER=1.22 GHCVER=7.10.1</span>
-<span class="co">#    - CABALVER=head GHCVER=head</span>
-
-<span class="fu">before_install:</span>
-  <span class="kw">-</span> <span class="fu">travis_retry sudo add-apt-repository -y ppa:</span>hvr/ghc
-  <span class="kw">-</span> travis_retry sudo apt-get update
-  <span class="kw">-</span> travis_retry sudo apt-get install cabal-install-$CABALVER ghc-$GHCVER
-  <span class="kw">-</span> <span class="fu">export PATH=/opt/ghc/$GHCVER/bin:</span>/opt/cabal/$CABALVER/bin:$PATH
-
-  <span class="kw">-</span> git submodule foreach --recursive <span class="st">&#39;git checkout master; git ls-files | grep -v README | grep -v CNAME | xargs -r git rm&#39;</span>
-
-<span class="fu">install:</span>
-  <span class="kw">-</span> travis_retry cabal update
-  <span class="kw">-</span> cabal sandbox init
-  <span class="kw">-</span> cabal install --only-dependencies --disable-documentation
-  <span class="kw">-</span> cabal configure --disable-library-profiling --disable-tests --disable-library-coverage --disable-benchmarks --disable-split-objs
-
-<span class="fu">before_script:</span>
-  <span class="kw">-</span> git config --global user.name <span class="st">&quot;$GH_NAME&quot;</span>
-  <span class="kw">-</span> git config --global user.email <span class="st">&quot;$GH_EMAIL&quot;</span>
-
-<span class="fu">script:</span>
-  <span class="kw">-</span> cabal run -j build
-
-<span class="fu">after_success:</span>
-  <span class="kw">-</span> if <span class="kw">[[</span> <span class="st">&quot;$TRAVIS_BRANCH&quot;</span> == <span class="st">&quot;source&quot;</span> <span class="kw">]]</span>; then
-    cd _site;
-    <span class="fu">export REMOTE=$(git config remote.origin.url | sed &#39;s/.*:</span>\/\///&#39;);
-    <span class="fu">git remote add github https:</span>//${GH_TOKEN}@${REMOTE};
-    git add --all;
-    git status;
-    git commit -m <span class="st">&quot;Built by Travis ( build $TRAVIS_BUILD_NUMBER )&quot;</span>;
-    <span class="fu">git push github master:</span>master | grep -v http;
-    fi</code></pre></div>
-<hr />
-<p>時は来た。。</p>
-<ul>
-<li>すべてのファイルをコミットしてsourceブランチにプッシュ。</li>
-</ul>
-<p><code>git add --all</code></p>
-<p><code>git commit -m &quot;Add source&quot;</code></p>
-<p><code>git push origin source</code></p>
-<ul>
-<li><p><a href="https://travis-ci.org/repositories">Travis CIのbuildの様子</a>を見守る。</p></li>
-<li><p>GitHubのmasterブランチが更新されたか確認。</p></li>
-<li><p>GitHub Pages(.github.io)に反映されたか確認。</p></li>
-</ul>
-<hr />
-<p>参考:</p>
-<p><a href="http://begriffs.com/posts/2014-08-12-create-static-site-with-hakyll-github.html">Create a static site with Hakyll, Github and Travis CI</a></p>
-<p><a href="http://timbaumann.info/posts/2013-08-04-hakyll-github-and-travis.html">Hakyll, Github and building a static site with Travis CI</a></p>]]></summary>
 </entry>
 
 </feed>
