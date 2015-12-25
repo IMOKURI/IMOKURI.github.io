@@ -3,7 +3,7 @@ language: c
 sudo: false
 cache:
   directories:
-  - $HOME/.stack
+    - $HOME/.stack
 
 branches:
   except:
@@ -18,7 +18,7 @@ env:
 addons:
   apt:
     packages:
-    - libgmp-dev
+      - libgmp-dev
 
 before_install:
   - mkdir -p ~/.local/bin
