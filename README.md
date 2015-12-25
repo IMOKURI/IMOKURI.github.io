@@ -9,6 +9,7 @@ Sources of my website are in "source" branch.
 ### Build
 
 ~~~
+git clone https://github.com/IMOKURI/IMOKURI.github.io.git
 stack setup
 stack build
 stack exec site build
