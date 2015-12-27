@@ -17,7 +17,8 @@ main = hakyllWith hakyllConfig $ do
        .||. "fonts/*"
        .||. "robots.txt"
        .||. "CNAME"
-       .||. "README.md" ) $ do
+       .||. "README.md"
+       .||. "google393d69a2d334900c.html" ) $ do
         route   idRoute
         compile copyFileCompiler
 
