@@ -12,7 +12,7 @@ tags: haskell,hakyll,github,github-pages
 カスタマイズしたソースは[こちら](https://github.com/IMOKURI/hakyll-blog-example)に公開していますので、適宜ご参照ください。
 
 
-#### 目次
+### 目次
 
 * [テンプレ展開](/blog/2015/12/how-to-create-blog-with-hakyll-part1.html#テンプレ展開)
 * [ページ作成の流れ](/blog/2015/12/how-to-create-blog-with-hakyll-part1.html#ページ作成の流れ)
@@ -27,7 +27,7 @@ tags: haskell,hakyll,github,github-pages
 
 <!--more-->
 
-### ページネーション
+## ページネーション
 
 前回確認したテンプレートの中の、「Archives」のページは、過去記事一覧ということで、記事を追加していくと、(たぶん)際限なくリストされていきます。それはそれで気分がいいかもしれませんが、記事の一覧は、ある程度の単位(5個とか10個とか)でページが分割されてほしいものです。それをやってみます。
 
@@ -98,7 +98,7 @@ paginateRules archive $ \pageNum pattern -> do
 ```
 
 
-### Feed作成
+## Feed作成
 
 HakyllはRSSとAtomのFeedが作成できるようになっています。HakyllでFeedを作ろうとした時、Feedに載る記事は当然HTMLに変換されていて欲しいのですが、記事のページ全体は必要ありません（ナビゲーションバーとか）。そこで、記事の内容をHTMLに変換したあと、記事のページ全体にする（default.htmlのテンプレートを反映させる）前の状態をsnapshotとして保存しておくことができます。
 

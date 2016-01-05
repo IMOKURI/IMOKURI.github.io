@@ -12,7 +12,7 @@ tags: haskell,hakyll,github,github-pages
 カスタマイズしたソースは[こちら](https://github.com/IMOKURI/hakyll-blog-example)に公開していますので、適宜ご参照ください。
 
 
-#### 目次
+### 目次
 
 * [テンプレ展開](/blog/2015/12/how-to-create-blog-with-hakyll-part1.html#テンプレ展開)
 * [ページ作成の流れ](/blog/2015/12/how-to-create-blog-with-hakyll-part1.html#ページ作成の流れ)
@@ -27,7 +27,7 @@ tags: haskell,hakyll,github,github-pages
 
 <!--more-->
 
-### ティーザー
+## ティーザー
 
 ブログでは、ときどき、記事の冒頭部分が見えていて、「続きを読む」的なリンクが付いていることがあります。それもやってみましょう。
 
@@ -60,7 +60,7 @@ postCtx =
 ```
 
 
-### タグ付け記事一覧
+## タグ付け記事一覧
 
 記事にどんな情報が載っているか、をタグとしてつけておくのもよくあります。記事にタグをつけつつ、その一覧ページも作ってみましょう。
 

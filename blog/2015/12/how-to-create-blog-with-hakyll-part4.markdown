@@ -12,7 +12,7 @@ tags: haskell,hakyll,github,github-pages
 カスタマイズしたソースは[こちら](https://github.com/IMOKURI/hakyll-blog-example)に公開していますので、適宜ご参照ください。
 
 
-#### 目次
+### 目次
 
 * [テンプレ展開](/blog/2015/12/how-to-create-blog-with-hakyll-part1.html#テンプレ展開)
 * [ページ作成の流れ](/blog/2015/12/how-to-create-blog-with-hakyll-part1.html#ページ作成の流れ)
@@ -27,7 +27,7 @@ tags: haskell,hakyll,github,github-pages
 
 <!--more-->
 
-### シンタックスハイライト
+## シンタックスハイライト
 
 pandocでコンパイルしたhtmlのコードブロックには、色付けのためのclassが付与されていますので、そのclassに合わせた色付けのcssが準備できれば良いことになります。
 
@@ -50,7 +50,7 @@ create ["css/highlight.css"] $ do
 CSSファイルが出来上がったので、あとはテンプレートで読み込んでおけばOKです。
 
 
-### ブログ公開
+## ブログ公開
 
 せっかく作ったブログはぜひ公開したいものです。
 
@@ -60,7 +60,7 @@ Github PagesでHakyllで作ったブログを公開するなら、Travis CIと�
 [参考リンク1](http://335g.github.io/posts/2015-08-09-hakyll_travis.html), [参考リンク2](/blog/2015/04/create-github-pages-with-hakyll.html)
 
 
-### デザインについて
+## デザインについて
 
 やっぱりブログやるならかっこいいのがいいですよね（笑
 
@@ -72,7 +72,7 @@ Hakyllでは、ブログデザインは、頑張らないといけない感じ�
 Hakyllは苦痛じゃないけど、デザインは苦痛だという方、一緒に頑張りましょう（笑
 
 
-### コメントについて
+## コメントについて
 
 記事の中でよくわからないとか、もっと説明してほしいとか、はもちろんのこと、
 
@@ -83,7 +83,7 @@ Hakyllでこれどうやるの？的なのもコメントに書いても良い�
 答えられるかどうかは別問題として。。
 
 
-#### 参照
+---
 
 [Hakyll setup](http://yannesposito.com/Scratch/en/blog/Hakyll-setup/)  
 [Pagination with Hakyll](http://dannysu.com/2015/10/29/hakyll-pagination/)  
