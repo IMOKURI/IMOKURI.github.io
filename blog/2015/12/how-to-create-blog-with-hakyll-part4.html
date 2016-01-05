@@ -41,7 +41,7 @@ if (window.location.host == host && window.location.protocol != "https:") {
 <div class="section body">
   <div class="container">
     <article>
-<h3>Hakyllでブログを作る(実践編4)</h3>
+<h1>Hakyllでブログを作る(実践編4)</h1>
 
 <p>
   <div class="info">
@@ -58,7 +58,7 @@ if (window.location.host == host && window.location.protocol != "https:") {
 <p>さて、<a href="../../../blog/2015/12/how-to-create-blog-with-hakyll-part3.html">前回</a>の続きになります。</p>
 <p>最終回は、シンタックスハイライト＋αで締めくくりたいと思います。</p>
 <p>カスタマイズしたソースは<a href="https://github.com/IMOKURI/hakyll-blog-example">こちら</a>に公開していますので、適宜ご参照ください。</p>
-<h4 id="目次">目次</h4>
+<h3 id="目次">目次</h3>
 <ul>
 <li><a href="../../../blog/2015/12/how-to-create-blog-with-hakyll-part1.html#テンプレ展開">テンプレ展開</a></li>
 <li><a href="../../../blog/2015/12/how-to-create-blog-with-hakyll-part1.html#ページ作成の流れ">ページ作成の流れ</a></li>
@@ -71,7 +71,7 @@ if (window.location.host == host && window.location.protocol != "https:") {
 </ul>
 <p>それでは、さっそくいってみましょう。</p>
 <!--more-->
-<h3 id="シンタックスハイライト">シンタックスハイライト</h3>
+<h2 id="シンタックスハイライト">シンタックスハイライト</h2>
 <p>pandocでコンパイルしたhtmlのコードブロックには、色付けのためのclassが付与されていますので、そのclassに合わせた色付けのcssが準備できれば良いことになります。</p>
 <p>今回は外部パッケージの「<a href="https://hackage.haskell.org/package/highlighting-kate">highlighting-kate</a>」を使って簡単に実装します。</p>
 <p>まずは、パッケージをビルドするため、cabalファイルの「build-depends」に「highlighting-kate」を追加しておきましょう。</p>
@@ -84,23 +84,23 @@ if (window.location.host == host && window.location.protocol != "https:") {
 「compressCss」でCSSをぬかりなく圧縮しておきましょう。 カラーテーマは<a href="https://hackage.haskell.org/package/highlighting-kate-0.6/docs/Text-Highlighting-Kate-Styles.html">こちら</a>に一覧があります。</p>
 </blockquote>
 <p>CSSファイルが出来上がったので、あとはテンプレートで読み込んでおけばOKです。</p>
-<h3 id="ブログ公開">ブログ公開</h3>
+<h2 id="ブログ公開">ブログ公開</h2>
 <p>せっかく作ったブログはぜひ公開したいものです。</p>
 <p>そんな時は、Github Pages。(回し者とかではないですが、オススメです)</p>
 <p>Github PagesでHakyllで作ったブログを公開するなら、Travis CIと連携して自動化するのが便利です。<br />
 <a href="http://335g.github.io/posts/2015-08-09-hakyll_travis.html">参考リンク1</a>, <a href="../../../blog/2015/04/create-github-pages-with-hakyll.html">参考リンク2</a></p>
-<h3 id="デザインについて">デザインについて</h3>
+<h2 id="デザインについて">デザインについて</h2>
 <p>やっぱりブログやるならかっこいいのがいいですよね（笑</p>
 <p>Hakyllでは、ブログデザインは、頑張らないといけない感じです（汗<br />
 (<a href="http://katychuang.com/hakyll-cssgarden/gallery/">ここ</a>にちょっとテンプレを公開してくれている人もいます)</p>
 <p>とはいえ、流石にゼロから作るのはきついので、フリーのボイラープレートなどを利用するのがいいのかな、と思います。</p>
 <p>Hakyllは苦痛じゃないけど、デザインは苦痛だという方、一緒に頑張りましょう（笑</p>
-<h3 id="コメントについて">コメントについて</h3>
+<h2 id="コメントについて">コメントについて</h2>
 <p>記事の中でよくわからないとか、もっと説明してほしいとか、はもちろんのこと、</p>
 <p>Hakyllでこれどうやるの？的なのもコメントに書いても良いのかなと思ったりします。</p>
 <p>質問サイトに書くのももちろん良いと思いますが、直接問いかけることができるのがコメント欄に書くメリットですね。</p>
 <p>答えられるかどうかは別問題として。。</p>
-<h4 id="参照">参照</h4>
+<hr />
 <p><a href="http://yannesposito.com/Scratch/en/blog/Hakyll-setup/">Hakyll setup</a><br />
 <a href="http://dannysu.com/2015/10/29/hakyll-pagination/">Pagination with Hakyll</a><br />
 <a href="http://jaspervdj.be/hakyll/tutorials/05-snapshots-feeds.html">TUTORIAL: SNAPSHOTS, AND HOW TO PRODUCE AN RSS/ATOM FEED</a><br />

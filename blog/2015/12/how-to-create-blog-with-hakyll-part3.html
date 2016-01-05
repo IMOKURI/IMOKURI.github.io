@@ -41,7 +41,7 @@ if (window.location.host == host && window.location.protocol != "https:") {
 <div class="section body">
   <div class="container">
     <article>
-<h3>Hakyllでブログを作る(実践編3)</h3>
+<h1>Hakyllでブログを作る(実践編3)</h1>
 
 <p>
   <div class="info">
@@ -58,7 +58,7 @@ if (window.location.host == host && window.location.protocol != "https:") {
 <p>さて、<a href="../../../blog/2015/12/how-to-create-blog-with-hakyll-part2.html">前回</a>の続きになります。</p>
 <p>今回は、カスタマイズ後半戦です。</p>
 <p>カスタマイズしたソースは<a href="https://github.com/IMOKURI/hakyll-blog-example">こちら</a>に公開していますので、適宜ご参照ください。</p>
-<h4 id="目次">目次</h4>
+<h3 id="目次">目次</h3>
 <ul>
 <li><a href="../../../blog/2015/12/how-to-create-blog-with-hakyll-part1.html#テンプレ展開">テンプレ展開</a></li>
 <li><a href="../../../blog/2015/12/how-to-create-blog-with-hakyll-part1.html#ページ作成の流れ">ページ作成の流れ</a></li>
@@ -71,7 +71,7 @@ if (window.location.host == host && window.location.protocol != "https:") {
 </ul>
 <p>それでは、さっそくいってみましょう。</p>
 <!--more-->
-<h3 id="ティーザー">ティーザー</h3>
+<h2 id="ティーザー">ティーザー</h2>
 <p>ブログでは、ときどき、記事の冒頭部分が見えていて、「続きを読む」的なリンクが付いていることがあります。それもやってみましょう。</p>
 <p>まずは、ブログの記事に、「どこまで見せておくか」のしるしとして「&lt;!--more--&gt;」を入れておきます。</p>
 <p>ここまでのチュートリアルで、記事の本文は、「$body$」の情報で、埋め込まれていました。ティーザーでは、同じように「&lt;!--more--&gt; までの記事」を「$teaser$」として埋め込むことになります。</p>
@@ -90,7 +90,7 @@ postCtx <span class="fu">=</span>
         <span class="kw">&lt;/li&gt;</span>
     $endfor$
 <span class="kw">&lt;/ul&gt;</span></code></pre></div>
-<h3 id="タグ付け記事一覧">タグ付け記事一覧</h3>
+<h2 id="タグ付け記事一覧">タグ付け記事一覧</h2>
 <p>記事にどんな情報が載っているか、をタグとしてつけておくのもよくあります。記事にタグをつけつつ、その一覧ページも作ってみましょう。</p>
 <p>付与するタグは、記事の冒頭に書いておきます。</p>
 <div class="sourceCode"><pre class="sourceCode markdown"><code class="sourceCode markdown">---

@@ -41,7 +41,7 @@ if (window.location.host == host && window.location.protocol != "https:") {
 <div class="section body">
   <div class="container">
     <article>
-<h3>Hakyllでブログを作る(実践編)</h3>
+<h1>Hakyllでブログを作る(実践編)</h1>
 
 <p>
   <div class="info">
@@ -59,7 +59,7 @@ if (window.location.host == host && window.location.protocol != "https:") {
 <p>このサイトは<a href="http://jaspervdj.be/hakyll/">Hakyll</a>で運営しています。</p>
 <p>少しずつノウハウが溜まってきたのでまとめてみたいと思います。</p>
 <p>Hakyllのチュートリアル的な内容になっています。</p>
-<h4 id="目次">目次</h4>
+<h3 id="目次">目次</h3>
 <ul>
 <li><a href="#テンプレ展開">テンプレ展開</a></li>
 <li><a href="#ページ作成の流れ">ページ作成の流れ</a></li>
@@ -72,7 +72,7 @@ if (window.location.host == host && window.location.protocol != "https:") {
 </ul>
 <p>それでは、さっそくいってみましょう。</p>
 <!--more-->
-<h3 id="テンプレ展開">テンプレ展開</h3>
+<h2 id="テンプレ展開">テンプレ展開</h2>
 <p>stackには、hakyll用のテンプレートが準備されていますので、それを使っていきます。</p>
 <p><code>stack new</code> を打つ前に、 「~/.stack/config.yaml」 に以下の様な情報を書いておくとテンプレに載せてくれます。</p>
 <div class="sourceCode"><pre class="sourceCode yaml"><code class="sourceCode yaml"><span class="fu">templates:</span>
@@ -91,7 +91,7 @@ webページをビルドするときに実行するので、あとあとハッ�
 <p>以降、Haskellのソースを修正した時は <code>stack build</code> をして、</p>
 <p><code>stack exec site build</code> (2回目以降は、 「rebuild」 )で、webページをビルドして、</p>
 <p><code>stack exec site watch</code> で、テスト用のサーバが、 http://127.0.0.1:8000 で立ち上がります。</p>
-<h3 id="ページ作成の流れ">ページ作成の流れ</h3>
+<h2 id="ページ作成の流れ">ページ作成の流れ</h2>
 <p>Hakyllで、webページを作るときは、</p>
 <ol style="list-style-type: decimal">
 <li>markdownなどで、記事を書き、</li>

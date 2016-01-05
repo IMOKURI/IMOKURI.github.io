@@ -41,7 +41,7 @@ if (window.location.host == host && window.location.protocol != "https:") {
 <div class="section body">
   <div class="container">
     <article>
-<h3>Hakyllでブログを作る(実践編2)</h3>
+<h1>Hakyllでブログを作る(実践編2)</h1>
 
 <p>
   <div class="info">
@@ -58,7 +58,7 @@ if (window.location.host == host && window.location.protocol != "https:") {
 <p>さて、<a href="../../../blog/2015/12/how-to-create-blog-with-hakyll-part1.html">前回</a>の続きになります。</p>
 <p>今回は、テンプレートを離れて、いろいろカスタマイズしていきます。</p>
 <p>カスタマイズしたソースは<a href="https://github.com/IMOKURI/hakyll-blog-example">こちら</a>に公開していますので、適宜ご参照ください。</p>
-<h4 id="目次">目次</h4>
+<h3 id="目次">目次</h3>
 <ul>
 <li><a href="../../../blog/2015/12/how-to-create-blog-with-hakyll-part1.html#テンプレ展開">テンプレ展開</a></li>
 <li><a href="../../../blog/2015/12/how-to-create-blog-with-hakyll-part1.html#ページ作成の流れ">ページ作成の流れ</a></li>
@@ -71,7 +71,7 @@ if (window.location.host == host && window.location.protocol != "https:") {
 </ul>
 <p>それでは、さっそくいってみましょう。</p>
 <!--more-->
-<h3 id="ページネーション">ページネーション</h3>
+<h2 id="ページネーション">ページネーション</h2>
 <p>前回確認したテンプレートの中の、「Archives」のページは、過去記事一覧ということで、記事を追加していくと、(たぶん)際限なくリストされていきます。それはそれで気分がいいかもしれませんが、記事の一覧は、ある程度の単位(5個とか10個とか)でページが分割されてほしいものです。それをやってみます。</p>
 <p>まずは、「どんなルールでページネーションをするか」を設定します。</p>
 <div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell">archive <span class="ot">&lt;-</span> buildPaginateWith
@@ -124,7 +124,7 @@ if (window.location.host == host && window.location.protocol != "https:") {
     <span class="dv">&amp;nbsp;</span><span class="kw">&lt;a</span><span class="ot"> href=</span><span class="st">&quot;$lastPageUrl$&quot;</span><span class="kw">&gt;</span>Last<span class="dv">&amp;nbsp;&amp;gt;&amp;gt;</span><span class="kw">&lt;/a&gt;</span>
   $endif$
 <span class="kw">&lt;/div&gt;</span></code></pre></div>
-<h3 id="feed作成">Feed作成</h3>
+<h2 id="feed作成">Feed作成</h2>
 <p>HakyllはRSSとAtomのFeedが作成できるようになっています。HakyllでFeedを作ろうとした時、Feedに載る記事は当然HTMLに変換されていて欲しいのですが、記事のページ全体は必要ありません（ナビゲーションバーとか）。そこで、記事の内容をHTMLに変換したあと、記事のページ全体にする（default.htmlのテンプレートを反映させる）前の状態をsnapshotとして保存しておくことができます。</p>
 <div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell">match <span class="st">&quot;posts/*&quot;</span> <span class="fu">$</span> <span class="kw">do</span>
     route <span class="fu">$</span> setExtension <span class="st">&quot;html&quot;</span>
