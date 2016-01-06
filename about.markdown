@@ -7,7 +7,7 @@ title: About
 
 数学が好きなインフラ系SEです。  
 最近は、Haskellに興味があります。  
-趣味は将棋とフットサルを少々です。  
+趣味はフットサルを少々です。  
 宜しくお願いします。  
 
 <p>
@@ -20,7 +20,9 @@ title: About
 
 </p>
 
-[![Project Euler](https://projecteuler.net/profile/IMOKURI.png)](https://projecteuler.net/)
+[![Project Euler](https://projecteuler.net/profile/IMOKURI.png)](https://projecteuler.net/)  
+フレンドキーはこちらです。  
+`245609_808e319d62ed3023cc7191bd63f0e987`
 
 </article>
 
