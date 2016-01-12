@@ -185,8 +185,10 @@ p {
 /* Links
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
 a {
+  text-decoration: none;
   color: #ff9900; }
 a:hover {
+  text-decoration: none;
   color: #ff6600; }
 
 
@@ -342,11 +344,9 @@ nav ul li {
   box-sizing: border-box; }
 
 nav ul li a {
-    text-decoration: none;
     color: #888; }
 
 nav ul li a:hover {
-    text-decoration: none;
     color: #333; }
 
 /* Code
