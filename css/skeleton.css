@@ -25,6 +25,14 @@
 - Media Queries
 */
 
+@font-face{
+  font-family:"Koku Gothic";
+  src:url("../fonts/font_1_kokugl_1.15_rls-webfont.woff2") format("woff2"),
+      url("../fonts/font_1_kokugl_1.15_rls-webfont.woff") format("woff"),
+      url("../fonts/font_1_kokugl_1.15_rls-webfont.ttf") format("ttf"),
+      url("../fonts/font_1_kokugl_1.15_rls-webfont.eot") format("eot");
+}
+
 .section.header,
 .section.footer,
 .pagination {
@@ -141,7 +149,7 @@ body {
   font-size: 1.7em; /* currently ems cause chrome bug misinterpreting rems on body element */
   line-height: 1.6;
   font-weight: 400;
-  font-family: "Koku Mincho", serif;
+  font-family: "Koku Gothic", sans-serif;
   color: #222; }
 
 
