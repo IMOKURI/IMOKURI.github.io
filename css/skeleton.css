@@ -186,10 +186,10 @@ p {
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
 a {
   text-decoration: none;
-  color: #ff9900; }
+  color: #e76016; }
 a:hover {
   text-decoration: none;
-  color: #ff6600; }
+  color: #bf1717; }
 
 
 /* Buttons
@@ -234,8 +234,8 @@ input[type="submit"].button-primary,
 input[type="reset"].button-primary,
 input[type="button"].button-primary {
   color: #FFF;
-  background-color: #ff9900;
-  border-color: #ff9900; }
+  background-color: #e76016;
+  border-color: #e76016; }
 .button.button-primary:hover,
 button.button-primary:hover,
 input[type="submit"].button-primary:hover,
@@ -247,8 +247,8 @@ input[type="submit"].button-primary:focus,
 input[type="reset"].button-primary:focus,
 input[type="button"].button-primary:focus {
   color: #FFF;
-  background-color: #ff9900;
-  border-color: #ff6600; }
+  background-color: #e76016;
+  border-color: #bf1717; }
 
 
 /* Forms
@@ -294,7 +294,7 @@ input[type="url"]:focus,
 input[type="password"]:focus,
 textarea:focus,
 select:focus {
-  border: 1px solid #ff9900;
+  border: 1px solid #e76016;
   outline: 0; }
 label,
 legend {
