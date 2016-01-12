@@ -234,7 +234,7 @@ input[type="submit"].button-primary,
 input[type="reset"].button-primary,
 input[type="button"].button-primary {
   color: #FFF;
-  background-color: #e76016;
+  background-color: #f29507;
   border-color: #e76016; }
 .button.button-primary:hover,
 button.button-primary:hover,
@@ -247,7 +247,7 @@ input[type="submit"].button-primary:focus,
 input[type="reset"].button-primary:focus,
 input[type="button"].button-primary:focus {
   color: #FFF;
-  background-color: #e76016;
+  background-color: #f29507;
   border-color: #bf1717; }
 
 
