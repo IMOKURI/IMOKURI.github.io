@@ -27,8 +27,8 @@ before_install:
   - git submodule foreach --recursive 'git checkout master; git ls-files | grep -v README | grep -v CNAME | xargs -r git rm'
 
 install:
-  - stack setup
-  - stack build
+  - stack --no-terminal setup
+  - stack --no-terminal build
 
 before_script:
   - git config --global user.name "$GH_NAME"
