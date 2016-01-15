@@ -56,6 +56,7 @@ Github Pagesのレポジトリを結構更新しているのになぁです。</
     <summary type="html"><![CDATA[<p>さて、<a href="/blog/2015/12/how-to-create-blog-with-hakyll-part3.html">前回</a>の続きになります。</p>
 <p>最終回は、シンタックスハイライト＋αで締めくくりたいと思います。</p>
 <p>カスタマイズしたソースは<a href="https://github.com/IMOKURI/hakyll-blog-example">こちら</a>に公開していますので、適宜ご参照ください。</p>
+<!--more-->
 <h3 id="目次">目次</h3>
 <ul>
 <li><a href="/blog/2015/12/how-to-create-blog-with-hakyll-part1.html#テンプレ展開">テンプレ展開</a></li>
@@ -68,7 +69,6 @@ Github Pagesのレポジトリを結構更新しているのになぁです。</
 <li><a href="#ブログ公開">【リンク】github pagesで作ったブログを公開</a></li>
 </ul>
 <p>それでは、さっそくいってみましょう。</p>
-<!--more-->
 <h2 id="シンタックスハイライト">シンタックスハイライト</h2>
 <p>pandocでコンパイルしたhtmlのコードブロックには、色付けのためのclassが付与されていますので、そのclassに合わせた色付けのcssが準備できれば良いことになります。</p>
 <p>今回は外部パッケージの「<a href="https://hackage.haskell.org/package/highlighting-kate">highlighting-kate</a>」を使って簡単に実装します。</p>
@@ -115,6 +115,7 @@ Github Pagesのレポジトリを結構更新しているのになぁです。</
     <summary type="html"><![CDATA[<p>さて、<a href="/blog/2015/12/how-to-create-blog-with-hakyll-part2.html">前回</a>の続きになります。</p>
 <p>今回は、カスタマイズ後半戦です。</p>
 <p>カスタマイズしたソースは<a href="https://github.com/IMOKURI/hakyll-blog-example">こちら</a>に公開していますので、適宜ご参照ください。</p>
+<!--more-->
 <h3 id="目次">目次</h3>
 <ul>
 <li><a href="/blog/2015/12/how-to-create-blog-with-hakyll-part1.html#テンプレ展開">テンプレ展開</a></li>
@@ -127,7 +128,6 @@ Github Pagesのレポジトリを結構更新しているのになぁです。</
 <li><a href="/blog/2015/12/how-to-create-blog-with-hakyll-part4.html#ブログ公開">【リンク】github pagesで作ったブログを公開</a></li>
 </ul>
 <p>それでは、さっそくいってみましょう。</p>
-<!--more-->
 <h2 id="ティーザー">ティーザー</h2>
 <p>ブログでは、ときどき、記事の冒頭部分が見えていて、「続きを読む」的なリンクが付いていることがあります。それもやってみましょう。</p>
 <p>まずは、ブログの記事に、「どこまで見せておくか」のしるしとして「&lt;!--more--&gt;」を入れておきます。</p>
@@ -225,6 +225,7 @@ postCtx tags <span class="fu">=</span>
     <summary type="html"><![CDATA[<p>さて、<a href="/blog/2015/12/how-to-create-blog-with-hakyll-part1.html">前回</a>の続きになります。</p>
 <p>今回は、テンプレートを離れて、いろいろカスタマイズしていきます。</p>
 <p>カスタマイズしたソースは<a href="https://github.com/IMOKURI/hakyll-blog-example">こちら</a>に公開していますので、適宜ご参照ください。</p>
+<!--more-->
 <h3 id="目次">目次</h3>
 <ul>
 <li><a href="/blog/2015/12/how-to-create-blog-with-hakyll-part1.html#テンプレ展開">テンプレ展開</a></li>
@@ -237,7 +238,6 @@ postCtx tags <span class="fu">=</span>
 <li><a href="/blog/2015/12/how-to-create-blog-with-hakyll-part4.html#ブログ公開">【リンク】github pagesで作ったブログを公開</a></li>
 </ul>
 <p>それでは、さっそくいってみましょう。</p>
-<!--more-->
 <h2 id="ページネーション">ページネーション</h2>
 <p>前回確認したテンプレートの中の、「Archives」のページは、過去記事一覧ということで、記事を追加していくと、(たぶん)際限なくリストされていきます。それはそれで気分がいいかもしれませんが、記事の一覧は、ある程度の単位(5個とか10個とか)でページが分割されてほしいものです。それをやってみます。</p>
 <p>まずは、「どんなルールでページネーションをするか」を設定します。</p>
@@ -341,6 +341,7 @@ myFeedConfiguration <span class="fu">=</span> <span class="dt">FeedConfiguration
 <p>このサイトは<a href="http://jaspervdj.be/hakyll/">Hakyll</a>で運営しています。</p>
 <p>少しずつノウハウが溜まってきたのでまとめてみたいと思います。</p>
 <p>Hakyllのチュートリアル的な内容になっています。</p>
+<!--more-->
 <h3 id="目次">目次</h3>
 <ul>
 <li><a href="#テンプレ展開">テンプレ展開</a></li>
@@ -353,7 +354,6 @@ myFeedConfiguration <span class="fu">=</span> <span class="dt">FeedConfiguration
 <li><a href="/blog/2015/12/how-to-create-blog-with-hakyll-part4.html#ブログ公開">【リンク】github pagesで作ったブログを公開</a></li>
 </ul>
 <p>それでは、さっそくいってみましょう。</p>
-<!--more-->
 <h2 id="テンプレ展開">テンプレ展開</h2>
 <p>stackには、hakyll用のテンプレートが準備されていますので、それを使っていきます。</p>
 <p><code>stack new</code> を打つ前に、 「~/.stack/config.yaml」 に以下の様な情報を書いておくとテンプレに載せてくれます。</p>

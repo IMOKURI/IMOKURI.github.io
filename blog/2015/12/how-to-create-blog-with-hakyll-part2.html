@@ -58,6 +58,7 @@ if (window.location.host == host && window.location.protocol != "https:") {
 <p>さて、<a href="../../../blog/2015/12/how-to-create-blog-with-hakyll-part1.html">前回</a>の続きになります。</p>
 <p>今回は、テンプレートを離れて、いろいろカスタマイズしていきます。</p>
 <p>カスタマイズしたソースは<a href="https://github.com/IMOKURI/hakyll-blog-example">こちら</a>に公開していますので、適宜ご参照ください。</p>
+<!--more-->
 <h3 id="目次">目次</h3>
 <ul>
 <li><a href="../../../blog/2015/12/how-to-create-blog-with-hakyll-part1.html#テンプレ展開">テンプレ展開</a></li>
@@ -70,7 +71,6 @@ if (window.location.host == host && window.location.protocol != "https:") {
 <li><a href="../../../blog/2015/12/how-to-create-blog-with-hakyll-part4.html#ブログ公開">【リンク】github pagesで作ったブログを公開</a></li>
 </ul>
 <p>それでは、さっそくいってみましょう。</p>
-<!--more-->
 <h2 id="ページネーション">ページネーション</h2>
 <p>前回確認したテンプレートの中の、「Archives」のページは、過去記事一覧ということで、記事を追加していくと、(たぶん)際限なくリストされていきます。それはそれで気分がいいかもしれませんが、記事の一覧は、ある程度の単位(5個とか10個とか)でページが分割されてほしいものです。それをやってみます。</p>
 <p>まずは、「どんなルールでページネーションをするか」を設定します。</p>
