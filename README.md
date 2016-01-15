@@ -6,7 +6,7 @@ Sources of my website are in "source" branch.
 [![Build Status](https://travis-ci.org/IMOKURI/IMOKURI.github.io.svg?branch=source)](https://travis-ci.org/IMOKURI/IMOKURI.github.io)
 
 
-### Build
+## Build
 
 ~~~
 git clone https://github.com/IMOKURI/IMOKURI.github.io.git
