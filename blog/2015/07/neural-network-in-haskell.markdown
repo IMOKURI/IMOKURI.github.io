@@ -10,6 +10,8 @@ Haskellの[ニューラルネットワーク](https://ja.wikipedia.org/wiki/ニ�
 
 題材は、ニューラルネットワークの例としてよく使用されるXORをシュミレーションしてみたいと思います。
 
+<!--more-->
+
 | Input | Output |
 |-------|--------|
 | (0,0) | 0      |
@@ -17,7 +19,6 @@ Haskellの[ニューラルネットワーク](https://ja.wikipedia.org/wiki/ニ�
 | (1,0) | 1      |
 | (1,1) | 0      |
 
-<!--more-->
 
 ---
 
@@ -120,4 +121,3 @@ n回学習ごとに更新するミニバッチ（minibatch n）が用意され�
 
 今回作成したコードは[こちら](https://github.com/IMOKURI/nn-sample)です。  
 LambdaNetの[こちら](https://github.com/jbarrow/LambdaNet/blob/master/examples/XOR.hs)のコードを参考にしています。
-
