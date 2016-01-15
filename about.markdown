@@ -21,8 +21,6 @@ title: About
 </p>
 
 [![Project Euler](https://projecteuler.net/profile/IMOKURI.png)](https://projecteuler.net/)  
-フレンドキーはこちらです。  
-`245609_808e319d62ed3023cc7191bd63f0e987`
 
 </article>
 
