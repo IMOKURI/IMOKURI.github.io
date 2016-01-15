@@ -369,15 +369,15 @@ pre > code {
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
 th,
 td {
-  padding: 12px 15px;
+  padding: 8px 15px;
   text-align: left;
   border-bottom: 1px solid #E1E1E1; }
 th:first-child,
 td:first-child {
-  padding-left: 0; }
+  padding-left: 5; }
 th:last-child,
 td:last-child {
-  padding-right: 0; }
+  padding-right: 5; }
 
 
 /* Spacing
@@ -449,16 +449,16 @@ there.
 
 
 /* Larger than mobile */
-@media (min-width: 400px) {}
+/*@media (min-width: 400px) {}*/
 
 /* Larger than phablet (also point when grid becomes active) */
-@media (min-width: 550px) {}
+/*@media (min-width: 550px) {}*/
 
 /* Larger than tablet */
-@media (min-width: 750px) {}
+/*@media (min-width: 750px) {}*/
 
 /* Larger than desktop */
-@media (min-width: 1000px) {}
+/*@media (min-width: 1000px) {}*/
 
 /* Larger than Desktop HD */
-@media (min-width: 1200px) {}
+/*@media (min-width: 1200px) {}*/
