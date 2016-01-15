@@ -13,7 +13,7 @@ env:
   global:
     - GH_NAME="Travis on behalf of IMOKURI"
     - secure: "iw7zkk4s3JZoZ9rqL9Fe43TcnGVJ4eTURgIxS2f0swsdpo/zZ9i5tiZ/QrZtRioOLjwwe3TNrJehWQrEv2oMy+By5a4c9NI4gMmCRlps3IGvW8SEFEoelaMqM4HZB/eXPZkhKyqf7LpGz3oC2HAH65u6Z9UfPchjsKJ8QmGTW4w="
-    - secure: "PJdQbveUtenH0lFV5oOOYsBBMwGKEZ7QsnEmtHLyeCb4KNvslA3J7DUn5tBMJa8Zczz7ZiTEuwHPE0CwUZAwht7gOKbnPwMgK+CtB4RcV1rvEvJpCl6y2OuIQ6tP35zZ6Ox6QVAB4yN7+XALeXCLk/9n0yZPQ77rTWBrHvaRxMM="
+    - secure: "EEyVgOpE1zUfNnDnVNGUD2smgwTxYoSNlALQZGmvXDNJhwzkXR0IIfxLEotGIoiiZYVQY6Wq4ZvdfAa7kz7IEiOIughH2doywTQtSGlmVJbFn8XUF+3n/j/yPexFzayCPbIvQ9fv9iZzzmHgsoXEUGTdlGaEhkI8YYHEh+/HiS8="
 
 addons:
   apt:
