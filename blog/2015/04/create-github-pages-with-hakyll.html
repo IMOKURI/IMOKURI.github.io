@@ -220,7 +220,7 @@ _site</code></pre>
     git add --all;
     git status;
     git commit -m <span class="st">&quot;Built by Travis ( build $TRAVIS_BUILD_NUMBER )&quot;</span>;
-    <span class="fu">git push github master:</span>master | grep -v http;
+    <span class="fu">git push github master:</span>master 2&gt;&amp;1 | grep -v http;
     fi</code></pre></div>
 <hr />
 <p>時は来た。。</p>
