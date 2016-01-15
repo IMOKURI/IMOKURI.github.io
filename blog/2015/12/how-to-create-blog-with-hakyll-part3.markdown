@@ -11,6 +11,7 @@ tags: haskell,hakyll,github,github-pages
 
 カスタマイズしたソースは[こちら](https://github.com/IMOKURI/hakyll-blog-example)に公開していますので、適宜ご参照ください。
 
+<!--more-->
 
 ### 目次
 
@@ -25,7 +26,6 @@ tags: haskell,hakyll,github,github-pages
 
 それでは、さっそくいってみましょう。
 
-<!--more-->
 
 ## ティーザー
 
@@ -164,5 +164,3 @@ match "index.html" $ do
 
 
 さて、[次回](/blog/2015/12/how-to-create-blog-with-hakyll-part4.html)、最終回に続きますー。
-
-

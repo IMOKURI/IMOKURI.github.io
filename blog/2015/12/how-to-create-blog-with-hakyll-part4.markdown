@@ -11,6 +11,7 @@ tags: haskell,hakyll,github,github-pages
 
 カスタマイズしたソースは[こちら](https://github.com/IMOKURI/hakyll-blog-example)に公開していますので、適宜ご参照ください。
 
+<!--more-->
 
 ### 目次
 
@@ -25,7 +26,6 @@ tags: haskell,hakyll,github,github-pages
 
 それでは、さっそくいってみましょう。
 
-<!--more-->
 
 ## シンタックスハイライト
 
@@ -91,4 +91,3 @@ Hakyllでこれどうやるの？的なのもコメントに書いても良い�
 [TUTORIAL: USING TEASERS IN HAKYLL](http://jaspervdj.be/hakyll/tutorials/using-teasers-in-hakyll.html)  
 [Add tags to your Hakyll blog](http://javran.github.io/posts/2014-03-01-add-tags-to-your-hakyll-blog.html)  
 [Hakyll tips](http://philopon.github.io/posts/2014/hakyll_tips.html)  
-
