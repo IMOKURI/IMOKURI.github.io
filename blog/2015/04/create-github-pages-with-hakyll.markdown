@@ -353,7 +353,7 @@ after_success:
     git add --all;
     git status;
     git commit -m "Built by Travis ( build $TRAVIS_BUILD_NUMBER )";
-    git push github master:master | grep -v http;
+    git push github master:master 2>&1 | grep -v http;
     fi
 ```
     
