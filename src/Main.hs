@@ -47,10 +47,10 @@ main = hakyllWith hakyllConfig $ do
                then fromFilePath "blog"
                else fromFilePath $ "blog/" ++ show n)
 
-    paginateRules blog $ \pageNum pattern -> do
+    paginateRules blog $ \pageNum patt -> do
         route   $ customRoute rootDirIndex
         compile $ do
-            posts <- recentFirst =<< loadAll pattern
+            posts <- recentFirst =<< loadAll patt
             let blogCtx = constField "title" "Blog"
                        <> listField "posts" (postCtx tags) (return posts)
                        <> paginateContext blog pageNum
@@ -62,10 +62,10 @@ main = hakyllWith hakyllConfig $ do
                 >>= removeIndexHtml
                 >>= relativizeUrls
 
-    tagsRules tags $ \tag pattern -> do
+    tagsRules tags $ \tag patt -> do
         route   idRoute
         compile $ do
-            posts <- recentFirst =<< loadAll pattern
+            posts <- recentFirst =<< loadAll patt
             let tagCtx = constField "title" ("Posts tagged " ++ tag)
                       <> listField "posts" (postCtx tags) (return posts)
                       <> defaultContext
