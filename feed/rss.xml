@@ -12,29 +12,7 @@
     <title>LinuxのいろいろなID</title>
     <link>https://imokuri123.com/blog/2016/01/linux-ids.html</link>
     <description><![CDATA[<p>LinuxのいろいろなIDについてまとめてみますー。</p>
-<!--more-->
-<p><strong>Group ID(GID)</strong> - 全てのグループがGIDを持っています。全てのユーザは少なくとも1つのグループに所属する必要があります。ユーザの所属するメインのグループは/etc/passwdで定義され、それ以外のグループは/etc/groupに記載されます。</p>
-<p><strong>Process ID(PID)</strong> - 全てのプロセス(デーモンも、GUIプロセスも、カーネルも)はプロセスIDを持っています。カーネルは常にPIDが0で、initプロセス(あるいはそれに類するプロセス)がPID 1になります。プロセスが停止すると、PIDは開放され、他のプロセスが同じIDを使えるようになります。</p>
-<p><strong>Thread ID(TID)</strong> - 全てのプロセスがIDを持つのと同じように、全てのスレッドもIDを持ちます。</p>
-<p><strong>Parent Process ID(PPID)</strong> - 全てのプロセスは、親プロセスのPIDと同じ番号を、PPIDとして持ちます。PPIDは、そのプロセスがどの親プロセスから起動されたか特定するのに役立ちます。</p>
-<p><strong>User ID(UID)</strong> - 全てのユーザはUIDを持っています。rootユーザのUIDは常に0です。UIDは/etc/passwdに格納されています。</p>
-<p><strong>Effective User ID(EUID)</strong> - プロセスやユーザが何かオブジェクトにアクセスしたり、作成しようとした時、カーネルは、そのプロセスやユーザがアクションに必要な権限を持っているか、EUIDでチェックします。殆どの場合、EUIDはUIDと同じですが、異なる場合があります。一般ユーザがrootユーザの権限が必要なコマンドを実行しようとした時、(許されていれば、)特別な関数(「sudo」など)を使ってユーザの権限を一時的に、昇格させることができます。ユーザは、ログイン中にUIDを変えることはできませんが、EUIDを変えることはできるのです(許されていれば)。</p>
-<p>UIDはユーザやプロセスを特定させるIDで、EUIDは、権限を特定させるIDです。つまり、UID 0は、rootユーザのことで、EUID 0はrootユーザの権限のことです。ちなみに(なんと)、whoamiコマンドで表示されているのは、UIDに紐づくユーザ名ではなく、EUIDに紐づくユーザ名です。</p>
-<p><strong>Real User ID(RUID)</strong> - リアルユーザIDはEUIDに似ていますが、プロセスへのシグナル送信などに関係しています。例えば、プロセスは、同じRUIDを持つ他のプロセスにのみ、シグナルを送ることができます。ユーザがプログラムを起動した時は、プログラムはユーザと同じRUIDを持ちます。RUIDはUIDと同じ値になるので、リアルユーザIDをと名付けられています。RUIDは変更できません。</p>
-<p>EUIDを、権限を持っているユーザのIDに変更する必要がある場合、RUIDからその情報を取得することがあります。</p>
-<p><strong>Saved/Set User ID(SUID)</strong> - EUIDはRUIDを参照して、一時的に権限を変更することができます。プロセスがたびたび権限を必要とする場合、いちいちRUIDを参照して、権限を変更するのは効率がよくありません。そこで、EUIDはSUIDにIDを保存しておき、後で戻れるようにしておくことができます。デフォルトでは、SUIDはEUIDと同じ値になっていますが、あらかじめSUIDに、別のIDを設定しておくこともできます。</p>
-<p>注釈) Saved User IDとSet User IDは同じものです。</p>
-<p><strong>Real Group ID(RGID)</strong> - リアルグループIDは、役割はリアルユーザIDと同じですが、対象がユーザではなく、グループになります。</p>
-<p><strong>Effective Group ID(EGID)</strong> - EGIDも役割はEUIDと同じで、対象がユーザではなく、グループです。</p>
-<p><strong>Saved/Set Group ID(SGID)</strong> - SGIDも役割は・・・(略)</p>
-<p><strong>Session ID(SID)</strong> - セッションIDはコミュニケーションの目的で、認証されたプロセス同士のみが特定のセッションだけで会話するのに使用できます。これは、ウイルスなどがデータのやりとりを盗むのを防ぐのに役立ちます。この「会話」でやりとりできるのは、この会話のためのセッションIDを持ったプロセスだけです。セッションIDは主に、HTTPセッションで利用されます。</p>
-<p><strong>Process Group ID(PGID)</strong> - プロセスグループIDは、同じグループにまとめられたプロセスたちに与えられるIDです。PGIDは、システムコールのsetsid()を使ってグループを生成・宣言したプロセスのPIDと同じになります。PGIDはグループの一種ですが、GIDの用にファイル(/etc/passwd, /etc/group)で定義・表現はされません。プロセスグループはグループ内のプロセス間のコミュニケーションに必要です。プロセスグループは競合状態や、危険なコミュニケーションによる他の障害なども防ぎます。</p>
-<p><strong>File System User ID(FSUID)</strong> - ファイルシステムの操作をファイルやディレクトリなどに行うときは、EUIDよりFSUIDが使用されます。FSUIDはファイル自身(のパーミッションなど)を変更するのに必要になります。</p>
-<p><strong>Universally Unique ID(UUID)</strong> - UUIDはさまざまな用途に使われる16バイトの数です。例えば、ストレージのユニットのUUIDや、MACアドレスのUUIDとして見たことがあるかもしれません。UUIDは、(ユーザやプログラマーによって書き換えられないかぎり)恒久的で、汎用的な、一意の値を与えるのに必要です。UUIDを生成したいときは、以下のコマンドが便利です。 <code>cat /proc/sys/kernel/random/uuid</code></p>
-<p><strong>Partition ID</strong> - 異なるファイルシステムタイプは、それぞれIDを持っています。このIDはファイルシステムをフォーマットする際に、よく使用されます。例えば、swapパーミッションはpartition ID 82です。しかし全てのファイルシステムが一意のIDを使っているわけではありません。ext4やxfsなどは83です。</p>
-<p><strong>USB ID</strong> - 異なるUSBデバイスもIDを持っています。そのリストは<a href="http://www.linux-usb.org/usb.ids">こちら</a>です。(PCIデバイスなど)他のタイプのハードウェアもそれぞれのIDを持っていますが、それは、それぞれをずらーとここに書いても退屈なので、、ここでは、カッツアイさせていただきます。</p>
-<hr />
-<p>参照：<a href="http://www.linux.org/threads/linux-ids.6027/">Linux IDs</a></p>]]></description>
+]]></description>
     <pubDate>Mon, 18 Jan 2016 10:56:00 UT</pubDate>
     <guid>https://imokuri123.com/blog/2016/01/linux-ids.html</guid>
     <dc:creator>IMOKURI</dc:creator>
@@ -44,25 +22,7 @@
     <link>https://imokuri123.com/blog/2016/01/git-push-output-is-stderr.html</link>
     <description><![CDATA[<p>git pushなどの出力は標準エラー(stderr)であることを最近知りました。。なぜstderrなのか、は過去<a href="http://git.661346.n2.nabble.com/git-push-output-goes-into-stderr-td6758028.html">こちら</a>でも話題となったようです。端的に言うと、「プログラムの実行結果の出力ではなく、実行の過程での出力だから」といった感じかと思います。</p>
 <p>では、それで何がまずいのかですが。</p>
-<!--more-->
-<p>CIツール(Travis CIなど)で、プログラムをビルドして、Githubにpushしたりすることがあります。その際、CIツールがpushできるようにGithubのTokenを使います。そのTokenがあると、そのTokenに許可しているアクセス(レポジトリのmasterへのpushなど)ができるわけです。CIツールのビルドのログは、公開されているものも多いので、Tokenのような情報は、見えないように暗号化したり、grepで表示から除外したりする必要があります。</p>
-<p>CIツールがTokenを使ってpushするためには、以下のように、remoteのURLにTokenを埋め込む必要があります(XXXXXXXXのところ)。</p>
-<ul>
-<li>レポジトリのURL： <code>https://github.com/IMOKURI/IMOKURI.github.io.git</code></li>
-<li>Token付きのURL： <code>https://XXXXXXXXXXXXXXXXXXXX@github.com/IMOKURI/IMOKURI.github.io.git</code></li>
-</ul>
-<p>実際に、CIツールがpushすると、その出力は、以下のようになります。</p>
-<pre><code>Counting objects: 10, done.
-Delta compression using up to 16 threads.
-Compressing objects: 100% (4/4), done.
-Writing objects: 100% (4/4), 397 bytes | 0 bytes/s, done.
-Total 4 (delta 3), reused 0 (delta 0)
-To https://XXXXXXXXXXXXXXXXXXXX@github.com/IMOKURI/IMOKURI.github.io.git
-   58151bd..fa3c03d  master -&gt; master</code></pre>
-<p>見えてます。。Tokenが。。</p>
-<p>ということで、Tokenを隠そうと、 <code>git push origin master | grep -v http</code> のように、うっかり単にgrepをしてしまうと、、除外できません。。git pushの出力はstderrなのです。。</p>
-<p>なので、 <code>git push origin master 2&gt;&amp;1 | grep -v http</code> のような感じでstderrをstdoutに入れてあげましょう。。</p>
-<p>もし、うっかりしてしまった場合は、Tokenの再発行をして、CIツールの設定を更新するのが良さそうです。</p>]]></description>
+]]></description>
     <pubDate>Fri, 15 Jan 2016 21:57:00 UT</pubDate>
     <guid>https://imokuri123.com/blog/2016/01/git-push-output-is-stderr.html</guid>
     <dc:creator>IMOKURI</dc:creator>
@@ -71,15 +31,7 @@ To https://XXXXXXXXXXXXXXXXXXXX@github.com/IMOKURI/IMOKURI.github.io.git
     <title>stackのbuildpackを使って、herokuにHaskellのプログラムをリリースする。</title>
     <link>https://imokuri123.com/blog/2016/01/wai-example-using-buildback-stack.html</link>
     <description><![CDATA[<p>Haskellのプログラムをherokuにリリースしようとして、調べていたところ、<a href="http://qiita.com/eielh/items/e52aeee1419ba611a84d">dockerを使ってリリースする方法</a>が見つかったのですが、なんだかんだでうまく行かず、一旦断念。それはリベンジすることにして、<a href="https://github.com/mfine/heroku-buildpack-stack">buildpackのstack版</a>が見つかったので、それを使って、リリースをしてみました。</p>
-<!--more-->
-<p>準備するものは、通常のstackのプログラム一式と、herokuでの起動プログラムを指定するProcfileです。</p>
-<p>buildpackでデプロイすると、起動プログラムはパスの通っている /app/.local/bin にコピーされるので、Procfileでファイルパスの指定は不要です。</p>
-<p><code>web: &lt;起動プログラム名&gt;</code></p>
-<p>ソースが準備出来たら、以下の要領で、herokuアプリを作成します。</p>
-<p><code>heroku create &lt;アプリ名&gt; --buildpack https://github.com/mfine/heroku-buildpack-stack.git</code></p>
-<p>herokuにpushすると、1回目は依存パッケージを含めたbuildが始まります。2回目以降は、インストール済みのパッケージが使えるので、buildの時間はかなり短縮されます。</p>
-<p><code>git push heroku master</code></p>
-<p>今回作ったレポジトリは<a href="https://github.com/IMOKURI/wai-example-using-buildback-stack">こちら</a>です。</p>]]></description>
+]]></description>
     <pubDate>Tue, 12 Jan 2016 21:00:00 UT</pubDate>
     <guid>https://imokuri123.com/blog/2016/01/wai-example-using-buildback-stack.html</guid>
     <dc:creator>IMOKURI</dc:creator>
@@ -91,16 +43,7 @@ To https://XXXXXXXXXXXXXXXXXXXX@github.com/IMOKURI/IMOKURI.github.io.git
 Github Pagesのレポジトリを結構更新しているのになぁです。</p>
 <p>調べてみると、<a href="https://help.github.com/articles/why-are-my-contributions-not-showing-up-on-my-profile/#commits">草を生やすには、Default branchへの更新でないとダメ</a>と判明。。</p>
 <p>であれば、Github PagesのDefault branchを変えてみたらどうだろうか、をやってみました。</p>
-<!--more-->
-<hr />
-<p>このブログはHakyllを使って、作っています。作り方は、「source」ブランチでHakyllのソースを作って、commit &amp; pushすると、Travis CIがbuildして、「master」ブランチにpushしてくれます。</p>
-<p>そのため、「master」ブランチへの貢献度は、私 0%、Travis CI君 100%、みたいな感じで、Default branchが「master」だとそりゃ草 生えんわ、って感じです。</p>
-<p>もともと、Default branchは、「プルリクなどを受けるベースとなるブランチ」ということで、Hakyllのブログとしては、当然「source」ブランチがデフォルトになって然るべきだろう、ということで、Default branch変更です！</p>
-<p>（個人のブログのソースでプルリクなんて考える必要なかと。）</p>
-<p>（そりゃいっちゃあおしまいだ）</p>
-<p>変更の仕方は簡単で、「Settings」→「Branches」で、「Default branch」を変更すればOKです。</p>
-<p>一応、Travis CIでの自動化に影響がないかは確認しました。</p>
-<p>これで、また、ちょいちょい草が生えるはず。</p>]]></description>
+]]></description>
     <pubDate>Fri, 25 Dec 2015 18:00:00 UT</pubDate>
     <guid>https://imokuri123.com/blog/2015/12/modify-default-branch.html</guid>
     <dc:creator>IMOKURI</dc:creator>
@@ -111,55 +54,7 @@ Github Pagesのレポジトリを結構更新しているのになぁです。</
     <description><![CDATA[<p>さて、<a href="/blog/2015/12/how-to-create-blog-with-hakyll-part3.html">前回</a>の続きになります。</p>
 <p>最終回は、シンタックスハイライト＋αで締めくくりたいと思います。</p>
 <p>カスタマイズしたソースは<a href="https://github.com/IMOKURI/hakyll-blog-example">こちら</a>に公開していますので、適宜ご参照ください。</p>
-<!--more-->
-<h3 id="目次">目次</h3>
-<ul>
-<li><a href="/blog/2015/12/how-to-create-blog-with-hakyll-part1.html#テンプレ展開">テンプレ展開</a></li>
-<li><a href="/blog/2015/12/how-to-create-blog-with-hakyll-part1.html#ページ作成の流れ">ページ作成の流れ</a></li>
-<li><a href="/blog/2015/12/how-to-create-blog-with-hakyll-part2.html#ページネーション">記事一覧を5記事ごとに分割(ページネーション)</a></li>
-<li><a href="/blog/2015/12/how-to-create-blog-with-hakyll-part2.html#feed作成">RSS/Atom Feed作成</a></li>
-<li><a href="/blog/2015/12/how-to-create-blog-with-hakyll-part3.html#ティーザー">「続きを読む」のリンク(ティーザー)</a></li>
-<li><a href="/blog/2015/12/how-to-create-blog-with-hakyll-part3.html#タグ付け記事一覧">タグ付けされた記事一覧</a></li>
-<li><a href="#シンタックスハイライト">シンタックスハイライト</a></li>
-<li><a href="#ブログ公開">【リンク】github pagesで作ったブログを公開</a></li>
-</ul>
-<p>それでは、さっそくいってみましょう。</p>
-<h2 id="シンタックスハイライト">シンタックスハイライト</h2>
-<p>pandocでコンパイルしたhtmlのコードブロックには、色付けのためのclassが付与されていますので、そのclassに合わせた色付けのcssが準備できれば良いことになります。</p>
-<p>今回は外部パッケージの「<a href="https://hackage.haskell.org/package/highlighting-kate">highlighting-kate</a>」を使って簡単に実装します。</p>
-<p>まずは、パッケージをビルドするため、cabalファイルの「build-depends」に「highlighting-kate」を追加しておきましょう。</p>
-<p>highlighting-kateには、いくつかカラーバリエーションが有りますので、お好みを選んで、cssファイルを作成します。</p>
-<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell">create [<span class="st">&quot;css/highlight.css&quot;</span>] <span class="fu">$</span> <span class="kw">do</span>
-    route   idRoute
-    compile <span class="fu">$</span> makeItem (compressCss <span class="fu">$</span> K.styleToCss K.pygments)</code></pre></div>
-<blockquote>
-<p>「K.styleToCss」でお好みのテーマ「K.pygments」をCSSに変換します。<br />
-「compressCss」でCSSをぬかりなく圧縮しておきましょう。 カラーテーマは<a href="https://hackage.haskell.org/package/highlighting-kate-0.6/docs/Text-Highlighting-Kate-Styles.html">こちら</a>に一覧があります。</p>
-</blockquote>
-<p>CSSファイルが出来上がったので、あとはテンプレートで読み込んでおけばOKです。</p>
-<h2 id="ブログ公開">ブログ公開</h2>
-<p>せっかく作ったブログはぜひ公開したいものです。</p>
-<p>そんな時は、Github Pages。(回し者とかではないですが、オススメです)</p>
-<p>Github PagesでHakyllで作ったブログを公開するなら、Travis CIと連携して自動化するのが便利です。<br />
-<a href="http://335g.github.io/posts/2015-08-09-hakyll_travis.html">参考リンク1</a>, <a href="/blog/2015/04/create-github-pages-with-hakyll.html">参考リンク2</a></p>
-<h2 id="デザインについて">デザインについて</h2>
-<p>やっぱりブログやるならかっこいいのがいいですよね（笑</p>
-<p>Hakyllでは、ブログデザインは、頑張らないといけない感じです（汗<br />
-(<a href="http://katychuang.com/hakyll-cssgarden/gallery/">ここ</a>にちょっとテンプレを公開してくれている人もいます)</p>
-<p>とはいえ、流石にゼロから作るのはきついので、フリーのボイラープレートなどを利用するのがいいのかな、と思います。</p>
-<p>Hakyllは苦痛じゃないけど、デザインは苦痛だという方、一緒に頑張りましょう（笑</p>
-<h2 id="コメントについて">コメントについて</h2>
-<p>記事の中でよくわからないとか、もっと説明してほしいとか、はもちろんのこと、</p>
-<p>Hakyllでこれどうやるの？的なのもコメントに書いても良いのかなと思ったりします。</p>
-<p>質問サイトに書くのももちろん良いと思いますが、直接問いかけることができるのがコメント欄に書くメリットですね。</p>
-<p>答えられるかどうかは別問題として。。</p>
-<hr />
-<p><a href="http://yannesposito.com/Scratch/en/blog/Hakyll-setup/">Hakyll setup</a><br />
-<a href="http://dannysu.com/2015/10/29/hakyll-pagination/">Pagination with Hakyll</a><br />
-<a href="http://jaspervdj.be/hakyll/tutorials/05-snapshots-feeds.html">TUTORIAL: SNAPSHOTS, AND HOW TO PRODUCE AN RSS/ATOM FEED</a><br />
-<a href="http://jaspervdj.be/hakyll/tutorials/using-teasers-in-hakyll.html">TUTORIAL: USING TEASERS IN HAKYLL</a><br />
-<a href="http://javran.github.io/posts/2014-03-01-add-tags-to-your-hakyll-blog.html">Add tags to your Hakyll blog</a><br />
-<a href="http://philopon.github.io/posts/2014/hakyll_tips.html">Hakyll tips</a></p>]]></description>
+]]></description>
     <pubDate>Sat, 19 Dec 2015 00:03:00 UT</pubDate>
     <guid>https://imokuri123.com/blog/2015/12/how-to-create-blog-with-hakyll-part4.html</guid>
     <dc:creator>IMOKURI</dc:creator>
@@ -170,106 +65,7 @@ Github Pagesのレポジトリを結構更新しているのになぁです。</
     <description><![CDATA[<p>さて、<a href="/blog/2015/12/how-to-create-blog-with-hakyll-part2.html">前回</a>の続きになります。</p>
 <p>今回は、カスタマイズ後半戦です。</p>
 <p>カスタマイズしたソースは<a href="https://github.com/IMOKURI/hakyll-blog-example">こちら</a>に公開していますので、適宜ご参照ください。</p>
-<!--more-->
-<h3 id="目次">目次</h3>
-<ul>
-<li><a href="/blog/2015/12/how-to-create-blog-with-hakyll-part1.html#テンプレ展開">テンプレ展開</a></li>
-<li><a href="/blog/2015/12/how-to-create-blog-with-hakyll-part1.html#ページ作成の流れ">ページ作成の流れ</a></li>
-<li><a href="/blog/2015/12/how-to-create-blog-with-hakyll-part2.html#ページネーション">記事一覧を5記事ごとに分割(ページネーション)</a></li>
-<li><a href="/blog/2015/12/how-to-create-blog-with-hakyll-part2.html#feed作成">RSS/Atom Feed作成</a></li>
-<li><a href="#ティーザー">「続きを読む」のリンク(ティーザー)</a></li>
-<li><a href="#タグ付け記事一覧">タグ付けされた記事一覧</a></li>
-<li><a href="/blog/2015/12/how-to-create-blog-with-hakyll-part4.html#シンタックスハイライト">シンタックスハイライト</a></li>
-<li><a href="/blog/2015/12/how-to-create-blog-with-hakyll-part4.html#ブログ公開">【リンク】github pagesで作ったブログを公開</a></li>
-</ul>
-<p>それでは、さっそくいってみましょう。</p>
-<h2 id="ティーザー">ティーザー</h2>
-<p>ブログでは、ときどき、記事の冒頭部分が見えていて、「続きを読む」的なリンクが付いていることがあります。それもやってみましょう。</p>
-<p>まずは、ブログの記事に、「どこまで見せておくか」のしるしとして「&lt;!--more--&gt;」を入れておきます。</p>
-<p>ここまでのチュートリアルで、記事の本文は、「$body$」の情報で、埋め込まれていました。ティーザーでは、同じように「&lt;!--more--&gt; までの記事」を「$teaser$」として埋め込むことになります。</p>
-<p>このとき、記事の内容は、前回つかったスナップショットで保存した記事を使います。</p>
-<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="ot">postCtx ::</span> <span class="dt">Context</span> <span class="dt">String</span>
-postCtx <span class="fu">=</span>
-    dateField <span class="st">&quot;date&quot;</span> <span class="st">&quot;%B %e, %Y&quot;</span> <span class="ot">`mappend`</span>
-    teaserField <span class="st">&quot;teaser&quot;</span> <span class="st">&quot;content&quot;</span> <span class="ot">`mappend`</span>
-    defaultContext</code></pre></div>
-<p>埋め込まれた情報を使うには、「テンプレートに反映」ということで、「$teaser$」をテンプレートに埋め込めば、ちょいだし記事の完成です。</p>
-<div class="sourceCode"><pre class="sourceCode html"><code class="sourceCode html"><span class="kw">&lt;ul&gt;</span>
-    $for(posts)$
-        <span class="kw">&lt;li&gt;</span>
-            $title$ - $date$
-            $teaser$...<span class="kw">&lt;a</span><span class="ot"> href=</span><span class="st">&quot;$url$&quot;</span><span class="kw">&gt;</span>(続きを読む)<span class="kw">&lt;/a&gt;</span>
-        <span class="kw">&lt;/li&gt;</span>
-    $endfor$
-<span class="kw">&lt;/ul&gt;</span></code></pre></div>
-<h2 id="タグ付け記事一覧">タグ付け記事一覧</h2>
-<p>記事にどんな情報が載っているか、をタグとしてつけておくのもよくあります。記事にタグをつけつつ、その一覧ページも作ってみましょう。</p>
-<p>付与するタグは、記事の冒頭に書いておきます。</p>
-<div class="sourceCode"><pre class="sourceCode markdown"><code class="sourceCode markdown">---
-title: example post
-tags: example, hakyll
----</code></pre></div>
-<p>続いて、Haskellのソースの方で、タグのルールを設定します。</p>
-<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell">tags <span class="ot">&lt;-</span> buildTags <span class="st">&quot;posts/*&quot;</span> (fromCapture <span class="st">&quot;tags/*.html&quot;</span>)</code></pre></div>
-<blockquote>
-<p>「&quot;posts/*&quot;」にマッチする記事からタグ情報を収集して、<br />
-タグごとのURLは、「tag/*.html」の形にする。<br />
-収集したタグの情報は「tags」に入れておく。</p>
-</blockquote>
-<p>ルールが決まって、タグの情報を収集したので、まずは、記事の方にタグの情報を表示してみましょう。</p>
-<p>例によって、タグの情報を埋め込むことになります。</p>
-<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="ot">postCtx ::</span> <span class="dt">Tags</span> <span class="ot">-&gt;</span> <span class="dt">Context</span> <span class="dt">String</span>
-postCtx tags <span class="fu">=</span>
-    dateField <span class="st">&quot;date&quot;</span> <span class="st">&quot;%B %e, %Y&quot;</span>   <span class="ot">`mappend`</span>
-    teaserField <span class="st">&quot;teaser&quot;</span> <span class="st">&quot;content&quot;</span> <span class="ot">`mappend`</span>
-    tagsField <span class="st">&quot;tags&quot;</span> tags          <span class="ot">`mappend`</span>
-    defaultContext</code></pre></div>
-<p>「tagsField」を使って埋め込みましょう。この時、タグの情報を「postCtx」の引数に指定する必要があるので、注意しましょう。</p>
-<p>埋め込んだ情報を使うためにテンプレートを更新します。</p>
-<div class="sourceCode"><pre class="sourceCode html"><code class="sourceCode html"><span class="kw">&lt;div</span><span class="ot"> class=</span><span class="st">&quot;info&quot;</span><span class="kw">&gt;</span>
-    $if(tags)$
-        Tags: $tags$
-    $endif$
-<span class="kw">&lt;/div&gt;</span></code></pre></div>
-<p>続いて、タグ一覧ページを作りましょう。</p>
-<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell">tagsRules tags <span class="fu">$</span> \tag pattern <span class="ot">-&gt;</span> <span class="kw">do</span>
-    route   idRoute
-    compile <span class="fu">$</span> <span class="kw">do</span>
-        posts <span class="ot">&lt;-</span> recentFirst <span class="fu">=&lt;&lt;</span> loadAll pattern
-        <span class="kw">let</span> tagCtx <span class="fu">=</span>
-                constField <span class="st">&quot;title&quot;</span> (<span class="st">&quot;Posts tagged &quot;</span> <span class="fu">++</span> tag)     <span class="ot">`mappend`</span>
-                listField <span class="st">&quot;posts&quot;</span> (postCtx tags) (return posts) <span class="ot">`mappend`</span>
-                defaultContext
-
-        makeItem <span class="st">&quot;&quot;</span>
-            <span class="fu">&gt;&gt;=</span> loadAndApplyTemplate <span class="st">&quot;templates/tag.html&quot;</span> tagCtx
-            <span class="fu">&gt;&gt;=</span> loadAndApplyTemplate <span class="st">&quot;templates/default.html&quot;</span> tagCtx
-            <span class="fu">&gt;&gt;=</span> relativizeUrls</code></pre></div>
-<p>・・・ページネーションのにそっくりですね♪</p>
-<p>ということで、残りは、「tag.html」のテンプレートの準備です。 対象となる記事をリストすればよいので、こんな感じで十分ですね。</p>
-<div class="sourceCode"><pre class="sourceCode html"><code class="sourceCode html">$partial(&quot;templates/post-list.html&quot;)$</code></pre></div>
-<p>おまけで、タグといえば、タグのリストや、タグクラウドも欲しくなります。作り方はほぼ同じなので、ここでは、タグクラウドを作って、トップページに貼り付けておきたいと思います。</p>
-<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell">match <span class="st">&quot;index.html&quot;</span> <span class="fu">$</span> <span class="kw">do</span>
-    route   idRoute
-    compile <span class="fu">$</span> <span class="kw">do</span>
-        posts <span class="ot">&lt;-</span> fmap (take <span class="dv">3</span>) <span class="fu">.</span> recentFirst <span class="fu">=&lt;&lt;</span> loadAll <span class="st">&quot;posts/*&quot;</span>
-        tagCloud <span class="ot">&lt;-</span> renderTagCloud <span class="fl">80.0</span> <span class="fl">120.0</span> tags
-        <span class="kw">let</span> indexCtx <span class="fu">=</span>
-                listField <span class="st">&quot;posts&quot;</span> (postCtx tags) (return posts) <span class="ot">`mappend`</span>
-                constField <span class="st">&quot;title&quot;</span> <span class="st">&quot;Home&quot;</span>                       <span class="ot">`mappend`</span>
-                constField <span class="st">&quot;tagcloud&quot;</span> tagCloud                  <span class="ot">`mappend`</span>
-                defaultContext
-
-        getResourceBody
-            <span class="fu">&gt;&gt;=</span> applyAsTemplate indexCtx
-            <span class="fu">&gt;&gt;=</span> loadAndApplyTemplate <span class="st">&quot;templates/default.html&quot;</span> indexCtx
-            <span class="fu">&gt;&gt;=</span> relativizeUrls</code></pre></div>
-<blockquote>
-<p>タグの情報を読み込み、最小のフォントが80%、最大が120%で、タグクラウドの情報を生成します。 (tagCloud &lt;- renderTagCloud 80.0 120.0 tags)<br />
-生成したタグクラウドの情報を「tagcloud」の名前で埋め込んでおきます。 (constField &quot;tagcloud&quot; tagCloud)</p>
-</blockquote>
-<p>あとはタグクラウドを表示したい場所に、「$tagcloud$」を入れておきましょう。</p>
-<p>さて、<a href="/blog/2015/12/how-to-create-blog-with-hakyll-part4.html">次回</a>、最終回に続きますー。</p>]]></description>
+]]></description>
     <pubDate>Sat, 19 Dec 2015 00:02:00 UT</pubDate>
     <guid>https://imokuri123.com/blog/2015/12/how-to-create-blog-with-hakyll-part3.html</guid>
     <dc:creator>IMOKURI</dc:creator>
@@ -280,111 +76,7 @@ postCtx tags <span class="fu">=</span>
     <description><![CDATA[<p>さて、<a href="/blog/2015/12/how-to-create-blog-with-hakyll-part1.html">前回</a>の続きになります。</p>
 <p>今回は、テンプレートを離れて、いろいろカスタマイズしていきます。</p>
 <p>カスタマイズしたソースは<a href="https://github.com/IMOKURI/hakyll-blog-example">こちら</a>に公開していますので、適宜ご参照ください。</p>
-<!--more-->
-<h3 id="目次">目次</h3>
-<ul>
-<li><a href="/blog/2015/12/how-to-create-blog-with-hakyll-part1.html#テンプレ展開">テンプレ展開</a></li>
-<li><a href="/blog/2015/12/how-to-create-blog-with-hakyll-part1.html#ページ作成の流れ">ページ作成の流れ</a></li>
-<li><a href="#ページネーション">記事一覧を5記事ごとに分割(ページネーション)</a></li>
-<li><a href="#feed作成">RSS/Atom Feed作成</a></li>
-<li><a href="/blog/2015/12/how-to-create-blog-with-hakyll-part3.html#ティーザー">「続きを読む」のリンク(ティーザー)</a></li>
-<li><a href="/blog/2015/12/how-to-create-blog-with-hakyll-part3.html#タグ付け記事一覧">タグ付けされた記事一覧</a></li>
-<li><a href="/blog/2015/12/how-to-create-blog-with-hakyll-part4.html#シンタックスハイライト">シンタックスハイライト</a></li>
-<li><a href="/blog/2015/12/how-to-create-blog-with-hakyll-part4.html#ブログ公開">【リンク】github pagesで作ったブログを公開</a></li>
-</ul>
-<p>それでは、さっそくいってみましょう。</p>
-<h2 id="ページネーション">ページネーション</h2>
-<p>前回確認したテンプレートの中の、「Archives」のページは、過去記事一覧ということで、記事を追加していくと、(たぶん)際限なくリストされていきます。それはそれで気分がいいかもしれませんが、記事の一覧は、ある程度の単位(5個とか10個とか)でページが分割されてほしいものです。それをやってみます。</p>
-<p>まずは、「どんなルールでページネーションをするか」を設定します。</p>
-<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell">archive <span class="ot">&lt;-</span> buildPaginateWith
-    (sortRecentFirst <span class="fu">&gt;=&gt;</span> return <span class="fu">.</span> paginateEvery <span class="dv">5</span>)
-    <span class="st">&quot;posts/*&quot;</span>
-    (\n <span class="ot">-&gt;</span> <span class="kw">if</span> n <span class="fu">==</span> <span class="dv">1</span>
-           <span class="kw">then</span> fromFilePath <span class="st">&quot;archive.html&quot;</span>
-           <span class="kw">else</span> fromFilePath <span class="fu">$</span> <span class="st">&quot;archive/&quot;</span> <span class="fu">++</span> show n <span class="fu">++</span> <span class="st">&quot;.html&quot;</span>)</code></pre></div>
-<p>こちらのソースは以下の様な意味になります。</p>
-<blockquote>
-<p>記事が新しい順に、5記事で1ページにする。 ((sortRecentFirst &gt;=&gt; return . paginateEvery 5))<br />
-ページネーションの対象になるのは &quot;posts/*&quot; にマッチする記事。<br />
-ページネーションの1ページ目のURLは http://user.github.io/archive.html<br />
-2ページ目以降のURLは http://user.github.io/archive/ページ番号.html</p>
-</blockquote>
-<p>ルールが決まったので、何ページ目にどの記事が入るか、が決まりました。 次に、ページネーションのページごとに、実際のページを組み立てていきます。</p>
-<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell">paginateRules archive <span class="fu">$</span> \pageNum pattern <span class="ot">-&gt;</span> <span class="kw">do</span>
-    route   idRoute
-    compile <span class="fu">$</span> <span class="kw">do</span>
-        posts <span class="ot">&lt;-</span> recentFirst <span class="fu">=&lt;&lt;</span> loadAll pattern
-        <span class="kw">let</span> archiveCtx <span class="fu">=</span>
-                constField <span class="st">&quot;title&quot;</span> <span class="st">&quot;Archives&quot;</span>            <span class="ot">`mappend`</span>
-                listField <span class="st">&quot;posts&quot;</span> postCtx (return posts) <span class="ot">`mappend`</span>
-                paginateContext archive pageNum          <span class="ot">`mappend`</span>
-                defaultContext
-
-        makeItem <span class="st">&quot;&quot;</span>
-            <span class="fu">&gt;&gt;=</span> loadAndApplyTemplate <span class="st">&quot;templates/archive.html&quot;</span> archiveCtx
-            <span class="fu">&gt;&gt;=</span> loadAndApplyTemplate <span class="st">&quot;templates/default.html&quot;</span> archiveCtx
-            <span class="fu">&gt;&gt;=</span> relativizeUrls</code></pre></div>
-<blockquote>
-<p>ページネーションのページ番号は 「pageNum」、対象となる記事は 「pattern」に入ります。<br />
-「paginateContext」では、ページネーションに必要な「$nextPageNum$」や、「$nextPageUrl$」などの情報が埋め込まれます。その他の埋め込まれる情報は<a href="https://github.com/jaspervdj/hakyll/blob/master/src/Hakyll/Web/Paginate.hs#L99-L109">こちら</a>を参照ください。</p>
-</blockquote>
-<p>組み立てたページを反映させるテンプレート 「archive.html」で、埋め込んだ情報を書いていきましょう。具体的には、各ページネーションのページに、「次のページ」や「最後のページ」のリンクを作っていきます。このとき、「最後のページ」には、その次のページはありませんので、「次のページ」が存在するときのみ、リンクを作成する、となるようif文を使っていきます。</p>
-<div class="sourceCode"><pre class="sourceCode html"><code class="sourceCode html"><span class="kw">&lt;div</span><span class="ot"> class=</span><span class="st">&quot;pagination&quot;</span><span class="kw">&gt;</span>
-  $if(firstPageUrl)$
-    <span class="kw">&lt;a</span><span class="ot"> href=</span><span class="st">&quot;$firstPageUrl$&quot;</span><span class="kw">&gt;</span><span class="dv">&amp;lt;&amp;lt;&amp;nbsp;</span>First<span class="kw">&lt;/a&gt;</span><span class="dv">&amp;nbsp;</span>
-  $endif$
-  $if(previousPageUrl)$
-    <span class="kw">&lt;a</span><span class="ot"> href=</span><span class="st">&quot;$previousPageUrl$&quot;</span><span class="kw">&gt;</span><span class="dv">&amp;lt;&amp;nbsp;</span>Previous<span class="kw">&lt;/a&gt;</span><span class="dv">&amp;nbsp;</span>
-  $endif$
-  <span class="dv">&amp;mdash;</span>
-  $currentPageNum$ of $numPages$
-  <span class="dv">&amp;mdash;</span>
-  $if(nextPageUrl)$
-    <span class="dv">&amp;nbsp;</span><span class="kw">&lt;a</span><span class="ot"> href=</span><span class="st">&quot;$nextPageUrl$&quot;</span><span class="kw">&gt;</span>Next<span class="dv">&amp;nbsp;&amp;gt;</span><span class="kw">&lt;/a&gt;</span>
-  $endif$
-  $if(lastPageUrl)$
-    <span class="dv">&amp;nbsp;</span><span class="kw">&lt;a</span><span class="ot"> href=</span><span class="st">&quot;$lastPageUrl$&quot;</span><span class="kw">&gt;</span>Last<span class="dv">&amp;nbsp;&amp;gt;&amp;gt;</span><span class="kw">&lt;/a&gt;</span>
-  $endif$
-<span class="kw">&lt;/div&gt;</span></code></pre></div>
-<h2 id="feed作成">Feed作成</h2>
-<p>HakyllはRSSとAtomのFeedが作成できるようになっています。HakyllでFeedを作ろうとした時、Feedに載る記事は当然HTMLに変換されていて欲しいのですが、記事のページ全体は必要ありません（ナビゲーションバーとか）。そこで、記事の内容をHTMLに変換したあと、記事のページ全体にする（default.htmlのテンプレートを反映させる）前の状態をsnapshotとして保存しておくことができます。</p>
-<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell">match <span class="st">&quot;posts/*&quot;</span> <span class="fu">$</span> <span class="kw">do</span>
-    route <span class="fu">$</span> setExtension <span class="st">&quot;html&quot;</span>
-    compile <span class="fu">$</span> pandocCompiler
-        <span class="fu">&gt;&gt;=</span> loadAndApplyTemplate <span class="st">&quot;templates/post.html&quot;</span>    postCtx
-        <span class="fu">&gt;&gt;=</span> saveSnapshot <span class="st">&quot;content&quot;</span>
-        <span class="fu">&gt;&gt;=</span> loadAndApplyTemplate <span class="st">&quot;templates/default.html&quot;</span> postCtx
-        <span class="fu">&gt;&gt;=</span> relativizeUrls</code></pre></div>
-<blockquote>
-<p>「&quot;posts/*&quot;」にマッチするドキュメントを、pandocでHTMLに変換し、「post.html」のテンプレートを反映した状態の記事を、<br />
-「content」という名前で保存して、そっとしておく。 (saveSnapshot &quot;content&quot;)<br />
-その後の処理は継続して、続けていく。</p>
-</blockquote>
-<p>という感じで、保存したスナップショットをFeedを作るときに利用します。</p>
-<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell">create [<span class="st">&quot;atom.xml&quot;</span>] <span class="fu">$</span> <span class="kw">do</span>
-    route   idRoute
-    compile <span class="fu">$</span> <span class="kw">do</span>
-        <span class="kw">let</span> feedCtx <span class="fu">=</span>
-                postCtx                 <span class="ot">`mappend`</span>
-                bodyField <span class="st">&quot;description&quot;</span>
-        posts <span class="ot">&lt;-</span> fmap (take <span class="dv">10</span>) <span class="fu">.</span> recentFirst <span class="fu">=&lt;&lt;</span> loadAllSnapshots <span class="st">&quot;posts/*&quot;</span> <span class="st">&quot;content&quot;</span>
-        renderAtom myFeedConfiguration feedCtx posts</code></pre></div>
-<blockquote>
-<p>「loadAllSnapshots」で、「&quot;content&quot;」に保存したsnapshotを読み込みます。 (loadAllSnapshots &quot;posts/*&quot; &quot;content&quot;)<br />
-読み込んだ記事を、新しい順に前から10件取得します。 (fmap (take 10) . recentFirst)<br />
-取得した10件でAtomフィードのページを作ります。 (renderAtom myFeedConfiguration feedCtx posts)</p>
-</blockquote>
-<p>最後に、「myFeedConfiguration」を準備しておきます。</p>
-<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="ot">myFeedConfiguration ::</span> <span class="dt">FeedConfiguration</span>
-myFeedConfiguration <span class="fu">=</span> <span class="dt">FeedConfiguration</span>
-    { feedTitle       <span class="fu">=</span> <span class="st">&quot;My Hakyll Blog&quot;</span>
-    , feedDescription <span class="fu">=</span> <span class="st">&quot;Hakyllでブログを作る&quot;</span>
-    , feedAuthorName  <span class="fu">=</span> <span class="st">&quot;username&quot;</span>
-    , feedAuthorEmail <span class="fu">=</span> <span class="st">&quot;test@example.com&quot;</span>
-    , feedRoot        <span class="fu">=</span> <span class="st">&quot;http://user.github.io&quot;</span>
-    }</code></pre></div>
-<p>ということで、だいぶブログっぽくなってきました。</p>
-<p><a href="/blog/2015/12/how-to-create-blog-with-hakyll-part3.html">次回</a>は、カスタマイズ後半戦です。</p>]]></description>
+]]></description>
     <pubDate>Sat, 19 Dec 2015 00:01:00 UT</pubDate>
     <guid>https://imokuri123.com/blog/2015/12/how-to-create-blog-with-hakyll-part2.html</guid>
     <dc:creator>IMOKURI</dc:creator>
@@ -396,117 +88,7 @@ myFeedConfiguration <span class="fu">=</span> <span class="dt">FeedConfiguration
 <p>このサイトは<a href="http://jaspervdj.be/hakyll/">Hakyll</a>で運営しています。</p>
 <p>少しずつノウハウが溜まってきたのでまとめてみたいと思います。</p>
 <p>Hakyllのチュートリアル的な内容になっています。</p>
-<!--more-->
-<h3 id="目次">目次</h3>
-<ul>
-<li><a href="#テンプレ展開">テンプレ展開</a></li>
-<li><a href="#ページ作成の流れ">ページ作成の流れ</a></li>
-<li><a href="/blog/2015/12/how-to-create-blog-with-hakyll-part2.html#ページネーション">記事一覧を5記事ごとに分割(ページネーション)</a></li>
-<li><a href="/blog/2015/12/how-to-create-blog-with-hakyll-part2.html#feed作成">RSS/Atom Feed作成</a></li>
-<li><a href="/blog/2015/12/how-to-create-blog-with-hakyll-part3.html#ティーザー">「続きを読む」のリンク(ティーザー)</a></li>
-<li><a href="/blog/2015/12/how-to-create-blog-with-hakyll-part3.html#タグ付け記事一覧">タグ付けされた記事一覧</a></li>
-<li><a href="/blog/2015/12/how-to-create-blog-with-hakyll-part4.html#シンタックスハイライト">シンタックスハイライト</a></li>
-<li><a href="/blog/2015/12/how-to-create-blog-with-hakyll-part4.html#ブログ公開">【リンク】github pagesで作ったブログを公開</a></li>
-</ul>
-<p>それでは、さっそくいってみましょう。</p>
-<h2 id="テンプレ展開">テンプレ展開</h2>
-<p>stackには、hakyll用のテンプレートが準備されていますので、それを使っていきます。</p>
-<p><code>stack new</code> を打つ前に、 「~/.stack/config.yaml」 に以下の様な情報を書いておくとテンプレに載せてくれます。</p>
-<div class="sourceCode"><pre class="sourceCode yaml"><code class="sourceCode yaml"><span class="fu">templates:</span>
-  <span class="fu">params:</span>
-    <span class="fu">author-email:</span> &lt; mail address &gt;
-    <span class="fu">author-name:</span> &lt; your name &gt;
-    <span class="fu">copyright:</span> 2015, &lt; your name &gt;
-    <span class="fu">github-username:</span> &lt; github user name &gt;
-    <span class="fu">category:</span> Web <span class="co"># なんでも良いです。</span></code></pre></div>
-<p>テンプレを展開してみましょう。</p>
-<p><code>stack new &lt;プロジェクト名&gt; hakyll-template</code></p>
-<p>プロジェクト名は何でも良いので、おためしだったら 「myblog」 とか、github pagesで公開するなら 「githubのユーザ名-github-io」 みたいなのが良いかと思います。ここでは、 「user-github-io」 として進めていきます。</p>
-<p>テンプレを展開したら、cabalファイル 「user-github-io.cabal」 内の 「executable」 の名称を 「site」 などタイピングしやすい単語にしておきましょう。<br />
-webページをビルドするときに実行するので、あとあとハッピーです。ここでは、 「site」 に変更したとして進めていきます。</p>
-<p><code>stack build</code> でhakyllをセットアップしておきましょう。</p>
-<p>以降、Haskellのソースを修正した時は <code>stack build</code> をして、</p>
-<p><code>stack exec site build</code> (2回目以降は、 「rebuild」 )で、webページをビルドして、</p>
-<p><code>stack exec site watch</code> で、テスト用のサーバが、 http://127.0.0.1:8000 で立ち上がります。</p>
-<h2 id="ページ作成の流れ">ページ作成の流れ</h2>
-<p>Hakyllで、webページを作るときは、</p>
-<ol style="list-style-type: decimal">
-<li>markdownなどで、記事を書き、</li>
-<li>それが、htmlに変換されて、</li>
-<li>テンプレートに埋め込まれる。</li>
-</ol>
-<p>のが基本イメージです。</p>
-<p><img src="/images/2015-12-hakyll-page-structure.png" alt="Hakyll page structure" /><br />
- 「どの記事と、どのテンプレートをあわせて、webサイトのどこに表示する」とか、「この記事にこの情報を埋め込む」とか、をHaskellのプログラム(デフォルトは 「site.hs」 )で作っていきます。</p>
-<p>たとえば、 「site.hs」 をのぞいてみると、以下の様なソースがあります。</p>
-<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell">match <span class="st">&quot;images/*&quot;</span> <span class="fu">$</span> <span class="kw">do</span>
-    route   idRoute
-    compile copyFileCompiler</code></pre></div>
-<p>これは、</p>
-<blockquote>
-<p>「images/*」 にマッチするファイルを、<br />
-webサイトの同じパス 「http://user.github.io/images/*」 に (idRoute)<br />
-そのままコピーする。 (copyFileCompiler)</p>
-</blockquote>
-<p>ということです。</p>
-<p>はたまた、以下の様なソースは、</p>
-<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell">match (fromList [<span class="st">&quot;about.rst&quot;</span>, <span class="st">&quot;contact.markdown&quot;</span>]) <span class="fu">$</span> <span class="kw">do</span>
-    route   <span class="fu">$</span> setExtension <span class="st">&quot;html&quot;</span>
-    compile <span class="fu">$</span> pandocCompiler
-        <span class="fu">&gt;&gt;=</span> loadAndApplyTemplate <span class="st">&quot;templates/default.html&quot;</span> defaultContext
-        <span class="fu">&gt;&gt;=</span> relativizeUrls</code></pre></div>
-<blockquote>
-<p>「abount.rst」 と 「contact.markdown」 を、<br />
-拡張子を 「html」 に変換して、 (setExtension &quot;html&quot;)<br />
-中身は、pandocでhtmlに変換して、 (pandocCompiler)<br />
-「default.html」 のテンプレートを適用して、 (loadAndApplyTemplate &quot;templates/default.html&quot; defaultContext)<br />
-記事の中のURLを相対パスに書き換える。 (relativizeUrls)</p>
-</blockquote>
-<p>となります。</p>
-<blockquote>
-<p>テンプレートを適用するときの 「defaultContext」 には、本文やタイトルを表す 「$body$」 や 「$title$」 などの情報が埋め込まれるようになっています。</p>
-</blockquote>
-<p>追加で、情報を埋め込むときは、 Context に埋め込む情報をまとめて、テンプレートに合わせる、というやり方になります。</p>
-<p>例えば、以下は、 「defaultContext」 の情報に、「ブログ記事の日時」の情報を(ファイル名などから)抽出して、追加しています。すると、テンプレート内の 「$date$」 がブログ記事の日時の情報に変換されます。</p>
-<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="ot">postCtx ::</span> <span class="dt">Context</span> <span class="dt">String</span>
-postCtx <span class="fu">=</span>
-    dateField <span class="st">&quot;date&quot;</span> <span class="st">&quot;%B %e, %Y&quot;</span> <span class="ot">`mappend`</span>
-    defaultContext</code></pre></div>
-<p>他にも、複数の記事をまとめて、新たに一覧のページを作ることもできます。</p>
-<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell">create [<span class="st">&quot;archive.html&quot;</span>] <span class="fu">$</span> <span class="kw">do</span>
-    route idRoute
-    compile <span class="fu">$</span> <span class="kw">do</span>
-        posts <span class="ot">&lt;-</span> recentFirst <span class="fu">=&lt;&lt;</span> loadAll <span class="st">&quot;posts/*&quot;</span>
-        <span class="kw">let</span> archiveCtx <span class="fu">=</span>
-                listField <span class="st">&quot;posts&quot;</span> postCtx (return posts) <span class="ot">`mappend`</span>
-                constField <span class="st">&quot;title&quot;</span> <span class="st">&quot;Archives&quot;</span>            <span class="ot">`mappend`</span>
-                defaultContext
-
-        makeItem <span class="st">&quot;&quot;</span>
-            <span class="fu">&gt;&gt;=</span> loadAndApplyTemplate <span class="st">&quot;templates/archive.html&quot;</span> archiveCtx
-            <span class="fu">&gt;&gt;=</span> loadAndApplyTemplate <span class="st">&quot;templates/default.html&quot;</span> archiveCtx
-            <span class="fu">&gt;&gt;=</span> relativizeUrls</code></pre></div>
-<p>こちらは、次のようになります。</p>
-<blockquote>
-<p>「archive.html」 というページを以下の通り作ります。(一部省略)<br />
-「posts/」 配下の記事を全て読み込んで、日付が新しい順に並べて 「posts」 に格納。 (posts &lt;- recentFirst =&lt;&lt; loadAll &quot;posts/*&quot;)<br />
-記事の情報を 「$posts$」 として使えるよう情報を埋め込み。 (listField &quot;posts&quot; postCtx (return posts))<br />
-「archive.html」 と 「default.html」 のテンプレートを反映させる。</p>
-</blockquote>
-<p>テンプレートの方は、どうなっているかというと、 「archive.html」 では、 「<span class="math inline">$partial(&quot;templates/post-list.html&quot;)$</span>」 となっていて、これは、 「post-list.html」 の内容を埋め込むということなので、</p>
-<p>「post-list.html」 の方を見ると、以下のようになっていて、</p>
-<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="fu">$</span>for(posts)<span class="fu">$</span>
-    <span class="fu">&lt;</span>li<span class="fu">&gt;</span>
-        <span class="fu">&lt;</span>a href<span class="fu">=</span><span class="st">&quot;$url$&quot;</span><span class="fu">&gt;$</span>title<span class="fu">$&lt;/</span>a<span class="fu">&gt;</span> <span class="fu">-</span> <span class="fu">$</span>date<span class="fu">$</span>
-    <span class="fu">&lt;/</span>li<span class="fu">&gt;</span>
-<span class="fu">$</span>endfor<span class="fu">$</span></code></pre></div>
-<blockquote>
-<p>「$posts$」 に埋め込まれた記事の情報分繰り返す。 ($for(posts)$)</p>
-</blockquote>
-<p>という使い方ができるようになっています。</p>
-<p>それぞれの関数がどんな役割をしているか、を確認するには、<a href="https://hackage.haskell.org/package/hakyll-4.7.4.0/docs/doc-index-All.html">HackageのIndexのページ</a>で検索するのが、便利です。</p>
-<p>さて、ここまでで、デフォルトのテンプレートの中身がだいたい把握できたかと思います。<a href="/blog/2015/12/how-to-create-blog-with-hakyll-part2.html">次の記事</a>では、脱テンプレートということで、いろいろカスタマイズしていきたいと思います。</p>
-<p>よくわからないところなどあれば、コメントいただければと思います。</p>]]></description>
+]]></description>
     <pubDate>Sat, 19 Dec 2015 00:00:00 UT</pubDate>
     <guid>https://imokuri123.com/blog/2015/12/how-to-create-blog-with-hakyll-part1.html</guid>
     <dc:creator>IMOKURI</dc:creator>
@@ -523,43 +105,7 @@ postCtx <span class="fu">=</span>
 <li>Atomのパッケージのmarkdown-writer</li>
 </ul>
 <p>特に、markdown-writerがそこそこ使えそうなので、さわってみました。</p>
-<!--more-->
-<p>Github Desktopはインストールして、起動して、github pages用のレポジトリをクローンしておきます。（雑）</p>
-<p>Atomもインストールして、起動して、お好みのパッケージとmarkdown-writerを入れておきます。（ry</p>
-<h3 id="markdown-writerの設定">markdown-writerの設定</h3>
-<p>ここからが本題です。</p>
-<p>markdown-writerでブログを書きやすくするため、各設定を入れていきます。</p>
-<p>まず、 <code>Site Local Directory</code> にクローンしたレポジトリのディレクトリを入れます。</p>
-<p>Windowsの場合、<code>C:\Users\&lt;ユーザ名&gt;\Documents\GitHub\&lt;レポジトリ名&gt;\</code> みたいな感じになるかと思います。</p>
-<p>デフォルトのファイルパスは、スラッシュ(/)区切りで書いてありますが、ここはWindowsらしくバックスラッシュ(\)でOKです。</p>
-<p>続いて、 <code>Site Drafts Directory</code> や <code>Site Posts Directory</code> に上記のディレクトリからの相対パスを入れます。</p>
-<p><code>drafts\</code> や <code>{year}\{month}\</code> のような感じです。</p>
-<p><code>New Draft File Name</code> や <code>New Post File Name</code> も好みに合わせて変えておきます。</p>
-<h3 id="記事を書く">記事を書く</h3>
-<p>基本的な設定は、ひとまずこのくらいで実際に記事を書いてみます。</p>
-<p>Atomで、コマンドパレット(Ctrl+Shift+P)を開き、 <code>new draft</code>！で、記事のタイトルなどを入力すると、先ほどの下書き用ディレクトリに、ファイルが出来上がります。</p>
-<p>最初に挿入されるテンプレが気に入らなければ、[File]→[Open Your Config]で、以下の様なブロックを追加すれば、変更できます。</p>
-<pre><code>  &quot;markdown-writer&quot;:
-    frontMatter: &quot;&quot;&quot;
-    ---
-    date: &lt;date&gt;
-    slug: &lt;title&gt;
-    title: title in japanese
-    categories: category
-    tags: aaa,bbb,ccc
-    ---
-
-
-    &lt;!--more--&gt;
-    &quot;&quot;&quot;</code></pre>
-<p>記事を書くにあたっても、markdown-writerには、markdownを書くのに便利なコマンドが用意されているので、コマンドパレットを開いて、ゴニョゴニョ書いていくと、結構スイスイかけます。</p>
-<h3 id="公開ディレクトリに移す">公開ディレクトリに移す</h3>
-<p>わざわざ、エクスプローラーを開いて移動する必要はありません。</p>
-<p>大活躍のコマンドパレットで <code>publish draft</code>！で、先ほどの下書きディレクトリから、公開ディレクトリに移動してくれます。</p>
-<p>あとは、Github Desktopで、commitして、syncすればOKです。</p>
-<p>注意点として、文字コードをUTF-8にしておかないと、GitHub Desktopで文字化けてしまいます。</p>
-<p>Windows環境だと、普段はSJISで書いている人も多いと思いますので、記事を書き始める前に、AtomのワークスペースをUTF-8にしてくださいませ。(ステータスバーの右下の方をクリック。もしくは[Ctrl+Shift+U]からのUTF-8)</p>
-<p>快適なブログ書きを～</p>]]></description>
+]]></description>
     <pubDate>Tue, 27 Oct 2015 00:00:00 UT</pubDate>
     <guid>https://imokuri123.com/blog/2015/10/write-blog-with-atom-and-github-desktop.html</guid>
     <dc:creator>IMOKURI</dc:creator>
@@ -569,18 +115,7 @@ postCtx <span class="fu">=</span>
     <link>https://imokuri123.com/blog/2015/10/upgrade-fedora-using-dnf.html</link>
     <description><![CDATA[<p>Fedora 23から DNF を使って、Fedoraをアップグレードするのが<a href="https://fedoraproject.org/wiki/DNF_system_upgrade">推奨</a>となるようですので、早速試してみたいと思います。</p>
 <p>Fedora 23はこの記事を書いている時点ではベータ版ですが、DNFでのアップグレードができました。</p>
-<!--more-->
-<h3 id="まずはアップグレードに必要なパッケージをインストールします">まずは、アップグレードに必要なパッケージをインストールします。</h3>
-<pre><code>sudo dnf install dnf-plugin-system-upgrade --enablerepo=updates-testing</code></pre>
-<h3 id="続いてアップグレードしたいバージョン今回はfedora-23のパッケージをダウンロードします">続いて、アップグレードしたいバージョン(今回はFedora 23)のパッケージをダウンロードします。</h3>
-<pre><code>sudo dnf system-upgrade download --releasever=23</code></pre>
-<p>私の環境では、1600パッケージ（1.2GB！）ほどがダウンロードの対象となりました。</p>
-<h3 id="アップグレードします">アップグレードします！</h3>
-<pre><code>sudo dnf system-upgrade reboot</code></pre>
-<p>OSが再起動して、起動中に先ほどダウンロードしたパッケージがインストールされていきます。所要時間20分ほどでしょうか。</p>
-<h3 id="無事アップグレード完了">無事、アップグレード完了</h3>
-<pre><code>$ cat /etc/fedora-release
-Fedora release 23 (Twenty Three)</code></pre>]]></description>
+]]></description>
     <pubDate>Mon, 26 Oct 2015 00:00:00 UT</pubDate>
     <guid>https://imokuri123.com/blog/2015/10/upgrade-fedora-using-dnf.html</guid>
     <dc:creator>IMOKURI</dc:creator>
