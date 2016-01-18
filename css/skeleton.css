@@ -35,11 +35,11 @@
 
 @font-face {
     font-family: 'icomoon';
-    src:    url('../fonts/icomoon.eot?f7ea0m');
-    src:    url('../fonts/icomoon.eot?f7ea0m#iefix') format('embedded-opentype'),
-        url('../fonts/icomoon.ttf?f7ea0m') format('truetype'),
-        url('../fonts/icomoon.woff?f7ea0m') format('woff'),
-        url('../fonts/icomoon.svg?f7ea0m#icomoon') format('svg');
+    src:    url('../fonts/icomoon.eot?dti4ip');
+    src:    url('../fonts/icomoon.eot?dti4ip#iefix') format('embedded-opentype'),
+        url('../fonts/icomoon.ttf?dti4ip') format('truetype'),
+        url('../fonts/icomoon.woff?dti4ip') format('woff'),
+        url('../fonts/icomoon.svg?dti4ip#icomoon') format('svg');
     font-weight: normal;
     font-style: normal;
 }
@@ -514,8 +514,10 @@ ul.sns-icon li a:hover {
     color: #333;
 }
 
+.icon-octoface:before  { content: "\f008"; }
 .icon-instagram:before { content: "\e900"; }
 .icon-twitter:before   { content: "\e901"; }
 .icon-rss2:before      { content: "\e902"; }
 .icon-github:before    { content: "\e903"; }
+.icon-reddit:before    { content: "\e904"; }
 
