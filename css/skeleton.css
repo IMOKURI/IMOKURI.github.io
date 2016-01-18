@@ -33,10 +33,25 @@
       url("../fonts/font_1_kokugl_1.15_rls-webfont.eot") format("eot");
 }
 
+@font-face {
+    font-family: 'icomoon';
+    src:    url('../fonts/icomoon.eot?f7ea0m');
+    src:    url('../fonts/icomoon.eot?f7ea0m#iefix') format('embedded-opentype'),
+        url('../fonts/icomoon.ttf?f7ea0m') format('truetype'),
+        url('../fonts/icomoon.woff?f7ea0m') format('woff'),
+        url('../fonts/icomoon.svg?f7ea0m#icomoon') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
 .section.header,
-.section.footer,
+.section.footer {
+  text-align: center;
+}
+
 .pagination {
   text-align: center;
+  margin-bottom: 1rem;
 }
 
 footer,
@@ -420,8 +435,7 @@ img,
 /* Misc
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
 hr {
-  margin-top: 3rem;
-  margin-bottom: 3.5rem;
+  margin: 3rem 0;
   border-width: 0;
   border-top: 1px solid #E1E1E1; }
 
@@ -462,3 +476,46 @@ there.
 
 /* Larger than Desktop HD */
 /*@media (min-width: 1200px) {}*/
+
+
+/* SNS Icon Settings */
+
+[class^="icon-"], [class*=" icon-"] {
+    /* use !important to prevent issues with browser extensions that change fonts */
+    font-family: 'icomoon' !important;
+    speak: none;
+    font-style: normal;
+    font-weight: normal;
+    font-variant: normal;
+    text-transform: none;
+    line-height: 1;
+
+    /* Better Font Rendering =========== */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+ul.sns-icon {
+    margin-bottom: 0;
+}
+
+ul.sns-icon li {
+    display: inline-block;
+    list-style: none;
+    padding: 0 20px;
+    font-size: 120%;
+}
+
+ul.sns-icon li a {
+    color: #888;
+}
+
+ul.sns-icon li a:hover {
+    color: #333;
+}
+
+.icon-instagram:before { content: "\e900"; }
+.icon-twitter:before   { content: "\e901"; }
+.icon-rss2:before      { content: "\e902"; }
+.icon-github:before    { content: "\e903"; }
+
