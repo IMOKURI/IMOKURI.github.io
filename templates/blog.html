@@ -34,21 +34,11 @@ $endfor$
 
 <div class="pagination">
   <div class="container">
-    $if(firstPageUrl)$
-      <a href="$firstPageUrl$">&lt;&lt;&nbsp;First</a>&nbsp;
-    $endif$
-    $if(previousPageUrl)$
-      <a href="$previousPageUrl$">&lt;&nbsp;Previous</a>&nbsp;
-    $endif$
-    &mdash;
-    $currentPageNum$ of $numPages$
-    &mdash;
-    $if(nextPageUrl)$
-      &nbsp;<a href="$nextPageUrl$">Next&nbsp;&gt;</a>
-    $endif$
-    $if(lastPageUrl)$
-      &nbsp;<a href="$lastPageUrl$">Last&nbsp;&gt;&gt;</a>
-    $endif$
+    $if(firstPageUrl)$      <a href="$firstPageUrl$">&lt;&lt;&nbsp;First</a>&nbsp;   $endif$
+    $if(previousPageUrl)$   <a href="$previousPageUrl$">&lt;&nbsp;Previous</a>&nbsp; $endif$
+    &mdash;$currentPageNum$ of $numPages$&mdash;
+    $if(nextPageUrl)$ &nbsp;<a href="$nextPageUrl$">Next&nbsp;&gt;</a>               $endif$
+    $if(lastPageUrl)$ &nbsp;<a href="$lastPageUrl$">Last&nbsp;&gt;&gt;</a>           $endif$
   </div>
 </div>
 
