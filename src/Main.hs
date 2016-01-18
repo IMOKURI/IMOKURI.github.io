@@ -115,7 +115,7 @@ main = hakyllWith hakyllConfig $ do
         route   idRoute
         compile $ do
             let feedCtx = postCtx tags
-                       <> bodyField "description"
+                       <> teaserField "description" "contents"
             posts <- fmap (take 10) . recentFirst =<< loadAllSnapshots "blog/*/*/*" "contents"
             renderRss feedConfig feedCtx posts
 
@@ -123,7 +123,7 @@ main = hakyllWith hakyllConfig $ do
         route   idRoute
         compile $ do
             let feedCtx = postCtx tags
-                       <> bodyField "description"
+                       <> teaserField "description" "contents"
             posts <- fmap (take 10) . recentFirst =<< loadAllSnapshots "blog/*/*/*" "contents"
             renderAtom feedConfig feedCtx posts
 
