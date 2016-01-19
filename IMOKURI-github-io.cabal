@@ -16,6 +16,7 @@ executable site
                   , hakyll
                   , filepath
                   , highlighting-kate
+                  , MissingH
   ghc-options:      -Wall -threaded
   default-language: Haskell2010
 
