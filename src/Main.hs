@@ -6,6 +6,7 @@ module Main where
 import           Control.Monad
 import           Data.Monoid ((<>))
 import           Data.List (isInfixOf)
+import           Data.String.Utils (replace)
 import           Hakyll
 import           System.FilePath
 import qualified Text.Highlighting.Kate as K
@@ -140,7 +141,7 @@ postCtx tags = dateField "date" "%B %e, %Y"
             <> defaultContext
 
 rootDirIndex :: Identifier -> FilePath
-rootDirIndex = (</> "index.html") . dropExtension . toFilePath
+rootDirIndex = replace "\\" "/" . (</> "index.html") . dropExtension . toFilePath
 
 removeIndexHtml :: Item String -> Compiler (Item String)
 removeIndexHtml item = return $ fmap (withUrls removeIndexStr) item
@@ -162,4 +163,3 @@ hakyllConfig :: Configuration
 hakyllConfig = defaultConfiguration
     { previewHost = "0.0.0.0"
     }
-
