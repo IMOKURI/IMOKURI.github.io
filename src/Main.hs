@@ -55,7 +55,7 @@ main = hakyllWith hakyllConfig $ do
             let blogCtx = constField "title" "Blog"
                        <> listField "posts" (postCtx tags) (return posts)
                        <> paginateContext blog pageNum
-                       <> defaultContext
+                       <> defCtx
 
             makeItem ""
                 >>= loadAndApplyTemplate "templates/blog.html" blogCtx
@@ -69,7 +69,7 @@ main = hakyllWith hakyllConfig $ do
             posts <- recentFirst =<< loadAll patt
             let tagCtx = constField "title" ("Posts tagged " ++ tag)
                       <> listField "posts" (postCtx tags) (return posts)
-                      <> defaultContext
+                      <> defCtx
 
             makeItem ""
                 >>= loadAndApplyTemplate "templates/tag.html" tagCtx
@@ -84,7 +84,7 @@ main = hakyllWith hakyllConfig $ do
             let indexCtx = listField "posts" (postCtx tags) (return posts)
                         <> constField "title" "Home"
                         <> constField "taglist" tagList
-                        <> defaultContext
+                        <> defCtx
 
             getResourceBody
                 >>= applyAsTemplate indexCtx
@@ -94,20 +94,20 @@ main = hakyllWith hakyllConfig $ do
     match "about.markdown" $ do
         route   $ customRoute rootDirIndex
         compile $ pandocCompiler
-            >>= loadAndApplyTemplate "templates/default.html" defaultContext
+            >>= loadAndApplyTemplate "templates/default.html" defCtx
             >>= relativizeUrls
 
     match "404.markdown" $ do
         route   $ setExtension "html"
         compile $ pandocCompiler
-            >>= loadAndApplyTemplate "templates/default.html" defaultContext
+            >>= loadAndApplyTemplate "templates/default.html" defCtx
 
     create ["sitemap.xml"] $ do
         route   idRoute
         compile $ do
             posts <- recentFirst =<< loadAll "blog/*/*/*"
             let sitemapCtx = listField "posts" (postCtx tags) (return posts)
-                          <> defaultContext
+                          <> defCtx
 
             makeItem ""
                 >>= loadAndApplyTemplate "templates/sitemap.xml" sitemapCtx
@@ -131,18 +131,27 @@ main = hakyllWith hakyllConfig $ do
     match "templates/*" $ compile templateCompiler
 
 
---------------------------------------------------------------------------------
+--- Context -----------------------------------------------------------------------------
 postCtx :: Tags -> Context String
 postCtx tags = dateField "date" "%B %e, %Y"
             <> dateField "simple-date" "%Y-%m-%d"
             <> tagsField "tags" tags
             <> teaserField "teaser" "contents"
             <> constField "host" (feedRoot feedConfig)
-            <> defaultContext
+            <> defCtx
 
+defCtx :: Context String
+defCtx = boolField "sourcecode" hasSourceCode
+      <> defaultContext
+
+hasSourceCode :: Item String -> Bool
+hasSourceCode item = "sourceCode" `isInfixOf` itemBody item
+
+--- Routes -----------------------------------------------------------------------------
 rootDirIndex :: Identifier -> FilePath
 rootDirIndex = replace "\\" "/" . (</> "index.html") . dropExtension . toFilePath
 
+--- Compiler -----------------------------------------------------------------------------
 removeIndexHtml :: Item String -> Compiler (Item String)
 removeIndexHtml item = return $ fmap (withUrls removeIndexStr) item
   where
@@ -150,6 +159,7 @@ removeIndexHtml item = return $ fmap (withUrls removeIndexStr) item
                        | otherwise                                        = url
     isNotUrl = not . isInfixOf "://"
 
+--- Configuration -----------------------------------------------------------------------------
 feedConfig :: FeedConfiguration
 feedConfig = FeedConfiguration
     { feedTitle       = "Wake up! Good night* - 最近の投稿"
