@@ -12,5 +12,7 @@ title: About
 
 [![Project Euler](https://projecteuler.net/profile/IMOKURI.png)](https://projecteuler.net/)  
 
+![](/images/mail.png)
+
 </article>
 
