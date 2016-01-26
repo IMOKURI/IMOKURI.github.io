@@ -2,7 +2,7 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"
     xmlns:dc="http://purl.org/dc/elements/1.1/">
     <channel>
-        <title>Wake up! Good night* - 最近の投稿</title>
+        <title>最近の投稿 - Wake up! Good night*</title>
         <link>https://imokuri123.com</link>
         <description><![CDATA[インフラ系SEのまとめノート]]></description>
         <atom:link href="https://imokuri123.com/feed/rss.xml" rel="self"
