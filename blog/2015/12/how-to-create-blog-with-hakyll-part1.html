@@ -102,7 +102,7 @@ webページをビルドするときに実行するので、あとあとハッ�
 </ol>
 <p>のが基本イメージです。</p>
 <p><img src="../../../images/2015-12-hakyll-page-structure.png" alt="Hakyll page structure" /><br />
- 「どの記事と、どのテンプレートをあわせて、webサイトのどこに表示する」とか、「この記事にこの情報を埋め込む」とか、をHaskellのプログラム(デフォルトは 「site.hs」 )で作っていきます。</p>
+「どの記事と、どのテンプレートをあわせて、webサイトのどこに表示する」とか、「この記事にこの情報を埋め込む」とか、をHaskellのプログラム(デフォルトは 「site.hs」 )で作っていきます。</p>
 <p>たとえば、 「site.hs」 をのぞいてみると、以下の様なソースがあります。</p>
 <div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell">match <span class="st">&quot;images/*&quot;</span> <span class="fu">$</span> <span class="kw">do</span>
     route   idRoute
