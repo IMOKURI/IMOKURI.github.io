@@ -120,14 +120,6 @@ main = hakyllWith hakyllConfig $ do
             posts <- fmap (take 10) . recentFirst =<< loadAllSnapshots "blog/*/*/*" "contents"
             renderRss feedConfig feedCtx posts
 
-    create ["feed/atom.xml"] $ do
-        route   idRoute
-        compile $ do
-            let feedCtx = postCtx tags
-                       <> teaserField "description" "contents"
-            posts <- fmap (take 10) . recentFirst =<< loadAllSnapshots "blog/*/*/*" "contents"
-            renderAtom feedConfig feedCtx posts
-
     match "templates/*" $ compile templateCompiler
 
 
@@ -162,10 +154,10 @@ removeIndexHtml item = return $ fmap (withUrls removeIndexStr) item
 --- Configuration -----------------------------------------------------------------------------
 feedConfig :: FeedConfiguration
 feedConfig = FeedConfiguration
-    { feedTitle       = "Wake up! Good night* - 最近の投稿"
+    { feedTitle       = "最近の投稿 - Wake up! Good night*"
     , feedDescription = "インフラ系SEのまとめノート"
     , feedAuthorName  = "IMOKURI"
-    , feedAuthorEmail = ""
+    , feedAuthorEmail = "nenegi.01mo@gmail.com"
     , feedRoot        = "https://imokuri123.com"
     }
 
