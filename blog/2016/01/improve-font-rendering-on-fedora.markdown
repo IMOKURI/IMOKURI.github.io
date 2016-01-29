@@ -65,4 +65,10 @@ tags: fedora,linux,font
 
 ---
 
+2016/1/29 追記：
+
+「フォント名」のところは、好みのフォントを指定します。フォントファイルは、 `/usr/share/fonts/` ディレクトリに、フォント名のフォルダを作成して格納しておきます。
+
+---
+
 [Trying Fedora 23 for the first time. Why do fonts suck so bad?](https://www.reddit.com/r/Fedora/comments/3o6ijr/trying_fedora_23_for_the_first_time_why_do_fonts/)
