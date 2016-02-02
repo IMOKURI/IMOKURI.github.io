@@ -43,7 +43,7 @@ tags: fedora,linux,font
     </edit>
   </match>
 
-<!-- Set preferred serif, gans serif, and monospace fonts. -->
+<!-- Set preferred serif, sans serif, and monospace fonts. -->
   <alias>
     <family>serif</family>
     <prefer><family>フォント名</family></prefer>
