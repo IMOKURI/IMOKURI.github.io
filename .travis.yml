@@ -40,7 +40,7 @@ script:
 after_success: |
   if [[ "$TRAVIS_BRANCH" == "source" ]] && [[ "$TRAVIS_PULL_REQUEST" == "false" ]]; then
     cd _site
-    if ! git diff-index --quiet HEAD; then
+    if ! git diff --quiet HEAD; then
       export REMOTE=$(git config remote.origin.url | sed 's/.*:\/\///')
       git remote add github https://${GH_TOKEN}@${REMOTE}
       git add --all
