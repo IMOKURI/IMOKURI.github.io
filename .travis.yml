@@ -24,7 +24,6 @@ before_install:
   - mkdir -p ~/.local/bin
   - export PATH=$HOME/.local/bin:$PATH
   - travis_retry curl -L https://www.stackage.org/stack/linux-x86_64 | tar xz --wildcards --strip-components=1 -C ~/.local/bin '*/stack'
-  - git submodule foreach --recursive 'git checkout master; git ls-files | grep -v README | grep -v CNAME | xargs -r git rm'
 
 install:
   - stack --no-terminal setup
@@ -35,7 +34,7 @@ before_script:
   - git config --global user.email "$GH_EMAIL"
 
 script:
-  - stack exec site build
+  - make rebuild
 
 after_success:
   - if test "$TRAVIS_BRANCH" == "source" && test "$TRAVIS_PULL_REQUEST" == "false" ; then
