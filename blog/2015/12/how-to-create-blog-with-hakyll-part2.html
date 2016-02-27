@@ -88,7 +88,7 @@ if (window.location.host == host && window.location.protocol != "https:") {
 ページネーションの1ページ目のURLは http://user.github.io/archive.html<br />
 2ページ目以降のURLは http://user.github.io/archive/ページ番号.html</p>
 </blockquote>
-<p>ルールが決まったので、何ページ目にどの記事が入るか、が決まりました。 次に、ページネーションのページごとに、実際のページを組み立てていきます。</p>
+<p>ルールが決まったので、何ページ目にどの記事が入るか、が決まりました。次に、ページネーションのページごとに、実際のページを組み立てていきます。</p>
 <div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell">paginateRules archive <span class="fu">$</span> \pageNum pattern <span class="ot">-&gt;</span> <span class="kw">do</span>
     route   idRoute
     compile <span class="fu">$</span> <span class="kw">do</span>

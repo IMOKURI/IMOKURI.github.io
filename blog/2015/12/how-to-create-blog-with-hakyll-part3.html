@@ -135,7 +135,7 @@ postCtx tags <span class="fu">=</span>
             <span class="fu">&gt;&gt;=</span> loadAndApplyTemplate <span class="st">&quot;templates/default.html&quot;</span> tagCtx
             <span class="fu">&gt;&gt;=</span> relativizeUrls</code></pre></div>
 <p>・・・ページネーションのにそっくりですね♪</p>
-<p>ということで、残りは、「tag.html」のテンプレートの準備です。 対象となる記事をリストすればよいので、こんな感じで十分ですね。</p>
+<p>ということで、残りは、「tag.html」のテンプレートの準備です。対象となる記事をリストすればよいので、こんな感じで十分ですね。</p>
 <div class="sourceCode"><pre class="sourceCode html"><code class="sourceCode html">$partial(&quot;templates/post-list.html&quot;)$</code></pre></div>
 <p>おまけで、タグといえば、タグのリストや、タグクラウドも欲しくなります。作り方はほぼ同じなので、ここでは、タグクラウドを作って、トップページに貼り付けておきたいと思います。</p>
 <div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell">match <span class="st">&quot;index.html&quot;</span> <span class="fu">$</span> <span class="kw">do</span>
