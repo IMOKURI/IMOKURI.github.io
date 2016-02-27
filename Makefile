@@ -1,4 +1,4 @@
-.PHONY: build rebuild watch
+.PHONY: build rebuild watch reset
 
 SITE_CMD = stack exec site
 

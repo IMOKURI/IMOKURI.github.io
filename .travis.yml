@@ -35,18 +35,19 @@ before_script:
   - git config --global user.email "$GH_EMAIL"
 
 script:
+  - stack test
   - make rebuild
 
-after_success:
-  - if test "$TRAVIS_BRANCH" == "source" && test "$TRAVIS_PULL_REQUEST" == "false" ; then
-    cd _site;
-    export REMOTE=$(git config remote.origin.url | sed 's/.*:\/\///');
-    git remote add github https://${GH_TOKEN}@${REMOTE};
-    git add --all;
-    git status;
-    git commit -m "Built by Travis ( build $TRAVIS_BUILD_NUMBER )";
-    git push github master:master 2>&1 | grep -v http;
-    fi
+#after_success:
+#  - if test "$TRAVIS_BRANCH" == "source" && test "$TRAVIS_PULL_REQUEST" == "false" ; then
+#    cd _site;
+#    export REMOTE=$(git config remote.origin.url | sed 's/.*:\/\///');
+#    git remote add github https://${GH_TOKEN}@${REMOTE};
+#    git add --all;
+#    git status;
+#    git commit -m "Built by Travis ( build $TRAVIS_BUILD_NUMBER )";
+#    git push github master:master 2>&1 | grep -v http;
+#    fi
 
 notifications:
   email: false
