@@ -14,3 +14,9 @@ rebuild:
 
 watch:
 	$(SITE_CMD) $@
+
+reset:
+	$(SITE_CMD) clean
+	git submodule init
+	git submodule update
+	git submodule foreach git pull origin master

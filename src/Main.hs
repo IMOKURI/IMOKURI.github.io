@@ -6,10 +6,12 @@ module Main where
 import           Control.Monad
 import           Data.Monoid ((<>))
 import           Data.List (isInfixOf)
+import qualified Data.Set as S
 import           Data.String.Utils (replace)
 import           Hakyll
 import           System.FilePath
 import qualified Text.Highlighting.Kate as K
+import           Text.Pandoc.Options (Extension(Ext_east_asian_line_breaks), readerExtensions)
 
 --------------------------------------------------------------------------------
 main :: IO ()
@@ -35,7 +37,7 @@ main = hakyllWith hakyllConfig $ do
 
     match "blog/*/*/*" $ do
         route   $ setExtension "html"
-        compile $ pandocCompiler
+        compile $ customPandocCompiler
             >>= saveSnapshot "contents"
             >>= loadAndApplyTemplate "templates/post.html"    (postCtx tags)
             >>= loadAndApplyTemplate "templates/default.html" (postCtx tags)
@@ -93,13 +95,13 @@ main = hakyllWith hakyllConfig $ do
 
     match "about.markdown" $ do
         route   $ customRoute rootDirIndex
-        compile $ pandocCompiler
+        compile $ customPandocCompiler
             >>= loadAndApplyTemplate "templates/default.html" defCtx
             >>= relativizeUrls
 
     match "404.markdown" $ do
         route   $ setExtension "html"
-        compile $ pandocCompiler
+        compile $ customPandocCompiler
             >>= loadAndApplyTemplate "templates/default.html" defCtx
 
     create ["sitemap.xml"] $ do
@@ -150,6 +152,15 @@ removeIndexHtml item = return $ fmap (withUrls removeIndexStr) item
     removeIndexStr url | takeFileName url == "index.html" && isNotUrl url = dropFileName url
                        | otherwise                                        = url
     isNotUrl = not . isInfixOf "://"
+
+customPandocCompiler :: Compiler (Item String)
+customPandocCompiler =
+  let
+    defaultExtensions = readerExtensions defaultHakyllReaderOptions
+    newExtensions = S.insert Ext_east_asian_line_breaks defaultExtensions
+    readerOptions = defaultHakyllReaderOptions { readerExtensions = newExtensions }
+  in
+    pandocCompilerWith readerOptions defaultHakyllWriterOptions
 
 --- Configuration -----------------------------------------------------------------------------
 feedConfig :: FeedConfiguration
