@@ -6,8 +6,8 @@ SITE_CMD = stack exec site
 build: ## Build Hakyll site code
 	$(SITE_CMD) $@
 
-rebuild: tmpdir := $(shell mktemp -d) ## Rebuild Hakyll site code
-rebuild:
+rebuild: tmpdir := $(shell mktemp -d)
+rebuild: ## Rebuild Hakyll site code
 	mv _site/.git $(tmpdir)/.git
 	$(SITE_CMD) $@
 	mv $(tmpdir)/.git _site/.git
