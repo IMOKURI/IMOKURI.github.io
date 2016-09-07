@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<script>
+var host = "imokuri123.com"
+if (window.location.host == host && window.location.protocol != "https:") {
+  window.location.protocol = "https:"
+}
+</script>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="description" content="Blog" />
+<meta name="author" content="IMOKURI" />
+<title>Alpine Linuxでインフラ構築・検証に必要なサーバ機能を揃えておく。 - Wake up! Good night*</title>
+<link rel="stylesheet" href="../../../css/normalize.css">
+<link rel="stylesheet" href="../../../css/skeleton.css">
+
+<link rel="shortcut icon" href="../../../images/favicon.ico">
+<link rel="alternate" type="application/rss+xml" title="最近の投稿 - Wake up! Good night*" href="https://imokuri123.com/feed/rss.xml">
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-62022693-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+<div class="section header">
+  <header class="container">
+    <img src="../../../images/title.png" alt="Title - Wake Up! Good Night*">
+  </header>
+  <nav class="container">
+    <ul>
+      <li><a href="../../../">Home</a></li>
+      <li><a href="../../../blog/">Blog</a></li>
+      <li><a href="../../../about/">About</a></li>
+    </ul>
+  </nav>
+</div>
+
+<div class="section body">
+  <div class="container">
+    <article>
+<h1>Alpine Linuxでインフラ構築・検証に必要なサーバ機能を揃えておく。</h1>
+
+<p>
+  <div class="info">
+    Posted on September  8, 2016
+    
+  </div>
+  <div class="info">
+    
+      Tags: <a href="../../../tags/linux.html">linux</a>, <a href="../../../tags/alpine-linux.html">alpine-linux</a>, <a href="../../../tags/ntp.html">ntp</a>, <a href="../../../tags/dns.html">dns</a>, <a href="../../../tags/ldap.html">ldap</a>, <a href="../../../tags/proxy.html">proxy</a>
+    
+  </div>
+</p>
+
+<p>デスクトップ上の仮想マシンで、ちょっと検証したいということが、よくありますよね。</p>
+<p>そんな時に、NTPサーバとか、DNSサーバとか、はたまたLDAPサーバとかが、欲しくなったりすることもよくあります。</p>
+<p>だからと言って、Ubuntuとか、CentOSとかでガッツリ作ってしまうと、それで、デスクトップPCのリソースを食ってしまって、やりたかった検証がスムーズに行かない、ってことになりがちです。（私のこと）</p>
+<p>そこで、最近コンテナ向けに流行っている？軽量LinuxのAlpine Linuxを使ってこれらを構築してしまいたいともいます。</p>
+<p>そのサイズ、なんとメモリ256MB、DISK8GB！お買い得！（違</p>
+<!--more-->
+<p>Alpine Linuxのインストールについては、<a href="http://qiita.com/syui/items/7851423ddc132b751fa3">こちら</a>や<a href="http://blog.stormcat.io/entry/alpine-entry-setup">こちら</a>を参照いただくとして。</p>
+<h2 id="ntp-server-chrony">NTP Server (chrony)</h2>
+<p>NTPサーバはchronyを使います。デスクトップ環境ということで、頻繁に停止起動されることを想定し、時刻同期が断続的でもよく機能するchronyを使います。（参照：<a href="https://access.redhat.com/documentation/ja-JP/Red_Hat_Enterprise_Linux/7/html/System_Administrators_Guide/ch-Configuring_NTP_Using_the_chrony_Suite.html#sect-differences_between_ntpd_and_chronyd">ntpd と chronyd の違い</a>）</p>
+<p>設定ファイル(/etc/chrony/chrony.conf)は以下の様な感じにしました。</p>
+<pre><code>server xxx.xxx.xxx.xxx
+initstepslew 10 xxx.xxx.xxx.xxx
+commandkey 10
+keyfile /etc/chrony/chrony.keys
+driftfile /var/lib/chrony/chrony.drift
+
+allow yyy.yyy.yyy.yyy/zz</code></pre>
+<p>xxx.xxx.xxx.xxxには同期先のサーバ、yyy.yyy.yyy.yyy/zzには同期元のサーバ群がいるローカルのネットワークを指定します。</p>
+<h2 id="dns-server-unbound">DNS Server (unbound)</h2>
+<p>DNSサーバはunboundを使います。zone設定含め、1ファイルで完結するので、小規模環境に向いています。</p>
+<p>設定ファイル(/etc/unbound/unbound.conf)では、以下の様な内容を設定しました。</p>
+<pre><code>server:
+        local-zone: &quot;imokuri.local.&quot; static
+
+        local-data: &quot;hostpc.imokuri.local. IN A 192.168.183.1&quot;
+        local-data: &quot;gateway.imokuri.local. IN A 192.168.183.2&quot;
+
+        local-data-ptr: &quot;192.168.183.1 hostpc.imokuri.local.&quot;
+        local-data-ptr: &quot;192.168.183.2 gateway.imokuri.local.&quot;
+
+forward-zone:
+        name: &quot;.&quot;
+        forward-addr: 192.168.183.2
+</code></pre>
+<p>serverセクションでは、ローカルの環境の名前解決の設定を、それ以外のものについては、forward-zoneに転送するように設定しています。</p>
+<h2 id="ldap-server-openldap">LDAP Server (openldap)</h2>
+<p>ユーザ管理にopenldapを使います。小規模環境なので、バックエンドも何も考えずにbdbを使います。インストールしたパッケージは、openldap, openldap-back-bdb, openldap-clientsです。</p>
+<p>/etc/openldap/slapd.confでは、必要なスキーマをインクルードし、databaseはbdbを使用など、設定します。</p>
+<p>/var/lib/openldap/openldap-data/DB_CONFIGをサンプルをコピーして準備しておきます。</p>
+<p>ここまでできたらslapdを起動し、必要な情報をLDIFファイルを作成して、流し込んでいきます。</p>
+<blockquote>
+<p>LDAPはまた元気なときに詳細をまとめよう。</p>
+</blockquote>
+<h2 id="forward-proxy-server-tinyproxy">Forward Proxy Server (tinyproxy)</h2>
+<p>最後はProxyです。Forward Proxyといえば、Squid？ですが、小規模環境ということで、お手軽、ミニマムなtinyproxyを使います。</p>
+<p>設定ファイル(/etc/tinyproxy/tinyproxy.conf)では、Proxyを使用しないローカルのアドレスと、それ以外を転送する上位のProxyがあれば、それを設定します。接続を許可するネットワークも設定しておきます。</p>
+<pre><code>no upstream &quot;.imokuri.local&quot;
+no upstream &quot;192.168.183.0/24&quot;
+upstream proxy.example.com:8080
+Allow 192.168.183.0/24</code></pre>
+<h2 id="終わりに">終わりに</h2>
+<p>これで、何か検証のため、サーバを作るとなっても、ホスト名のドメインどうしよう、、とか迷わずに済みますね。</p>
+<p>他に、あれば、助かるものあるかなぁ。メールサーバとかかなぁ。</p>
+
+</article>
+
+
+<a href="//www.reddit.com/submit" onclick="window.location = '//www.reddit.com/submit?url=' + encodeURIComponent(window.location); return false"> <img src="//www.redditstatic.com/spreddit7.gif" alt="submit to reddit" border="0" /> </a>
+
+<a href="https://twitter.com/share" class="twitter-share-button" data-related="rouge_pawn">Tweet</a>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+
+<a href="http://b.hatena.ne.jp/entry/imokuri123.com/blog/2016/09/build-servers-by-alpine-linux.html" class="hatena-bookmark-button" data-hatena-bookmark-title="Alpine Linuxでインフラ構築・検証に必要なサーバ機能を揃えておく。 - Wake up! Good night*" data-hatena-bookmark-layout="standard-noballoon" data-hatena-bookmark-lang="ja" title="このエントリーをはてなブックマークに追加"><img src="https://b.st-hatena.com/images/entry-button/button-only@2x.png" alt="このエントリーをはてなブックマークに追加" width="20" height="20" style="border: none;" /></a><script type="text/javascript" src="https://b.st-hatena.com/js/bookmark_button.js" charset="utf-8" async="async"></script>
+
+
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+  /* * * CONFIGURATION VARIABLES * * */
+  var disqus_shortname = 'IMOKURI';
+  var disqus_identifier = "/blog/2016/09/build-servers-by-alpine-linux.html";
+  var disqus_title = "Alpine Linuxでインフラ構築・検証に必要なサーバ機能を揃えておく。";
+  var disqus_url = "https://imokuri123.com/blog/2016/09/build-servers-by-alpine-linux.html";
+
+  /* * * DON'T EDIT BELOW THIS LINE * * */
+  (function() {
+    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+
+
+  </div>
+</div>
+
+<div class="section footer">
+    <ul class="sns-icon">
+      <li><a href="//www.reddit.com/user/IMOKURI"><span class="icon-reddit"></span></a></li>
+      <li><a href="//twitter.com/rouge_pawn"><span class="icon-twitter"></span></a></li>
+      <li><a href="//github.com/IMOKURI"><span class="icon-octoface"></span></a></li>
+      <li><a href="../../../feed/rss.xml"><span class="icon-rss2"></span></a></li>
+    </ul>
+
+  <footer class="container">
+    Site proudly generated by <a href="http://jaspervdj.be/hakyll">Hakyll</a> and <a href="http://getskeleton.com/">Skeleton</a>. The entire source code of this website is <a href="https://github.com/IMOKURI/IMOKURI.github.io">available at Github</a>.
+  </footer>
+</div>
