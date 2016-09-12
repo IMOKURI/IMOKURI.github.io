@@ -11,7 +11,7 @@ import           Data.String.Utils (replace)
 import           Hakyll
 import           System.FilePath
 import qualified Text.Highlighting.Kate as K
-import           Text.Pandoc.Options (Extension(Ext_east_asian_line_breaks), readerExtensions)
+import           Text.Pandoc.Options
 
 --------------------------------------------------------------------------------
 main :: IO ()
@@ -154,13 +154,7 @@ removeIndexHtml item = return $ fmap (withUrls removeIndexStr) item
     isNotUrl = not . isInfixOf "://"
 
 customPandocCompiler :: Compiler (Item String)
-customPandocCompiler =
-  let
-    defaultExtensions = readerExtensions defaultHakyllReaderOptions
-    newExtensions = S.insert Ext_east_asian_line_breaks defaultExtensions
-    readerOptions = defaultHakyllReaderOptions { readerExtensions = newExtensions }
-  in
-    pandocCompilerWith readerOptions defaultHakyllWriterOptions
+customPandocCompiler = pandocCompilerWith readerOptions writerOptions
 
 --- Configuration -----------------------------------------------------------------------------
 feedConfig :: FeedConfiguration
@@ -176,3 +170,14 @@ hakyllConfig :: Configuration
 hakyllConfig = defaultConfiguration
     { previewHost = "0.0.0.0"
     }
+
+readerOptions :: ReaderOptions
+readerOptions = defaultHakyllReaderOptions
+    { readerExtensions = newExtensions
+    }
+        where defaultExtensions = readerExtensions defaultHakyllReaderOptions
+              newExtensions = S.insert Ext_east_asian_line_breaks defaultExtensions
+
+writerOptions :: WriterOptions
+writerOptions = defaultHakyllWriterOptions
+
