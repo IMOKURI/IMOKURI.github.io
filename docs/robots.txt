@@ -1,4 +1,0 @@
-User-agent: *
-Disallow: /fonts/
-
-Sitemap:https://imokuri123.com/sitemap.xml
