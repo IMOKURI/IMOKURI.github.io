@@ -36,7 +36,7 @@ before_script:
 
 script:
   - stack test
-  - make rebuild
+  - ./Build.hs build
 
 #after_success:
 #  - if test "$TRAVIS_BRANCH" == "source" && test "$TRAVIS_PULL_REQUEST" == "false" ; then
