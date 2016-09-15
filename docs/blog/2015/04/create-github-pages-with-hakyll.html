@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<script>
+var host = "imokuri123.com"
+if (window.location.host == host && window.location.protocol != "https:") {
+  window.location.protocol = "https:"
+}
+</script>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="description" content="Blog" />
+<meta name="author" content="IMOKURI" />
+<title>Hakyllを使ってGitHub Pagesを作成して、そのソースも管理して、Travis CIで自動デプロイする。 - Wake up! Good night*</title>
+<link rel="stylesheet" href="../../../css/normalize.css">
+<link rel="stylesheet" href="../../../css/skeleton.css">
+
+<link rel="stylesheet" href="../../../css/highlight.css">
+
+<link rel="shortcut icon" href="../../../images/favicon.ico">
+<link rel="alternate" type="application/rss+xml" title="最近の投稿 - Wake up! Good night*" href="https://imokuri123.com/feed/rss.xml">
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-62022693-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+<div class="section header">
+  <header class="container">
+    <img src="../../../images/title.png" alt="Title - Wake Up! Good Night*">
+  </header>
+  <nav class="container">
+    <ul>
+      <li><a href="../../../">Home</a></li>
+      <li><a href="../../../blog/">Blog</a></li>
+      <li><a href="../../../about/">About</a></li>
+    </ul>
+  </nav>
+</div>
+
+<div class="section body">
+  <div class="container">
+    <article>
+<h1>Hakyllを使ってGitHub Pagesを作成して、そのソースも管理して、Travis CIで自動デプロイする。</h1>
+
+<p>
+  <div class="info">
+    Posted on April  5, 2015
+    
+  </div>
+  <div class="info">
+    
+      Tags: <a href="../../../tags/github.html">github</a>, <a href="../../../tags/github-pages.html">github-pages</a>, <a href="../../../tags/hakyll.html">hakyll</a>, <a href="../../../tags/haskell.html">haskell</a>, <a href="../../../tags/travis-ci.html">travis-ci</a>
+    
+  </div>
+</p>
+
+<p><a href="https://pages.github.com/">GitHub Pages</a>は、レポジトリに配置されたファイルにそって、Webページが生成されます。そのため、<code>index.html</code> などは、レポジトリのルートに配置されている必要があります。</p>
+<p>一方、<a href="http://jaspervdj.be/hakyll/">Hakyll</a>は、公開用の <code>index.html</code> などのファイルが、ルートディレクトリではなく、 <code>_site</code> というディレクトリ配下に生成されます。</p>
+<p>そのため、HakyllのソースのルートディレクトリからGithub Pagesのレポジトリにソースをアップロードしてしまうと、正しくWebページが表示されません。</p>
+<p>そこで、レポジトリのmasterブランチでは、公開用にHakyllで生成したファイル( <code>_site</code> 配下の <code>index.html</code> など)が配置され、sourceブランチに、Webページ生成元となるソースを含めたファイルを配置するようにレポジトリを作成したいと思います。</p>
+<p>その際、sourceブランチを修正、プッシュしたら、自動でmasterブランチが更新されるよう、<a href="https://travis-ci.org/">Travis CI</a>を使用して自動化したいと思います。</p>
+<!--more-->
+<hr />
+<p>はじめに、GitHub Pagesを作成するレポジトリを作成します。</p>
+<p>GitHub Pagesのレポジトリは、 <code>&lt;account name&gt;.github.io</code> で<a href="https://github.com/IMOKURI/IMOKURI.github.io">作成します</a>。</p>
+<p>レポジトリ作成の時点では、 <code>Initialize this repository with a README</code> はチェック <strong>しない</strong> ことを想定しています。</p>
+<hr />
+<p>まずは、Hakyllをsandboxにインストールして、Webページのソースを生成します。</p>
+<ul>
+<li>Webページを生成するためのディレクトリを作成。</li>
+</ul>
+<p><code>mkdir $HOME/hakyll; cd $HOME/hakyll</code></p>
+<ul>
+<li>sandboxを初期化。</li>
+</ul>
+<p><code>cabal sandbox init</code></p>
+<ul>
+<li>Hakyllをインストール（ちょっと時間かかる）。</li>
+</ul>
+<p><code>cabal install -j --disable-documentation hakyll</code></p>
+<ul>
+<li>Webページのソースを生成。</li>
+</ul>
+<p><code>cabal exec hakyll-init &lt;account name&gt;.github.io</code></p>
+<ul>
+<li>あとで、buildの確認にsandoboxを使いたいので、移動。</li>
+</ul>
+<p><code>mv .cabal-sandbox &lt;account name&gt;.github.io/</code></p>
+<hr />
+<p>続いて、GitHubのレポジトリに空のmasterブランチを作成します。</p>
+<ul>
+<li>gitを初期化。</li>
+</ul>
+<p><code>git init</code></p>
+<ul>
+<li>remoteブランチを登録。</li>
+</ul>
+<p><code>git remote add origin git@github.com:&lt;account name&gt;/&lt;account name&gt;.github.io.git</code></p>
+<ul>
+<li>masterブランチを空コミット。</li>
+</ul>
+<p><code>git commit --allow-empty -m &quot;Initial commit&quot;</code></p>
+<ul>
+<li>GitHubのレポジトリにアップロード。</li>
+</ul>
+<p><code>git push origin master</code></p>
+<hr />
+<p>sourceブランチを作成し、 <code>_site</code> ディレクトリをサブモジュールに登録します。</p>
+<ul>
+<li>sourceブランチを作成。</li>
+</ul>
+<p><code>git checkout -b source</code></p>
+<ul>
+<li><code>_site</code> ディレクトリをサブモジュールに登録。</li>
+</ul>
+<p><code>git submodule add git@github.com:&lt;account name&gt;/&lt;account name&gt;.github.io.git _site</code></p>
+<ul>
+<li>.gitmodulesファイルをTravisからアクセスできるように修正。</li>
+</ul>
+<p><code>vi .gitmodules</code></p>
+<p><code>url</code> を <code>https://github.com/&lt;account name&gt;/&lt;account name&gt;.github.io.git</code> に修正。</p>
+<ul>
+<li>.gitignoreファイルを作成。</li>
+</ul>
+<p><code>vi .gitignore</code></p>
+<pre><code>.cabal-sandbox
+cabal.sandbox.config
+dist/
+_cache
+_site</code></pre>
+<ul>
+<li>Hakyllのソースをbuild確認。</li>
+</ul>
+<p><code>cabal sandbox init</code></p>
+<p><code>cabal run -j build</code></p>
+<hr />
+<p>Travis CIがGitHubのレポジトリを更新できるようTokenを取得します。</p>
+<ul>
+<li><p>GitHubの<a href="https://github.com/settings/applications">Tokenを生成するページ</a>にアクセス。</p></li>
+<li><p><code>Generate new token</code> をクリック。</p></li>
+<li><p><code>Select scopes</code> は、デフォルトのに追加して、 <code>read:org</code> 、 <code>write:repo_hook</code> をチェック。</p></li>
+<li><p>生成されたTokenは控えておく。</p></li>
+</ul>
+<hr />
+<p>Travis CIでGitHubと連携する設定を追加します。</p>
+<ul>
+<li><a href="https://travis-ci.org/profile/">Travis CIのアカウント管理画面</a>で、GitHubのレポジトリの情報を取得。</li>
+</ul>
+<p><code>sync</code> ボタンをクリック。</p>
+<p><code>&lt;account name&gt;/&lt;account name&gt;.github.io</code> のスイッチをON。</p>
+<p>歯車アイコンを押して、設定画面へ。</p>
+<p><code>Build only if .travis.yml is present</code> のスイッチをON。</p>
+<hr />
+<p>TokenをTravisの設定に追加するため、暗号化します。</p>
+<ul>
+<li>Rubyのgemが必要なのでインストール。</li>
+</ul>
+<p><code>sudo yum install rubygems ruby-devel</code></p>
+<ul>
+<li>Travisをインストール。</li>
+</ul>
+<p><code>sudo gem install travis</code></p>
+<ul>
+<li>Tokenの情報と、メールアドレスの情報を暗号化。情報を控える。</li>
+</ul>
+<p><code>travis encrypt -r &lt;account name&gt;/&lt;account name&gt;.github.io GH_EMAIL=&lt;your email&gt;@&lt;your domain&gt;.&lt;tld&gt;</code></p>
+<p><code>travis encrypt -r &lt;account name&gt;/&lt;account name&gt;.github.io GH_TOKEN=&lt;the token that is used to access github&gt;</code></p>
+<hr />
+<p>Travis CIとの連携を <code>.travis.yml</code> に記載します。</p>
+<ul>
+<li><code>.travis.yml</code> ファイルを作成。</li>
+</ul>
+<p><code>vi .travis.yml</code></p>
+<div class="sourceCode"><pre class="sourceCode yaml"><code class="sourceCode yaml"><span class="co"># NB: don't set `language: haskell` here</span>
+
+<span class="co"># See also https://github.com/hvr/multi-ghc-travis for more information</span>
+
+<span class="fu">branches:</span>
+  <span class="fu">only:</span>
+    <span class="kw">-</span> source
+
+<span class="fu">env:</span>
+  <span class="fu">global:</span>
+    <span class="kw">-</span> GH_NAME=<span class="st">&quot;Travis on behalf of IMOKURI&quot;</span>
+    <span class="kw">-</span> <span class="fu">secure:</span> <span class="st">&quot;&lt;text that encrypts your email address&gt;&quot;</span>
+    <span class="kw">-</span> <span class="fu">secure:</span> <span class="st">&quot;&lt;text that encrypts github token&gt;&quot;</span>
+
+  <span class="fu">matrix:</span>
+    <span class="kw">-</span> CABALVER=1.20 GHCVER=7.8.3
+<span class="co">#    - CABALVER=1.22 GHCVER=7.10.1</span>
+<span class="co">#    - CABALVER=head GHCVER=head</span>
+
+<span class="fu">before_install:</span>
+  <span class="kw">-</span> <span class="fu">travis_retry sudo add-apt-repository -y ppa:</span>hvr/ghc
+  <span class="kw">-</span> travis_retry sudo apt-get update
+  <span class="kw">-</span> travis_retry sudo apt-get install cabal-install-$CABALVER ghc-$GHCVER
+  <span class="kw">-</span> <span class="fu">export PATH=/opt/ghc/$GHCVER/bin:</span>/opt/cabal/$CABALVER/bin:$PATH
+
+  <span class="kw">-</span> git submodule foreach --recursive <span class="st">'git checkout master; git ls-files | grep -v README | grep -v CNAME | xargs -r git rm'</span>
+
+<span class="fu">install:</span>
+  <span class="kw">-</span> travis_retry cabal update
+  <span class="kw">-</span> cabal sandbox init
+  <span class="kw">-</span> cabal install --only-dependencies --disable-documentation
+  <span class="kw">-</span> cabal configure --disable-library-profiling --disable-tests --disable-library-coverage --disable-benchmarks --disable-split-objs
+
+<span class="fu">before_script:</span>
+  <span class="kw">-</span> git config --global user.name <span class="st">&quot;$GH_NAME&quot;</span>
+  <span class="kw">-</span> git config --global user.email <span class="st">&quot;$GH_EMAIL&quot;</span>
+
+<span class="fu">script:</span>
+  <span class="kw">-</span> cabal run -j build
+
+<span class="fu">after_success:</span>
+  <span class="kw">-</span> if <span class="kw">[[</span> <span class="st">&quot;$TRAVIS_BRANCH&quot;</span> == <span class="st">&quot;source&quot;</span> <span class="kw">]]</span>; then
+    cd _site;
+    <span class="fu">export REMOTE=$(git config remote.origin.url | sed 's/.*:</span>\/\///');
+    <span class="fu">git remote add github https:</span>//${GH_TOKEN}@${REMOTE};
+    git add --all;
+    git status;
+    git commit -m <span class="st">&quot;Built by Travis ( build $TRAVIS_BUILD_NUMBER )&quot;</span>;
+    <span class="fu">git push github master:</span>master 2&gt;&amp;1 | grep -v http;
+    fi</code></pre></div>
+<hr />
+<p>時は来た。。</p>
+<ul>
+<li>すべてのファイルをコミットしてsourceブランチにプッシュ。</li>
+</ul>
+<p><code>git add --all</code></p>
+<p><code>git commit -m &quot;Add source&quot;</code></p>
+<p><code>git push origin source</code></p>
+<ul>
+<li><p><a href="https://travis-ci.org/repositories">Travis CIのbuildの様子</a>を見守る。</p></li>
+<li><p>GitHubのmasterブランチが更新されたか確認。</p></li>
+<li><p>GitHub Pages(.github.io)に反映されたか確認。</p></li>
+</ul>
+<hr />
+<p>参考:</p>
+<p><a href="http://begriffs.com/posts/2014-08-12-create-static-site-with-hakyll-github.html">Create a static site with Hakyll, Github and Travis CI</a></p>
+<p><a href="http://timbaumann.info/posts/2013-08-04-hakyll-github-and-travis.html">Hakyll, Github and building a static site with Travis CI</a></p>
+
+</article>
+
+
+<a href="//www.reddit.com/submit" onclick="window.location = '//www.reddit.com/submit?url=' + encodeURIComponent(window.location); return false"> <img src="//www.redditstatic.com/spreddit7.gif" alt="submit to reddit" border="0" /> </a>
+
+<a href="https://twitter.com/share" class="twitter-share-button" data-related="rouge_pawn">Tweet</a>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+
+<a href="http://b.hatena.ne.jp/entry/imokuri123.com/blog/2015/04/create-github-pages-with-hakyll.html" class="hatena-bookmark-button" data-hatena-bookmark-title="Hakyllを使ってGitHub Pagesを作成して、そのソースも管理して、Travis CIで自動デプロイする。 - Wake up! Good night*" data-hatena-bookmark-layout="standard-noballoon" data-hatena-bookmark-lang="ja" title="このエントリーをはてなブックマークに追加"><img src="https://b.st-hatena.com/images/entry-button/button-only@2x.png" alt="このエントリーをはてなブックマークに追加" width="20" height="20" style="border: none;" /></a><script type="text/javascript" src="https://b.st-hatena.com/js/bookmark_button.js" charset="utf-8" async="async"></script>
+
+
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+  /* * * CONFIGURATION VARIABLES * * */
+  var disqus_shortname = 'IMOKURI';
+  var disqus_identifier = "/blog/2015/04/create-github-pages-with-hakyll.html";
+  var disqus_title = "Hakyllを使ってGitHub Pagesを作成して、そのソースも管理して、Travis CIで自動デプロイする。";
+  var disqus_url = "https://imokuri123.com/blog/2015/04/create-github-pages-with-hakyll.html";
+
+  /* * * DON'T EDIT BELOW THIS LINE * * */
+  (function() {
+    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+
+
+  </div>
+</div>
+
+<div class="section footer">
+    <ul class="sns-icon">
+      <li><a href="//www.reddit.com/user/IMOKURI"><span class="icon-reddit"></span></a></li>
+      <li><a href="//twitter.com/rouge_pawn"><span class="icon-twitter"></span></a></li>
+      <li><a href="//github.com/IMOKURI"><span class="icon-octoface"></span></a></li>
+      <li><a href="../../../feed/rss.xml"><span class="icon-rss2"></span></a></li>
+    </ul>
+
+  <footer class="container">
+    Site proudly generated by <a href="http://jaspervdj.be/hakyll">Hakyll</a> and <a href="http://getskeleton.com/">Skeleton</a>. The entire source code of this website is <a href="https://github.com/IMOKURI/IMOKURI.github.io">available at Github</a>.
+  </footer>
+</div>

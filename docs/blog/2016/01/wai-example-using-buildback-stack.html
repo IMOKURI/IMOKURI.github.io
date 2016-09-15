@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<script>
+var host = "imokuri123.com"
+if (window.location.host == host && window.location.protocol != "https:") {
+  window.location.protocol = "https:"
+}
+</script>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="description" content="Blog" />
+<meta name="author" content="IMOKURI" />
+<title>stackのbuildpackを使って、herokuにHaskellのプログラムをリリースする。 - Wake up! Good night*</title>
+<link rel="stylesheet" href="../../../css/normalize.css">
+<link rel="stylesheet" href="../../../css/skeleton.css">
+
+<link rel="shortcut icon" href="../../../images/favicon.ico">
+<link rel="alternate" type="application/rss+xml" title="最近の投稿 - Wake up! Good night*" href="https://imokuri123.com/feed/rss.xml">
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-62022693-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+<div class="section header">
+  <header class="container">
+    <img src="../../../images/title.png" alt="Title - Wake Up! Good Night*">
+  </header>
+  <nav class="container">
+    <ul>
+      <li><a href="../../../">Home</a></li>
+      <li><a href="../../../blog/">Blog</a></li>
+      <li><a href="../../../about/">About</a></li>
+    </ul>
+  </nav>
+</div>
+
+<div class="section body">
+  <div class="container">
+    <article>
+<h1>stackのbuildpackを使って、herokuにHaskellのプログラムをリリースする。</h1>
+
+<p>
+  <div class="info">
+    Posted on January 12, 2016
+    
+  </div>
+  <div class="info">
+    
+      Tags: <a href="../../../tags/haskell.html">haskell</a>, <a href="../../../tags/stack.html">stack</a>, <a href="../../../tags/heroku.html">heroku</a>
+    
+  </div>
+</p>
+
+<p>Haskellのプログラムをherokuにリリースしようとして、調べていたところ、<a href="http://qiita.com/eielh/items/e52aeee1419ba611a84d">dockerを使ってリリースする方法</a>が見つかったのですが、なんだかんだでうまく行かず、一旦断念。それはリベンジすることにして、<a href="https://github.com/mfine/heroku-buildpack-stack">buildpackのstack版</a>が見つかったので、それを使って、リリースをしてみました。</p>
+<!--more-->
+<p>準備するものは、通常のstackのプログラム一式と、herokuでの起動プログラムを指定するProcfileです。</p>
+<p>buildpackでデプロイすると、起動プログラムはパスの通っている /app/.local/bin にコピーされるので、Procfileでファイルパスの指定は不要です。</p>
+<p><code>web: &lt;起動プログラム名&gt;</code></p>
+<p>ソースが準備出来たら、以下の要領で、herokuアプリを作成します。</p>
+<p><code>heroku create &lt;アプリ名&gt; --buildpack https://github.com/mfine/heroku-buildpack-stack.git</code></p>
+<p>herokuにpushすると、1回目は依存パッケージを含めたbuildが始まります。2回目以降は、インストール済みのパッケージが使えるので、buildの時間はかなり短縮されます。</p>
+<p><code>git push heroku master</code></p>
+<p>今回作ったレポジトリは<a href="https://github.com/IMOKURI/wai-example-using-buildback-stack">こちら</a>です。</p>
+
+</article>
+
+
+<a href="//www.reddit.com/submit" onclick="window.location = '//www.reddit.com/submit?url=' + encodeURIComponent(window.location); return false"> <img src="//www.redditstatic.com/spreddit7.gif" alt="submit to reddit" border="0" /> </a>
+
+<a href="https://twitter.com/share" class="twitter-share-button" data-related="rouge_pawn">Tweet</a>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+
+<a href="http://b.hatena.ne.jp/entry/imokuri123.com/blog/2016/01/wai-example-using-buildback-stack.html" class="hatena-bookmark-button" data-hatena-bookmark-title="stackのbuildpackを使って、herokuにHaskellのプログラムをリリースする。 - Wake up! Good night*" data-hatena-bookmark-layout="standard-noballoon" data-hatena-bookmark-lang="ja" title="このエントリーをはてなブックマークに追加"><img src="https://b.st-hatena.com/images/entry-button/button-only@2x.png" alt="このエントリーをはてなブックマークに追加" width="20" height="20" style="border: none;" /></a><script type="text/javascript" src="https://b.st-hatena.com/js/bookmark_button.js" charset="utf-8" async="async"></script>
+
+
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+  /* * * CONFIGURATION VARIABLES * * */
+  var disqus_shortname = 'IMOKURI';
+  var disqus_identifier = "/blog/2016/01/wai-example-using-buildback-stack.html";
+  var disqus_title = "stackのbuildpackを使って、herokuにHaskellのプログラムをリリースする。";
+  var disqus_url = "https://imokuri123.com/blog/2016/01/wai-example-using-buildback-stack.html";
+
+  /* * * DON'T EDIT BELOW THIS LINE * * */
+  (function() {
+    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+
+
+  </div>
+</div>
+
+<div class="section footer">
+    <ul class="sns-icon">
+      <li><a href="//www.reddit.com/user/IMOKURI"><span class="icon-reddit"></span></a></li>
+      <li><a href="//twitter.com/rouge_pawn"><span class="icon-twitter"></span></a></li>
+      <li><a href="//github.com/IMOKURI"><span class="icon-octoface"></span></a></li>
+      <li><a href="../../../feed/rss.xml"><span class="icon-rss2"></span></a></li>
+    </ul>
+
+  <footer class="container">
+    Site proudly generated by <a href="http://jaspervdj.be/hakyll">Hakyll</a> and <a href="http://getskeleton.com/">Skeleton</a>. The entire source code of this website is <a href="https://github.com/IMOKURI/IMOKURI.github.io">available at Github</a>.
+  </footer>
+</div>

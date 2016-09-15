@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"
+    xmlns:dc="http://purl.org/dc/elements/1.1/">
+    <channel>
+        <title>最近の投稿 - Wake up! Good night*</title>
+        <link>https://imokuri123.com</link>
+        <description><![CDATA[インフラ系SEのまとめノート]]></description>
+        <atom:link href="https://imokuri123.com/feed/rss.xml" rel="self"
+                   type="application/rss+xml" />
+        <lastBuildDate>Thu, 08 Sep 2016 12:00:00 UT</lastBuildDate>
+        <item>
+    <title>Alpine Linuxでインフラ構築・検証に必要なサーバ機能を揃えておく。</title>
+    <link>https://imokuri123.com/blog/2016/09/build-servers-by-alpine-linux.html</link>
+    <description><![CDATA[<p>デスクトップ上の仮想マシンで、ちょっと検証したいということが、よくありますよね。</p>
+<p>そんな時に、NTPサーバとか、DNSサーバとか、はたまたLDAPサーバとかが、欲しくなったりすることもよくあります。</p>
+<p>だからと言って、Ubuntuとか、CentOSとかでガッツリ作ってしまうと、それで、デスクトップPCのリソースを食ってしまって、やりたかった検証がスムーズに行かない、ってことになりがちです。（私のこと）</p>
+<p>そこで、最近コンテナ向けに流行っている？軽量LinuxのAlpine Linuxを使ってこれらを構築してしまいたいともいます。</p>
+<p>そのサイズ、なんとメモリ256MB、DISK8GB！お買い得！（違</p>
+]]></description>
+    <pubDate>Thu, 08 Sep 2016 12:00:00 UT</pubDate>
+    <guid>https://imokuri123.com/blog/2016/09/build-servers-by-alpine-linux.html</guid>
+    <dc:creator>IMOKURI</dc:creator>
+</item>
+<item>
+    <title>FedoraでChromeのフォントをきれいにする</title>
+    <link>https://imokuri123.com/blog/2016/01/improve-font-rendering-on-fedora.html</link>
+    <description><![CDATA[<p>普段遣いのパソコンをWindowsからLinux(Fedora)に入れ替えました。日頃仕事で、LinuxはRedhatを使用することが多く、使いなれているので、Fedoraを選びました。ゆうゆう使い始めたのも束の間、Chromeのフォントが汚い。。。そこで以下の対処をしました。</p>
+]]></description>
+    <pubDate>Wed, 27 Jan 2016 19:00:00 UT</pubDate>
+    <guid>https://imokuri123.com/blog/2016/01/improve-font-rendering-on-fedora.html</guid>
+    <dc:creator>IMOKURI</dc:creator>
+</item>
+<item>
+    <title>LinuxのいろいろなID</title>
+    <link>https://imokuri123.com/blog/2016/01/linux-ids.html</link>
+    <description><![CDATA[<p>LinuxのいろいろなIDについてまとめてみますー。</p>
+]]></description>
+    <pubDate>Mon, 18 Jan 2016 10:56:00 UT</pubDate>
+    <guid>https://imokuri123.com/blog/2016/01/linux-ids.html</guid>
+    <dc:creator>IMOKURI</dc:creator>
+</item>
+<item>
+    <title>git pushの出力がstderrであることの弊害</title>
+    <link>https://imokuri123.com/blog/2016/01/git-push-output-is-stderr.html</link>
+    <description><![CDATA[<p>git pushなどの出力は標準エラー(stderr)であることを最近知りました。。なぜstderrなのか、は過去<a href="http://git.661346.n2.nabble.com/git-push-output-goes-into-stderr-td6758028.html">こちら</a>でも話題となったようです。端的に言うと、「プログラムの実行結果の出力ではなく、実行の過程での出力だから」といった感じかと思います。</p>
+<p>では、それで何がまずいのかですが。</p>
+]]></description>
+    <pubDate>Fri, 15 Jan 2016 21:57:00 UT</pubDate>
+    <guid>https://imokuri123.com/blog/2016/01/git-push-output-is-stderr.html</guid>
+    <dc:creator>IMOKURI</dc:creator>
+</item>
+<item>
+    <title>stackのbuildpackを使って、herokuにHaskellのプログラムをリリースする。</title>
+    <link>https://imokuri123.com/blog/2016/01/wai-example-using-buildback-stack.html</link>
+    <description><![CDATA[<p>Haskellのプログラムをherokuにリリースしようとして、調べていたところ、<a href="http://qiita.com/eielh/items/e52aeee1419ba611a84d">dockerを使ってリリースする方法</a>が見つかったのですが、なんだかんだでうまく行かず、一旦断念。それはリベンジすることにして、<a href="https://github.com/mfine/heroku-buildpack-stack">buildpackのstack版</a>が見つかったので、それを使って、リリースをしてみました。</p>
+]]></description>
+    <pubDate>Tue, 12 Jan 2016 21:00:00 UT</pubDate>
+    <guid>https://imokuri123.com/blog/2016/01/wai-example-using-buildback-stack.html</guid>
+    <dc:creator>IMOKURI</dc:creator>
+</item>
+<item>
+    <title>Github PagesのDefault branchを変えてみた。</title>
+    <link>https://imokuri123.com/blog/2015/12/modify-default-branch.html</link>
+    <description><![CDATA[<p><a href="https://github.com/IMOKURI">GithubのProfileのページ</a>で、草が生えないなぁと思っていたのです。<br />
+Github Pagesのレポジトリを結構更新しているのになぁです。</p>
+<p>調べてみると、<a href="https://help.github.com/articles/why-are-my-contributions-not-showing-up-on-my-profile/#commits">草を生やすには、Default branchへの更新でないとダメ</a>と判明。。</p>
+<p>であれば、Github PagesのDefault branchを変えてみたらどうだろうか、をやってみました。</p>
+]]></description>
+    <pubDate>Fri, 25 Dec 2015 18:00:00 UT</pubDate>
+    <guid>https://imokuri123.com/blog/2015/12/modify-default-branch.html</guid>
+    <dc:creator>IMOKURI</dc:creator>
+</item>
+<item>
+    <title>Hakyllでブログを作る(実践編4)</title>
+    <link>https://imokuri123.com/blog/2015/12/how-to-create-blog-with-hakyll-part4.html</link>
+    <description><![CDATA[<p>さて、<a href="/blog/2015/12/how-to-create-blog-with-hakyll-part3.html">前回</a>の続きになります。</p>
+<p>最終回は、シンタックスハイライト＋αで締めくくりたいと思います。</p>
+<p>カスタマイズしたソースは<a href="https://github.com/IMOKURI/hakyll-blog-example">こちら</a>に公開していますので、適宜ご参照ください。</p>
+]]></description>
+    <pubDate>Sat, 19 Dec 2015 00:03:00 UT</pubDate>
+    <guid>https://imokuri123.com/blog/2015/12/how-to-create-blog-with-hakyll-part4.html</guid>
+    <dc:creator>IMOKURI</dc:creator>
+</item>
+<item>
+    <title>Hakyllでブログを作る(実践編3)</title>
+    <link>https://imokuri123.com/blog/2015/12/how-to-create-blog-with-hakyll-part3.html</link>
+    <description><![CDATA[<p>さて、<a href="/blog/2015/12/how-to-create-blog-with-hakyll-part2.html">前回</a>の続きになります。</p>
+<p>今回は、カスタマイズ後半戦です。</p>
+<p>カスタマイズしたソースは<a href="https://github.com/IMOKURI/hakyll-blog-example">こちら</a>に公開していますので、適宜ご参照ください。</p>
+]]></description>
+    <pubDate>Sat, 19 Dec 2015 00:02:00 UT</pubDate>
+    <guid>https://imokuri123.com/blog/2015/12/how-to-create-blog-with-hakyll-part3.html</guid>
+    <dc:creator>IMOKURI</dc:creator>
+</item>
+<item>
+    <title>Hakyllでブログを作る(実践編2)</title>
+    <link>https://imokuri123.com/blog/2015/12/how-to-create-blog-with-hakyll-part2.html</link>
+    <description><![CDATA[<p>さて、<a href="/blog/2015/12/how-to-create-blog-with-hakyll-part1.html">前回</a>の続きになります。</p>
+<p>今回は、テンプレートを離れて、いろいろカスタマイズしていきます。</p>
+<p>カスタマイズしたソースは<a href="https://github.com/IMOKURI/hakyll-blog-example">こちら</a>に公開していますので、適宜ご参照ください。</p>
+]]></description>
+    <pubDate>Sat, 19 Dec 2015 00:01:00 UT</pubDate>
+    <guid>https://imokuri123.com/blog/2015/12/how-to-create-blog-with-hakyll-part2.html</guid>
+    <dc:creator>IMOKURI</dc:creator>
+</item>
+<item>
+    <title>Hakyllでブログを作る(実践編)</title>
+    <link>https://imokuri123.com/blog/2015/12/how-to-create-blog-with-hakyll-part1.html</link>
+    <description><![CDATA[<p>Haskellのアドベントカレンダー初参加です。よろしくお願いします。</p>
+<p>このサイトは<a href="http://jaspervdj.be/hakyll/">Hakyll</a>で運営しています。</p>
+<p>少しずつノウハウが溜まってきたのでまとめてみたいと思います。</p>
+<p>Hakyllのチュートリアル的な内容になっています。</p>
+]]></description>
+    <pubDate>Sat, 19 Dec 2015 00:00:00 UT</pubDate>
+    <guid>https://imokuri123.com/blog/2015/12/how-to-create-blog-with-hakyll-part1.html</guid>
+    <dc:creator>IMOKURI</dc:creator>
+</item>
+
+    </channel>
+</rss>
