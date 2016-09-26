@@ -11,6 +11,5 @@ Sources of my website are in "source" branch.
 ~~~
 git clone https://github.com/IMOKURI/IMOKURI.github.io.git
 stack setup
-stack build
-stack exec site build
+./Build.hs build
 ~~~
