@@ -1,5 +1,5 @@
 #!/usr/bin/env stack
--- stack --resolver lts-6.22 --install-ghc runghc --package shake
+-- stack --resolver lts-8.0 --install-ghc runghc --package shake
 
 import Development.Shake
 import Development.Shake.Command
