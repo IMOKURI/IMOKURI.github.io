@@ -184,8 +184,8 @@ _site</code></pre>
 <span class="fu">env:</span>
   <span class="fu">global:</span>
     <span class="kw">-</span> GH_NAME=<span class="st">&quot;Travis on behalf of IMOKURI&quot;</span>
-    <span class="kw">-</span> <span class="fu">secure:</span> <span class="st">&quot;&lt;text that encrypts your email address&gt;&quot;</span>
-    <span class="kw">-</span> <span class="fu">secure:</span> <span class="st">&quot;&lt;text that encrypts github token&gt;&quot;</span>
+    <span class="kw">-</span> <span class="fu">secure:</span><span class="at"> </span><span class="st">&quot;&lt;text that encrypts your email address&gt;&quot;</span>
+    <span class="kw">-</span> <span class="fu">secure:</span><span class="at"> </span><span class="st">&quot;&lt;text that encrypts github token&gt;&quot;</span>
 
   <span class="fu">matrix:</span>
     <span class="kw">-</span> CABALVER=1.20 GHCVER=7.8.3
@@ -193,10 +193,10 @@ _site</code></pre>
 <span class="co">#    - CABALVER=head GHCVER=head</span>
 
 <span class="fu">before_install:</span>
-  <span class="kw">-</span> <span class="fu">travis_retry sudo add-apt-repository -y ppa:</span>hvr/ghc
+  <span class="kw">-</span> <span class="fu">travis_retry sudo add-apt-repository -y ppa:</span><span class="at">hvr/ghc</span>
   <span class="kw">-</span> travis_retry sudo apt-get update
   <span class="kw">-</span> travis_retry sudo apt-get install cabal-install-$CABALVER ghc-$GHCVER
-  <span class="kw">-</span> <span class="fu">export PATH=/opt/ghc/$GHCVER/bin:</span>/opt/cabal/$CABALVER/bin:$PATH
+  <span class="kw">-</span> <span class="fu">export PATH=/opt/ghc/$GHCVER/bin:</span><span class="at">/opt/cabal/$CABALVER/bin:$PATH</span>
 
   <span class="kw">-</span> git submodule foreach --recursive <span class="st">'git checkout master; git ls-files | grep -v README | grep -v CNAME | xargs -r git rm'</span>
 
@@ -216,12 +216,12 @@ _site</code></pre>
 <span class="fu">after_success:</span>
   <span class="kw">-</span> if <span class="kw">[[</span> <span class="st">&quot;$TRAVIS_BRANCH&quot;</span> == <span class="st">&quot;source&quot;</span> <span class="kw">]]</span>; then
     cd _site;
-    <span class="fu">export REMOTE=$(git config remote.origin.url | sed 's/.*:</span>\/\///');
-    <span class="fu">git remote add github https:</span>//${GH_TOKEN}@${REMOTE};
+    <span class="fu">export REMOTE=$(git config remote.origin.url | sed 's/.*:</span><span class="at">\/\///');</span>
+    <span class="fu">git remote add github https:</span><span class="at">//${GH_TOKEN}@${REMOTE};</span>
     git add --all;
     git status;
     git commit -m <span class="st">&quot;Built by Travis ( build $TRAVIS_BUILD_NUMBER )&quot;</span>;
-    <span class="fu">git push github master:</span>master 2&gt;&amp;1 | grep -v http;
+    <span class="fu">git push github master:</span><span class="at">master 2&gt;&amp;1 | grep -v http;</span>
     fi</code></pre></div>
 <hr />
 <p>時は来た。。</p>

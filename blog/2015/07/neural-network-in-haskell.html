@@ -129,17 +129,17 @@ n回学習ごとに更新するミニバッチ（minibatch n）が用意され�
 <p>うまくいけば、XORの結果が得られていると思います。<br />
 （今回のソースの条件だと、最初の乱数の状況によってはあまりよい結果にならない場合もありそうです・・）</p>
 <p>良いケース</p>
-<p>==&gt; XOR predictions:<br />
-(0,0): fromList [5.9859958e-3]<br />
-(1,0): fromList [0.9938293]<br />
-(0,1): fromList [0.9938205]<br />
-(1,1): fromList [7.5507853e-3]</p>
+<div style="white-space: pre-line;">==&gt; XOR predictions:
+(0,0): fromList [5.9859958e-3]
+(1,0): fromList [0.9938293]
+(0,1): fromList [0.9938205]
+(1,1): fromList [7.5507853e-3]</div>
 <p>悪いケース・・・</p>
-<p>==&gt; XOR predictions:<br />
-(0,0): fromList [5.984603e-3]<br />
-(1,0): fromList [0.99414057]<br />
-(0,1): fromList [0.4489829]<br />
-(1,1): fromList [0.44912618]</p>
+<div style="white-space: pre-line;">==&gt; XOR predictions:
+(0,0): fromList [5.984603e-3]
+(1,0): fromList [0.99414057]
+(0,1): fromList [0.4489829]
+(1,1): fromList [0.44912618]</div>
 <p>この形を基本に様々なケースに拡張してみたいと思います。</p>
 <hr />
 <p>今回作成したコードは<a href="https://github.com/IMOKURI/nn-sample">こちら</a>です。<br />
