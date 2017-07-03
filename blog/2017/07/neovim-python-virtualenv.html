@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<script>
+var host = "imokuri123.com"
+if (window.location.host == host && window.location.protocol != "https:") {
+  window.location.protocol = "https:"
+}
+</script>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="description" content="Blog" />
+<meta name="author" content="IMOKURI" />
+<title>Neovimでvirtualenvを使うときのpython_host_progの設定 - Wake up! Good night*</title>
+<link rel="stylesheet" href="../../../css/normalize.css">
+<link rel="stylesheet" href="../../../css/skeleton.css">
+
+<link rel="stylesheet" href="../../../css/highlight.css">
+
+<link rel="shortcut icon" href="../../../images/favicon.ico">
+<link rel="alternate" type="application/rss+xml" title="最近の投稿 - Wake up! Good night*" href="https://imokuri123.com/feed/rss.xml">
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-62022693-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+<div class="section header">
+  <header class="container">
+    <img src="../../../images/title.png" alt="Title - Wake Up! Good Night*">
+  </header>
+  <nav class="container">
+    <ul>
+      <li><a href="../../../">Home</a></li>
+      <li><a href="../../../blog/">Blog</a></li>
+      <li><a href="../../../about/">About</a></li>
+    </ul>
+  </nav>
+</div>
+
+<div class="section body">
+  <div class="container">
+    <article>
+<h1>Neovimでvirtualenvを使うときのpython_host_progの設定</h1>
+
+<p>
+  <div class="info">
+    Posted on July  3, 2017
+    
+  </div>
+  <div class="info">
+    
+      Tags: <a href="../../../tags/neovim.html">neovim</a>, <a href="../../../tags/python.html">python</a>, <a href="../../../tags/virtualenv.html">virtualenv</a>
+    
+  </div>
+</p>
+
+<p>neovimでpythonのvirtualenvを使うときの<code>python_host_prog</code>の設定についてです。</p>
+<p>neovimで補完などを有効化する場合、pythonのneovimパッケージをインストールしていると思いますが、デフォルトでvirtualenvを作ると、そのneovimパッケージが入っていません。</p>
+<p>そこで、neovimパッケージをvirtualenvにインストールして、<code>python_host_prog</code>にvirtualenvのpythonを指定するのが一般的かと思います。<a href="https://github.com/zchee/deoplete-jedi/wiki/Setting-up-Python-for-Neovim">参考</a></p>
+<p>しかし、この方法だと、pythonの仮想環境を作る度に、neovimパッケージをインストールする手間が発生してしまいます。</p>
+<p>そこで、virtualenvを作成したときのデフォルトのパッケージにneovimなどを追加するようにし、<code>python_host_prog</code>には、現在のvirtualenvのpythonが指定されるようにしたいと思います。</p>
+<!--more-->
+<h2 id="virtualenv作成時のデフォルトのパッケージ追加">virtualenv作成時のデフォルトのパッケージ追加</h2>
+<p>まず、追加したいパッケージをあるディレクトリにインストールします。この時、python2用とpython3用の両方を準備しておくのが良いと思います。</p>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="co"># python2用のディレクトリ作成</span>
+<span class="fu">mkdir</span> -p ~/.virtualenvs/deps
+
+<span class="co"># python3用のディレクトリ作成</span>
+<span class="fu">mkdir</span> -p ~/.virtualenvs/deps3
+
+<span class="co"># デフォルトでvirtualenvに追加したいパッケージをインストール(python2)</span>
+<span class="ex">pip2</span> install -U --target ~/.virtualenvs/deps <span class="op">&lt;</span>インストールしたいパッケージ(neovim jedi flake8など)<span class="op">&gt;</span>
+
+<span class="co"># デフォルトでvirtualenvに追加したいパッケージをインストール(python3)</span>
+<span class="ex">pip3</span> install -U --target ~/.virtualenvs/deps3 <span class="op">&lt;</span>インストールしたいパッケージ(neovim jedi flake8など)<span class="op">&gt;</span></code></pre></div>
+<p>次に、virtualenv作成時に、これらのパッケージも参照するように設定します。以下のように <code>~/.virtualenv/postmkvirtualenv</code> を編集します。</p>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="co"># find directory</span>
+<span class="va">SITEDIR=$(</span><span class="ex">virtualenvwrapper_get_site_packages_dir</span><span class="va">)</span>
+<span class="va">PYVER=$(</span><span class="ex">virtualenvwrapper_get_python_version</span><span class="va">)</span>
+
+<span class="co"># create new .pth file with our path depending of python version</span>
+<span class="kw">if [[</span> <span class="va">$PYVER</span> <span class="ot">==</span> 3*<span class="kw"> ]]</span>;
+<span class="kw">then</span>
+    <span class="bu">echo</span> <span class="st">&quot;</span><span class="va">$HOME</span><span class="st">/.virtualenvs/deps3/&quot;</span> <span class="op">&gt;</span> <span class="st">&quot;</span><span class="va">$SITEDIR</span><span class="st">/extra.pth&quot;</span><span class="kw">;</span>
+<span class="kw">else</span>
+    <span class="bu">echo</span> <span class="st">&quot;</span><span class="va">$HOME</span><span class="st">/.virtualenvs/deps/&quot;</span> <span class="op">&gt;</span> <span class="st">&quot;</span><span class="va">$SITEDIR</span><span class="st">/extra.pth&quot;</span><span class="kw">;</span>
+<span class="kw">fi</span></code></pre></div>
+<p>これでvirtualenv作成時に、上記でインストールしたパッケージも読み込まれます。</p>
+<h2 id="neovimのpython_host_progの設定">neovimの<code>python_host_prog</code>の設定</h2>
+<p>続いて、neovimで、virtualenvが有効な場合は、virtualenvのpythonを参照するように指定します。</p>
+<pre class="nvim"><code>let g:python_host_prog = '/usr/bin/python2'
+let g:python3_host_prog = '/usr/bin/python3'
+
+if exists(&quot;$VIRTUAL_ENV&quot;)
+  if !empty(glob(&quot;$VIRTUAL_ENV/bin/python3&quot;))
+    let g:python3_host_prog = substitute(system(&quot;which python&quot;), '\n', '', 'g')
+  else
+    let g:python_host_prog = substitute(system(&quot;which python&quot;), '\n', '', 'g')
+  endif
+endif</code></pre>
+<hr />
+<p><a href="http://www.pygopar.com/how-to-add-default-packages-to-a-virtualenv/">参照</a></p>
+
+</article>
+
+
+<a href="//www.reddit.com/submit" onclick="window.location = '//www.reddit.com/submit?url=' + encodeURIComponent(window.location); return false"> <img src="//www.redditstatic.com/spreddit7.gif" alt="submit to reddit" border="0" /> </a>
+
+<a href="https://twitter.com/share" class="twitter-share-button" data-related="rouge_pawn">Tweet</a>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+
+<a href="http://b.hatena.ne.jp/entry/imokuri123.com/blog/2017/07/neovim-python-virtualenv.html" class="hatena-bookmark-button" data-hatena-bookmark-title="Neovimでvirtualenvを使うときのpython_host_progの設定 - Wake up! Good night*" data-hatena-bookmark-layout="standard-noballoon" data-hatena-bookmark-lang="ja" title="このエントリーをはてなブックマークに追加"><img src="https://b.st-hatena.com/images/entry-button/button-only@2x.png" alt="このエントリーをはてなブックマークに追加" width="20" height="20" style="border: none;" /></a><script type="text/javascript" src="https://b.st-hatena.com/js/bookmark_button.js" charset="utf-8" async="async"></script>
+
+
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+  /* * * CONFIGURATION VARIABLES * * */
+  var disqus_shortname = 'IMOKURI';
+  var disqus_identifier = "/blog/2017/07/neovim-python-virtualenv.html";
+  var disqus_title = "Neovimでvirtualenvを使うときのpython_host_progの設定";
+  var disqus_url = "https://imokuri123.com/blog/2017/07/neovim-python-virtualenv.html";
+
+  /* * * DON'T EDIT BELOW THIS LINE * * */
+  (function() {
+    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+
+
+  </div>
+</div>
+
+<div class="section footer">
+    <ul class="sns-icon">
+      <li><a href="//www.reddit.com/user/IMOKURI"><span class="icon-reddit"></span></a></li>
+      <li><a href="//twitter.com/rouge_pawn"><span class="icon-twitter"></span></a></li>
+      <li><a href="//github.com/IMOKURI"><span class="icon-octoface"></span></a></li>
+      <li><a href="../../../feed/rss.xml"><span class="icon-rss2"></span></a></li>
+    </ul>
+
+  <footer class="container">
+    Site proudly generated by <a href="http://jaspervdj.be/hakyll">Hakyll</a> and <a href="http://getskeleton.com/">Skeleton</a>. The entire source code of this website is <a href="https://github.com/IMOKURI/IMOKURI.github.io">available at Github</a>.
+  </footer>
+</div>

@@ -47,6 +47,33 @@ if (window.location.host == host && window.location.protocol != "https:") {
 
 
 
+  <h2>Neovimでvirtualenvを使うときのpython_host_progの設定</h2>
+
+  <p>
+    <div class="info">
+      Posted on July  3, 2017
+      
+    </div>
+    <div class="info">
+      
+        Tags: <a href="../tags/neovim.html">neovim</a>, <a href="../tags/python.html">python</a>, <a href="../tags/virtualenv.html">virtualenv</a>
+      
+    </div>
+  </p>
+
+  
+    <p>neovimでpythonのvirtualenvを使うときの<code>python_host_prog</code>の設定についてです。</p>
+<p>neovimで補完などを有効化する場合、pythonのneovimパッケージをインストールしていると思いますが、デフォルトでvirtualenvを作ると、そのneovimパッケージが入っていません。</p>
+<p>そこで、neovimパッケージをvirtualenvにインストールして、<code>python_host_prog</code>にvirtualenvのpythonを指定するのが一般的かと思います。<a href="https://github.com/zchee/deoplete-jedi/wiki/Setting-up-Python-for-Neovim">参考</a></p>
+<p>しかし、この方法だと、pythonの仮想環境を作る度に、neovimパッケージをインストールする手間が発生してしまいます。</p>
+<p>そこで、virtualenvを作成したときのデフォルトのパッケージにneovimなどを追加するようにし、<code>python_host_prog</code>には、現在のvirtualenvのpythonが指定されるようにしたいと思います。</p>
+...<a href="../blog/2017/07/neovim-python-virtualenv.html">(続きを読む)</a>
+  
+
+  <hr>
+
+
+
   <h2>Alpine Linuxでインフラ構築・検証に必要なサーバ機能を揃えておく。</h2>
 
   <p>
@@ -262,32 +289,6 @@ Github Pagesのレポジトリを結構更新しているのになぁです。</
 <p>今回は、テンプレートを離れて、いろいろカスタマイズしていきます。</p>
 <p>カスタマイズしたソースは<a href="https://github.com/IMOKURI/hakyll-blog-example">こちら</a>に公開していますので、適宜ご参照ください。</p>
 ...<a href="../blog/2015/12/how-to-create-blog-with-hakyll-part2.html">(続きを読む)</a>
-  
-
-  <hr>
-
-
-
-  <h2>Hakyllでブログを作る(実践編)</h2>
-
-  <p>
-    <div class="info">
-      Posted on December 19, 2015
-      
-    </div>
-    <div class="info">
-      
-        Tags: <a href="../tags/haskell.html">haskell</a>, <a href="../tags/hakyll.html">hakyll</a>, <a href="../tags/github.html">github</a>, <a href="../tags/github-pages.html">github-pages</a>
-      
-    </div>
-  </p>
-
-  
-    <p>Haskellのアドベントカレンダー初参加です。よろしくお願いします。</p>
-<p>このサイトは<a href="http://jaspervdj.be/hakyll/">Hakyll</a>で運営しています。</p>
-<p>少しずつノウハウが溜まってきたのでまとめてみたいと思います。</p>
-<p>Hakyllのチュートリアル的な内容になっています。</p>
-...<a href="../blog/2015/12/how-to-create-blog-with-hakyll-part1.html">(続きを読む)</a>
   
 
   <hr>
