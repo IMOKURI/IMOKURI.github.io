@@ -6,8 +6,9 @@ title: About
 # About
 
 数学が好きなインフラ系SEです。  
-最近は、Haskellに興味があります。  
-趣味はフットサルを少々です。  
+PythonやAnsibleをカリカリ書いたり、  
+BigDataのシステムを構築したり、してます。  
+趣味は将棋(主に見る将)や、フットサルを少々です。  
 宜しくお願いします。  
 
 [![Project Euler](https://projecteuler.net/profile/IMOKURI.png)](https://projecteuler.net/)  
