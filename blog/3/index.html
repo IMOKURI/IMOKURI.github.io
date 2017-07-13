@@ -47,6 +47,37 @@ if (window.location.host == host && window.location.protocol != "https:") {
 
 
 
+  <h2>HaskellでSNMP Trapを投げる</h2>
+
+  <p>
+    <div class="info">
+      Posted on June 29, 2014
+      
+    </div>
+    <div class="info">
+      
+        Tags: <a href="../../tags/haskell.html">haskell</a>, <a href="../../tags/snmp.html">snmp</a>
+      
+    </div>
+  </p>
+
+  
+    <p>Haskellには、SNMP Trapを送信するライブラリがないですかね。</p>
+<p>ということで、簡単なものだけ作ってみました。</p>
+<p>目指したものとしては、</p>
+<ol style="list-style-type: decimal">
+<li><p>送信したいSNMP Trapを複数定義した設定ファイルを読み込む</p></li>
+<li><p>SNMP Trapの定義ごとにSNMP Trapのパケットを組み立てる</p></li>
+<li><p>SNMP Trapの定義ごとにスレッドを立てて、SNMP Trapを送信する（指定した間隔で投げ続ける）</p></li>
+</ol>
+<p>と言った感じです。</p>
+...<a href="../../blog/2014/06/send-snmptrap-using-haskell.html">(続きを読む)</a>
+  
+
+  <hr>
+
+
+
   <h2>交渉で良い結果を得る方法7つ</h2>
 
   <p>
@@ -289,33 +320,6 @@ if (window.location.host == host && window.location.protocol != "https:") {
 <p>それは、必ずしもそうではない。ということを皮切りに、</p>
 <p>選択肢が多い世界で、幸せに生きる秘訣を伝授してくれています。</p>
 ...<a href="../../blog/2013/12/the-paradox-of-choice.html">(続きを読む)</a>
-  
-
-  <hr>
-
-
-
-  <h2>タトゥーのように残るあなたのオンラインライフ</h2>
-
-  <p>
-    <div class="info">
-      Posted on December 17, 2013
-      
-    </div>
-    <div class="info">
-      
-        Tags: <a href="../../tags/TED.html">TED</a>
-      
-    </div>
-  </p>
-
-  
-    <p>SNSやGOOGLEを利用したオンラインの活動は、</p>
-<p>記録されています。</p>
-<p>そして、予想以上にたやすくアクセスされます。</p>
-<p>意識し過ぎると、息苦しいかもしれませんが、</p>
-<p>無頓着にはならないようにしたいものです。</p>
-...<a href="../../blog/2013/12/how-to-think-about-digital-tattoos.html">(続きを読む)</a>
   
 
   <hr>

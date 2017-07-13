@@ -7,8 +7,19 @@
         <description><![CDATA[インフラ系SEのまとめノート]]></description>
         <atom:link href="https://imokuri123.com/feed/rss.xml" rel="self"
                    type="application/rss+xml" />
-        <lastBuildDate>Wed, 12 Jul 2017 19:00:00 UT</lastBuildDate>
+        <lastBuildDate>Thu, 13 Jul 2017 18:00:00 UT</lastBuildDate>
         <item>
+    <title>AnsibleのCallbackプラグインのCALLBACK_TYPEについて</title>
+    <link>https://imokuri123.com/blog/2017/07/ansible-callback-type.html</link>
+    <description><![CDATA[<p>AnsibleのCallbackプラグインを書くときの<code>CALLBACK_TYPE</code>についてです。</p>
+<p>Ansible 2.0以降で、Callbackプラグインを書くときは、<code>CALLBACK_VERSION</code>と<code>CALLBACK_NAME</code>の設定が必須になっています。</p>
+<p>それ以外で、<code>CALLBACK_TYPE</code> も設定できるのですが、どんな設定ができるのか（一覧はないものの、）慣例となっているものと整理したいと思います。</p>
+]]></description>
+    <pubDate>Thu, 13 Jul 2017 18:00:00 UT</pubDate>
+    <guid>https://imokuri123.com/blog/2017/07/ansible-callback-type.html</guid>
+    <dc:creator>IMOKURI</dc:creator>
+</item>
+<item>
     <title>AnsibleでDotfilesをインストール</title>
     <link>https://imokuri123.com/blog/2017/07/ansible-for-dotfiles.html</link>
     <description><![CDATA[<p>DotfilesのインストールをAnsibleのPlaybookにしました。</p>
@@ -104,17 +115,6 @@ Github Pagesのレポジトリを結構更新しているのになぁです。</
 ]]></description>
     <pubDate>Sat, 19 Dec 2015 00:03:00 UT</pubDate>
     <guid>https://imokuri123.com/blog/2015/12/how-to-create-blog-with-hakyll-part4.html</guid>
-    <dc:creator>IMOKURI</dc:creator>
-</item>
-<item>
-    <title>Hakyllでブログを作る(実践編3)</title>
-    <link>https://imokuri123.com/blog/2015/12/how-to-create-blog-with-hakyll-part3.html</link>
-    <description><![CDATA[<p>さて、<a href="/blog/2015/12/how-to-create-blog-with-hakyll-part2.html">前回</a>の続きになります。</p>
-<p>今回は、カスタマイズ後半戦です。</p>
-<p>カスタマイズしたソースは<a href="https://github.com/IMOKURI/hakyll-blog-example">こちら</a>に公開していますので、適宜ご参照ください。</p>
-]]></description>
-    <pubDate>Sat, 19 Dec 2015 00:02:00 UT</pubDate>
-    <guid>https://imokuri123.com/blog/2015/12/how-to-create-blog-with-hakyll-part3.html</guid>
     <dc:creator>IMOKURI</dc:creator>
 </item>
 

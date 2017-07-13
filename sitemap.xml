@@ -2,6 +2,11 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
   <url>
+    <loc>https://imokuri123.com/blog/2017/07/ansible-callback-type.html</loc>
+    <lastmod>2017-07-13</lastmod>
+  </url>
+
+  <url>
     <loc>https://imokuri123.com/blog/2017/07/ansible-for-dotfiles.html</loc>
     <lastmod>2017-07-12</lastmod>
   </url>
