@@ -6,7 +6,6 @@ module Main where
 import           Control.Monad
 import           Data.Monoid ((<>))
 import           Data.List (isInfixOf)
-import qualified Data.Set as S
 import           Data.String.Utils (replace)
 import           Hakyll
 import           System.FilePath
@@ -176,8 +175,7 @@ readerOptions = defaultHakyllReaderOptions
     { readerExtensions = newExtensions
     }
         where defaultExtensions = readerExtensions defaultHakyllReaderOptions
-              newExtensions = S.insert Ext_east_asian_line_breaks defaultExtensions
+              newExtensions = enableExtension Ext_east_asian_line_breaks defaultExtensions
 
 writerOptions :: WriterOptions
 writerOptions = defaultHakyllWriterOptions
-
