@@ -64,29 +64,29 @@ if (window.location.host == host && window.location.protocol != "https:") {
 <!--more-->
 <h2 id="virtualenv作成時のデフォルトのパッケージ追加">virtualenv作成時のデフォルトのパッケージ追加</h2>
 <p>まず、追加したいパッケージをあるディレクトリにインストールします。この時、python2用とpython3用の両方を準備しておくのが良いと思います。</p>
-<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="co"># python2用のディレクトリ作成</span>
-<span class="fu">mkdir</span> -p ~/.virtualenvs/deps
-
-<span class="co"># python3用のディレクトリ作成</span>
-<span class="fu">mkdir</span> -p ~/.virtualenvs/deps3
-
-<span class="co"># デフォルトでvirtualenvに追加したいパッケージをインストール(python2)</span>
-<span class="ex">pip2</span> install -U --target ~/.virtualenvs/deps <span class="op">&lt;</span>インストールしたいパッケージ(neovim jedi flake8など)<span class="op">&gt;</span>
-
-<span class="co"># デフォルトでvirtualenvに追加したいパッケージをインストール(python3)</span>
-<span class="ex">pip3</span> install -U --target ~/.virtualenvs/deps3 <span class="op">&lt;</span>インストールしたいパッケージ(neovim jedi flake8など)<span class="op">&gt;</span></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb1-1" title="1"><span class="co"># python2用のディレクトリ作成</span></a>
+<a class="sourceLine" id="cb1-2" title="2"><span class="fu">mkdir</span> -p ~/.virtualenvs/deps</a>
+<a class="sourceLine" id="cb1-3" title="3"></a>
+<a class="sourceLine" id="cb1-4" title="4"><span class="co"># python3用のディレクトリ作成</span></a>
+<a class="sourceLine" id="cb1-5" title="5"><span class="fu">mkdir</span> -p ~/.virtualenvs/deps3</a>
+<a class="sourceLine" id="cb1-6" title="6"></a>
+<a class="sourceLine" id="cb1-7" title="7"><span class="co"># デフォルトでvirtualenvに追加したいパッケージをインストール(python2)</span></a>
+<a class="sourceLine" id="cb1-8" title="8"><span class="ex">pip2</span> install -U --target ~/.virtualenvs/deps <span class="op">&lt;</span>インストールしたいパッケージ(neovim jedi flake8など)<span class="op">&gt;</span></a>
+<a class="sourceLine" id="cb1-9" title="9"></a>
+<a class="sourceLine" id="cb1-10" title="10"><span class="co"># デフォルトでvirtualenvに追加したいパッケージをインストール(python3)</span></a>
+<a class="sourceLine" id="cb1-11" title="11"><span class="ex">pip3</span> install -U --target ~/.virtualenvs/deps3 <span class="op">&lt;</span>インストールしたいパッケージ(neovim jedi flake8など)<span class="op">&gt;</span></a></code></pre></div>
 <p>次に、virtualenv作成時に、これらのパッケージも参照するように設定します。以下のように <code>~/.virtualenv/postmkvirtualenv</code> を編集します。</p>
-<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="co"># find directory</span>
-<span class="va">SITEDIR=$(</span><span class="ex">virtualenvwrapper_get_site_packages_dir</span><span class="va">)</span>
-<span class="va">PYVER=$(</span><span class="ex">virtualenvwrapper_get_python_version</span><span class="va">)</span>
-
-<span class="co"># create new .pth file with our path depending of python version</span>
-<span class="kw">if [[</span> <span class="va">$PYVER</span> <span class="ot">==</span> 3*<span class="kw"> ]]</span>;
-<span class="kw">then</span>
-    <span class="bu">echo</span> <span class="st">&quot;</span><span class="va">$HOME</span><span class="st">/.virtualenvs/deps3/&quot;</span> <span class="op">&gt;</span> <span class="st">&quot;</span><span class="va">$SITEDIR</span><span class="st">/extra.pth&quot;</span><span class="kw">;</span>
-<span class="kw">else</span>
-    <span class="bu">echo</span> <span class="st">&quot;</span><span class="va">$HOME</span><span class="st">/.virtualenvs/deps/&quot;</span> <span class="op">&gt;</span> <span class="st">&quot;</span><span class="va">$SITEDIR</span><span class="st">/extra.pth&quot;</span><span class="kw">;</span>
-<span class="kw">fi</span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb2-1" title="1"><span class="co"># find directory</span></a>
+<a class="sourceLine" id="cb2-2" title="2"><span class="va">SITEDIR=$(</span><span class="ex">virtualenvwrapper_get_site_packages_dir</span><span class="va">)</span></a>
+<a class="sourceLine" id="cb2-3" title="3"><span class="va">PYVER=$(</span><span class="ex">virtualenvwrapper_get_python_version</span><span class="va">)</span></a>
+<a class="sourceLine" id="cb2-4" title="4"></a>
+<a class="sourceLine" id="cb2-5" title="5"><span class="co"># create new .pth file with our path depending of python version</span></a>
+<a class="sourceLine" id="cb2-6" title="6"><span class="kw">if [[</span> <span class="va">$PYVER</span> <span class="ot">==</span> 3*<span class="kw"> ]]</span>;</a>
+<a class="sourceLine" id="cb2-7" title="7"><span class="kw">then</span></a>
+<a class="sourceLine" id="cb2-8" title="8">    <span class="bu">echo</span> <span class="st">&quot;</span><span class="va">$HOME</span><span class="st">/.virtualenvs/deps3/&quot;</span> <span class="op">&gt;</span> <span class="st">&quot;</span><span class="va">$SITEDIR</span><span class="st">/extra.pth&quot;</span><span class="kw">;</span></a>
+<a class="sourceLine" id="cb2-9" title="9"><span class="kw">else</span></a>
+<a class="sourceLine" id="cb2-10" title="10">    <span class="bu">echo</span> <span class="st">&quot;</span><span class="va">$HOME</span><span class="st">/.virtualenvs/deps/&quot;</span> <span class="op">&gt;</span> <span class="st">&quot;</span><span class="va">$SITEDIR</span><span class="st">/extra.pth&quot;</span><span class="kw">;</span></a>
+<a class="sourceLine" id="cb2-11" title="11"><span class="kw">fi</span></a></code></pre></div>
 <p>これでvirtualenv作成時に、上記でインストールしたパッケージも読み込まれます。</p>
 <h2 id="neovimのpython_host_progの設定">neovimの<code>python_host_prog</code>の設定</h2>
 <p>続いて、neovimで、virtualenvが有効な場合は、virtualenvのpythonを参照するように指定します。</p>

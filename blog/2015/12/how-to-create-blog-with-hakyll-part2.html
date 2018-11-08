@@ -75,12 +75,12 @@ if (window.location.host == host && window.location.protocol != "https:") {
 <h2 id="ページネーション">ページネーション</h2>
 <p>前回確認したテンプレートの中の、「Archives」のページは、過去記事一覧ということで、記事を追加していくと、(たぶん)際限なくリストされていきます。それはそれで気分がいいかもしれませんが、記事の一覧は、ある程度の単位(5個とか10個とか)でページが分割されてほしいものです。それをやってみます。</p>
 <p>まずは、「どんなルールでページネーションをするか」を設定します。</p>
-<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell">archive <span class="ot">&lt;-</span> buildPaginateWith
-    (sortRecentFirst <span class="fu">&gt;=&gt;</span> return <span class="fu">.</span> paginateEvery <span class="dv">5</span>)
-    <span class="st">&quot;posts/*&quot;</span>
-    (\n <span class="ot">-&gt;</span> <span class="kw">if</span> n <span class="fu">==</span> <span class="dv">1</span>
-           <span class="kw">then</span> fromFilePath <span class="st">&quot;archive.html&quot;</span>
-           <span class="kw">else</span> fromFilePath <span class="fu">$</span> <span class="st">&quot;archive/&quot;</span> <span class="fu">++</span> show n <span class="fu">++</span> <span class="st">&quot;.html&quot;</span>)</code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb1-1" title="1">archive <span class="ot">&lt;-</span> buildPaginateWith</a>
+<a class="sourceLine" id="cb1-2" title="2">    (sortRecentFirst <span class="fu">&gt;=&gt;</span> <span class="fu">return</span> <span class="fu">.</span> paginateEvery <span class="dv">5</span>)</a>
+<a class="sourceLine" id="cb1-3" title="3">    <span class="st">&quot;posts/*&quot;</span></a>
+<a class="sourceLine" id="cb1-4" title="4">    (\n <span class="ot">-&gt;</span> <span class="kw">if</span> n <span class="fu">==</span> <span class="dv">1</span></a>
+<a class="sourceLine" id="cb1-5" title="5">           <span class="kw">then</span> fromFilePath <span class="st">&quot;archive.html&quot;</span></a>
+<a class="sourceLine" id="cb1-6" title="6">           <span class="kw">else</span> fromFilePath <span class="fu">$</span> <span class="st">&quot;archive/&quot;</span> <span class="fu">++</span> <span class="fu">show</span> n <span class="fu">++</span> <span class="st">&quot;.html&quot;</span>)</a></code></pre></div>
 <p>こちらのソースは以下の様な意味になります。</p>
 <blockquote>
 <p>記事が新しい順に、5記事で1ページにする。 ((sortRecentFirst &gt;=&gt; return . paginateEvery 5))<br />
@@ -88,80 +88,80 @@ if (window.location.host == host && window.location.protocol != "https:") {
 ページネーションの1ページ目のURLは http://user.github.io/archive.html<br />
 2ページ目以降のURLは http://user.github.io/archive/ページ番号.html</p>
 </blockquote>
-<p>ルールが決まったので、何ページ目にどの記事が入るか、が決まりました。次に、ページネーションのページごとに、実際のページを組み立てていきます。</p>
-<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell">paginateRules archive <span class="fu">$</span> \pageNum pattern <span class="ot">-&gt;</span> <span class="kw">do</span>
-    route   idRoute
-    compile <span class="fu">$</span> <span class="kw">do</span>
-        posts <span class="ot">&lt;-</span> recentFirst <span class="fu">=&lt;&lt;</span> loadAll pattern
-        <span class="kw">let</span> archiveCtx <span class="fu">=</span>
-                constField <span class="st">&quot;title&quot;</span> <span class="st">&quot;Archives&quot;</span>            <span class="ot">`mappend`</span>
-                listField <span class="st">&quot;posts&quot;</span> postCtx (return posts) <span class="ot">`mappend`</span>
-                paginateContext archive pageNum          <span class="ot">`mappend`</span>
-                defaultContext
-
-        makeItem <span class="st">&quot;&quot;</span>
-            <span class="fu">&gt;&gt;=</span> loadAndApplyTemplate <span class="st">&quot;templates/archive.html&quot;</span> archiveCtx
-            <span class="fu">&gt;&gt;=</span> loadAndApplyTemplate <span class="st">&quot;templates/default.html&quot;</span> archiveCtx
-            <span class="fu">&gt;&gt;=</span> relativizeUrls</code></pre></div>
+<p>ルールが決まったので、何ページ目にどの記事が入るか、が決まりました。 次に、ページネーションのページごとに、実際のページを組み立てていきます。</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb2-1" title="1">paginateRules archive <span class="fu">$</span> \pageNum <span class="kw">pattern</span> <span class="ot">-&gt;</span> <span class="kw">do</span></a>
+<a class="sourceLine" id="cb2-2" title="2">    route   idRoute</a>
+<a class="sourceLine" id="cb2-3" title="3">    compile <span class="fu">$</span> <span class="kw">do</span></a>
+<a class="sourceLine" id="cb2-4" title="4">        posts <span class="ot">&lt;-</span> recentFirst <span class="fu">=&lt;&lt;</span> loadAll <span class="kw">pattern</span></a>
+<a class="sourceLine" id="cb2-5" title="5">        <span class="kw">let</span> archiveCtx <span class="fu">=</span></a>
+<a class="sourceLine" id="cb2-6" title="6">                constField <span class="st">&quot;title&quot;</span> <span class="st">&quot;Archives&quot;</span>            <span class="ot">`mappend`</span></a>
+<a class="sourceLine" id="cb2-7" title="7">                listField <span class="st">&quot;posts&quot;</span> postCtx (<span class="fu">return</span> posts) <span class="ot">`mappend`</span></a>
+<a class="sourceLine" id="cb2-8" title="8">                paginateContext archive pageNum          <span class="ot">`mappend`</span></a>
+<a class="sourceLine" id="cb2-9" title="9">                defaultContext</a>
+<a class="sourceLine" id="cb2-10" title="10"></a>
+<a class="sourceLine" id="cb2-11" title="11">        makeItem <span class="st">&quot;&quot;</span></a>
+<a class="sourceLine" id="cb2-12" title="12">            <span class="fu">&gt;&gt;=</span> loadAndApplyTemplate <span class="st">&quot;templates/archive.html&quot;</span> archiveCtx</a>
+<a class="sourceLine" id="cb2-13" title="13">            <span class="fu">&gt;&gt;=</span> loadAndApplyTemplate <span class="st">&quot;templates/default.html&quot;</span> archiveCtx</a>
+<a class="sourceLine" id="cb2-14" title="14">            <span class="fu">&gt;&gt;=</span> relativizeUrls</a></code></pre></div>
 <blockquote>
 <p>ページネーションのページ番号は 「pageNum」、対象となる記事は 「pattern」に入ります。<br />
 「paginateContext」では、ページネーションに必要な「$nextPageNum$」や、「$nextPageUrl$」などの情報が埋め込まれます。その他の埋め込まれる情報は<a href="https://github.com/jaspervdj/hakyll/blob/master/src/Hakyll/Web/Paginate.hs#L99-L109">こちら</a>を参照ください。</p>
 </blockquote>
 <p>組み立てたページを反映させるテンプレート 「archive.html」で、埋め込んだ情報を書いていきましょう。具体的には、各ページネーションのページに、「次のページ」や「最後のページ」のリンクを作っていきます。このとき、「最後のページ」には、その次のページはありませんので、「次のページ」が存在するときのみ、リンクを作成する、となるようif文を使っていきます。</p>
-<div class="sourceCode"><pre class="sourceCode html"><code class="sourceCode html"><span class="kw">&lt;div</span><span class="ot"> class=</span><span class="st">&quot;pagination&quot;</span><span class="kw">&gt;</span>
-  $if(firstPageUrl)$
-    <span class="kw">&lt;a</span><span class="ot"> href=</span><span class="st">&quot;$firstPageUrl$&quot;</span><span class="kw">&gt;</span><span class="dv">&amp;lt;&amp;lt;&amp;nbsp;</span>First<span class="kw">&lt;/a&gt;</span><span class="dv">&amp;nbsp;</span>
-  $endif$
-  $if(previousPageUrl)$
-    <span class="kw">&lt;a</span><span class="ot"> href=</span><span class="st">&quot;$previousPageUrl$&quot;</span><span class="kw">&gt;</span><span class="dv">&amp;lt;&amp;nbsp;</span>Previous<span class="kw">&lt;/a&gt;</span><span class="dv">&amp;nbsp;</span>
-  $endif$
-  <span class="dv">&amp;mdash;</span>
-  $currentPageNum$ of $numPages$
-  <span class="dv">&amp;mdash;</span>
-  $if(nextPageUrl)$
-    <span class="dv">&amp;nbsp;</span><span class="kw">&lt;a</span><span class="ot"> href=</span><span class="st">&quot;$nextPageUrl$&quot;</span><span class="kw">&gt;</span>Next<span class="dv">&amp;nbsp;&amp;gt;</span><span class="kw">&lt;/a&gt;</span>
-  $endif$
-  $if(lastPageUrl)$
-    <span class="dv">&amp;nbsp;</span><span class="kw">&lt;a</span><span class="ot"> href=</span><span class="st">&quot;$lastPageUrl$&quot;</span><span class="kw">&gt;</span>Last<span class="dv">&amp;nbsp;&amp;gt;&amp;gt;</span><span class="kw">&lt;/a&gt;</span>
-  $endif$
-<span class="kw">&lt;/div&gt;</span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode html"><code class="sourceCode html"><a class="sourceLine" id="cb3-1" title="1"><span class="kw">&lt;div</span><span class="ot"> class=</span><span class="st">&quot;pagination&quot;</span><span class="kw">&gt;</span></a>
+<a class="sourceLine" id="cb3-2" title="2">  $if(firstPageUrl)$</a>
+<a class="sourceLine" id="cb3-3" title="3">    <span class="kw">&lt;a</span><span class="ot"> href=</span><span class="st">&quot;$firstPageUrl$&quot;</span><span class="kw">&gt;</span><span class="dv">&amp;lt;&amp;lt;&amp;nbsp;</span>First<span class="kw">&lt;/a&gt;</span><span class="dv">&amp;nbsp;</span></a>
+<a class="sourceLine" id="cb3-4" title="4">  $endif$</a>
+<a class="sourceLine" id="cb3-5" title="5">  $if(previousPageUrl)$</a>
+<a class="sourceLine" id="cb3-6" title="6">    <span class="kw">&lt;a</span><span class="ot"> href=</span><span class="st">&quot;$previousPageUrl$&quot;</span><span class="kw">&gt;</span><span class="dv">&amp;lt;&amp;nbsp;</span>Previous<span class="kw">&lt;/a&gt;</span><span class="dv">&amp;nbsp;</span></a>
+<a class="sourceLine" id="cb3-7" title="7">  $endif$</a>
+<a class="sourceLine" id="cb3-8" title="8">  <span class="dv">&amp;mdash;</span></a>
+<a class="sourceLine" id="cb3-9" title="9">  $currentPageNum$ of $numPages$</a>
+<a class="sourceLine" id="cb3-10" title="10">  <span class="dv">&amp;mdash;</span></a>
+<a class="sourceLine" id="cb3-11" title="11">  $if(nextPageUrl)$</a>
+<a class="sourceLine" id="cb3-12" title="12">    <span class="dv">&amp;nbsp;</span><span class="kw">&lt;a</span><span class="ot"> href=</span><span class="st">&quot;$nextPageUrl$&quot;</span><span class="kw">&gt;</span>Next<span class="dv">&amp;nbsp;&amp;gt;</span><span class="kw">&lt;/a&gt;</span></a>
+<a class="sourceLine" id="cb3-13" title="13">  $endif$</a>
+<a class="sourceLine" id="cb3-14" title="14">  $if(lastPageUrl)$</a>
+<a class="sourceLine" id="cb3-15" title="15">    <span class="dv">&amp;nbsp;</span><span class="kw">&lt;a</span><span class="ot"> href=</span><span class="st">&quot;$lastPageUrl$&quot;</span><span class="kw">&gt;</span>Last<span class="dv">&amp;nbsp;&amp;gt;&amp;gt;</span><span class="kw">&lt;/a&gt;</span></a>
+<a class="sourceLine" id="cb3-16" title="16">  $endif$</a>
+<a class="sourceLine" id="cb3-17" title="17"><span class="kw">&lt;/div&gt;</span></a></code></pre></div>
 <h2 id="feed作成">Feed作成</h2>
 <p>HakyllはRSSとAtomのFeedが作成できるようになっています。HakyllでFeedを作ろうとした時、Feedに載る記事は当然HTMLに変換されていて欲しいのですが、記事のページ全体は必要ありません（ナビゲーションバーとか）。そこで、記事の内容をHTMLに変換したあと、記事のページ全体にする（default.htmlのテンプレートを反映させる）前の状態をsnapshotとして保存しておくことができます。</p>
-<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell">match <span class="st">&quot;posts/*&quot;</span> <span class="fu">$</span> <span class="kw">do</span>
-    route <span class="fu">$</span> setExtension <span class="st">&quot;html&quot;</span>
-    compile <span class="fu">$</span> pandocCompiler
-        <span class="fu">&gt;&gt;=</span> loadAndApplyTemplate <span class="st">&quot;templates/post.html&quot;</span>    postCtx
-        <span class="fu">&gt;&gt;=</span> saveSnapshot <span class="st">&quot;content&quot;</span>
-        <span class="fu">&gt;&gt;=</span> loadAndApplyTemplate <span class="st">&quot;templates/default.html&quot;</span> postCtx
-        <span class="fu">&gt;&gt;=</span> relativizeUrls</code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb4-1" title="1">match <span class="st">&quot;posts/*&quot;</span> <span class="fu">$</span> <span class="kw">do</span></a>
+<a class="sourceLine" id="cb4-2" title="2">    route <span class="fu">$</span> setExtension <span class="st">&quot;html&quot;</span></a>
+<a class="sourceLine" id="cb4-3" title="3">    compile <span class="fu">$</span> pandocCompiler</a>
+<a class="sourceLine" id="cb4-4" title="4">        <span class="fu">&gt;&gt;=</span> loadAndApplyTemplate <span class="st">&quot;templates/post.html&quot;</span>    postCtx</a>
+<a class="sourceLine" id="cb4-5" title="5">        <span class="fu">&gt;&gt;=</span> saveSnapshot <span class="st">&quot;content&quot;</span></a>
+<a class="sourceLine" id="cb4-6" title="6">        <span class="fu">&gt;&gt;=</span> loadAndApplyTemplate <span class="st">&quot;templates/default.html&quot;</span> postCtx</a>
+<a class="sourceLine" id="cb4-7" title="7">        <span class="fu">&gt;&gt;=</span> relativizeUrls</a></code></pre></div>
 <blockquote>
 <p>「&quot;posts/*&quot;」にマッチするドキュメントを、pandocでHTMLに変換し、「post.html」のテンプレートを反映した状態の記事を、<br />
 「content」という名前で保存して、そっとしておく。 (saveSnapshot &quot;content&quot;)<br />
 その後の処理は継続して、続けていく。</p>
 </blockquote>
 <p>という感じで、保存したスナップショットをFeedを作るときに利用します。</p>
-<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell">create [<span class="st">&quot;atom.xml&quot;</span>] <span class="fu">$</span> <span class="kw">do</span>
-    route   idRoute
-    compile <span class="fu">$</span> <span class="kw">do</span>
-        <span class="kw">let</span> feedCtx <span class="fu">=</span>
-                postCtx                 <span class="ot">`mappend`</span>
-                bodyField <span class="st">&quot;description&quot;</span>
-        posts <span class="ot">&lt;-</span> fmap (take <span class="dv">10</span>) <span class="fu">.</span> recentFirst <span class="fu">=&lt;&lt;</span> loadAllSnapshots <span class="st">&quot;posts/*&quot;</span> <span class="st">&quot;content&quot;</span>
-        renderAtom myFeedConfiguration feedCtx posts</code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb5-1" title="1">create [<span class="st">&quot;atom.xml&quot;</span>] <span class="fu">$</span> <span class="kw">do</span></a>
+<a class="sourceLine" id="cb5-2" title="2">    route   idRoute</a>
+<a class="sourceLine" id="cb5-3" title="3">    compile <span class="fu">$</span> <span class="kw">do</span></a>
+<a class="sourceLine" id="cb5-4" title="4">        <span class="kw">let</span> feedCtx <span class="fu">=</span></a>
+<a class="sourceLine" id="cb5-5" title="5">                postCtx                 <span class="ot">`mappend`</span></a>
+<a class="sourceLine" id="cb5-6" title="6">                bodyField <span class="st">&quot;description&quot;</span></a>
+<a class="sourceLine" id="cb5-7" title="7">        posts <span class="ot">&lt;-</span> <span class="fu">fmap</span> (<span class="fu">take</span> <span class="dv">10</span>) <span class="fu">.</span> recentFirst <span class="fu">=&lt;&lt;</span> loadAllSnapshots <span class="st">&quot;posts/*&quot;</span> <span class="st">&quot;content&quot;</span></a>
+<a class="sourceLine" id="cb5-8" title="8">        renderAtom myFeedConfiguration feedCtx posts</a></code></pre></div>
 <blockquote>
 <p>「loadAllSnapshots」で、「&quot;content&quot;」に保存したsnapshotを読み込みます。 (loadAllSnapshots &quot;posts/*&quot; &quot;content&quot;)<br />
 読み込んだ記事を、新しい順に前から10件取得します。 (fmap (take 10) . recentFirst)<br />
 取得した10件でAtomフィードのページを作ります。 (renderAtom myFeedConfiguration feedCtx posts)</p>
 </blockquote>
 <p>最後に、「myFeedConfiguration」を準備しておきます。</p>
-<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="ot">myFeedConfiguration ::</span> <span class="dt">FeedConfiguration</span>
-myFeedConfiguration <span class="fu">=</span> <span class="dt">FeedConfiguration</span>
-    { feedTitle       <span class="fu">=</span> <span class="st">&quot;My Hakyll Blog&quot;</span>
-    , feedDescription <span class="fu">=</span> <span class="st">&quot;Hakyllでブログを作る&quot;</span>
-    , feedAuthorName  <span class="fu">=</span> <span class="st">&quot;username&quot;</span>
-    , feedAuthorEmail <span class="fu">=</span> <span class="st">&quot;test@example.com&quot;</span>
-    , feedRoot        <span class="fu">=</span> <span class="st">&quot;http://user.github.io&quot;</span>
-    }</code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb6-1" title="1"><span class="ot">myFeedConfiguration ::</span> <span class="dt">FeedConfiguration</span></a>
+<a class="sourceLine" id="cb6-2" title="2">myFeedConfiguration <span class="fu">=</span> <span class="dt">FeedConfiguration</span></a>
+<a class="sourceLine" id="cb6-3" title="3">    { feedTitle       <span class="fu">=</span> <span class="st">&quot;My Hakyll Blog&quot;</span></a>
+<a class="sourceLine" id="cb6-4" title="4">    , feedDescription <span class="fu">=</span> <span class="st">&quot;Hakyllでブログを作る&quot;</span></a>
+<a class="sourceLine" id="cb6-5" title="5">    , feedAuthorName  <span class="fu">=</span> <span class="st">&quot;username&quot;</span></a>
+<a class="sourceLine" id="cb6-6" title="6">    , feedAuthorEmail <span class="fu">=</span> <span class="st">&quot;test@example.com&quot;</span></a>
+<a class="sourceLine" id="cb6-7" title="7">    , feedRoot        <span class="fu">=</span> <span class="st">&quot;http://user.github.io&quot;</span></a>
+<a class="sourceLine" id="cb6-8" title="8">    }</a></code></pre></div>
 <p>ということで、だいぶブログっぽくなってきました。</p>
 <p><a href="../../../blog/2015/12/how-to-create-blog-with-hakyll-part3.html">次回</a>は、カスタマイズ後半戦です。</p>
 

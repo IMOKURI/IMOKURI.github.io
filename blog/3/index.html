@@ -65,7 +65,7 @@ if (window.location.host == host && window.location.protocol != "https:") {
     <p>Haskellには、SNMP Trapを送信するライブラリがないですかね。</p>
 <p>ということで、簡単なものだけ作ってみました。</p>
 <p>目指したものとしては、</p>
-<ol style="list-style-type: decimal">
+<ol type="1">
 <li><p>送信したいSNMP Trapを複数定義した設定ファイルを読み込む</p></li>
 <li><p>SNMP Trapの定義ごとにSNMP Trapのパケットを組み立てる</p></li>
 <li><p>SNMP Trapの定義ごとにスレッドを立てて、SNMP Trapを送信する（指定した間隔で投げ続ける）</p></li>

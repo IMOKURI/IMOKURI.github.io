@@ -72,7 +72,7 @@ NETCONFは、NETCONF clientとNETCONF Serverの間を、さまざまなYANGモ�
 <hr />
 <p><strong>では、なぜ、NETCONFを使う必要があるのでしょうか。</strong></p>
 <p>それには、大きく2つの理由があります。</p>
-<ol style="list-style-type: decimal">
+<ol type="1">
 <li>強固なトランザクションのモデルをもっていること
 <ul>
 <li>SNMPは、トランザクションの仕組みを持っておらず、機器の設定管理には不向きでした。</li>
@@ -89,7 +89,7 @@ NETCONFは、NETCONF clientとNETCONF Serverの間を、さまざまなYANGモ�
 <hr />
 <p><strong>NETCONFのプロトコルのレイヤーについて</strong></p>
 <p>NETCONFのプロトコルには、4つのレイヤーがあります。それぞれのレイヤーでSNMPの場合の何に対応するのかをまとめます。</p>
-<ol style="list-style-type: decimal">
+<ol type="1">
 <li>コンテンツレイヤー
 <ul>
 <li>SNMPでいうところのbind変数のリストの情報が含まれます。NETCONFの場合は、XMLのサブツリーで表現します。</li>
@@ -113,9 +113,9 @@ NETCONFは、NETCONF clientとNETCONF Serverの間を、さまざまなYANGモ�
 <p>具体的な、要素の比較は以下になります。</p>
 <table>
 <colgroup>
-<col width="29%" />
-<col width="33%" />
-<col width="36%" />
+<col style="width: 29%" />
+<col style="width: 33%" />
+<col style="width: 36%" />
 </colgroup>
 <thead>
 <tr class="header">

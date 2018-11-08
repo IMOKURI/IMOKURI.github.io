@@ -76,13 +76,13 @@ if (window.location.host == host && window.location.protocol != "https:") {
 <h2 id="テンプレ展開">テンプレ展開</h2>
 <p>stackには、hakyll用のテンプレートが準備されていますので、それを使っていきます。</p>
 <p><code>stack new</code> を打つ前に、 「~/.stack/config.yaml」 に以下の様な情報を書いておくとテンプレに載せてくれます。</p>
-<div class="sourceCode"><pre class="sourceCode yaml"><code class="sourceCode yaml"><span class="fu">templates:</span>
-  <span class="fu">params:</span>
-    <span class="fu">author-email:</span><span class="at"> &lt; mail address &gt;</span>
-    <span class="fu">author-name:</span><span class="at"> &lt; your name &gt;</span>
-    <span class="fu">copyright:</span><span class="at"> 2015, &lt; your name &gt;</span>
-    <span class="fu">github-username:</span><span class="at"> &lt; github user name &gt;</span>
-    <span class="fu">category:</span><span class="at"> Web </span><span class="co"># なんでも良いです。</span></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode yaml"><code class="sourceCode yaml"><a class="sourceLine" id="cb1-1" title="1"><span class="fu">templates:</span></a>
+<a class="sourceLine" id="cb1-2" title="2">  <span class="fu">params:</span></a>
+<a class="sourceLine" id="cb1-3" title="3"><span class="fu">    author-email:</span> <span class="at">&lt; mail address </span><span class="st">&gt;</span></a>
+<a class="sourceLine" id="cb1-4" title="4"><span class="fu">    author-name:</span> <span class="at">&lt; your name </span><span class="st">&gt;</span></a>
+<a class="sourceLine" id="cb1-5" title="5"><span class="fu">    copyright:</span> <span class="at">2015, &lt; your name </span><span class="st">&gt;</span></a>
+<a class="sourceLine" id="cb1-6" title="6"><span class="fu">    github-username:</span> <span class="at">&lt; github user name </span><span class="st">&gt;</span></a>
+<a class="sourceLine" id="cb1-7" title="7">    <span class="fu">category:</span><span class="at"> Web </span><span class="co"># なんでも良いです。</span></a></code></pre></div>
 <p>テンプレを展開してみましょう。</p>
 <p><code>stack new &lt;プロジェクト名&gt; hakyll-template</code></p>
 <p>プロジェクト名は何でも良いので、おためしだったら 「myblog」 とか、github pagesで公開するなら 「githubのユーザ名-github-io」 みたいなのが良いかと思います。ここでは、 「user-github-io」 として進めていきます。</p>
@@ -94,18 +94,19 @@ webページをビルドするときに実行するので、あとあとハッ�
 <p><code>stack exec site watch</code> で、テスト用のサーバが、 http://127.0.0.1:8000 で立ち上がります。</p>
 <h2 id="ページ作成の流れ">ページ作成の流れ</h2>
 <p>Hakyllで、webページを作るときは、</p>
-<ol style="list-style-type: decimal">
+<ol type="1">
 <li>markdownなどで、記事を書き、</li>
 <li>それが、htmlに変換されて、</li>
 <li>テンプレートに埋め込まれる。</li>
 </ol>
 <p>のが基本イメージです。</p>
 <p><img src="../../../images/2015-12-hakyll-page-structure.png" alt="Hakyll page structure" /><br />
-「どの記事と、どのテンプレートをあわせて、webサイトのどこに表示する」とか、「この記事にこの情報を埋め込む」とか、をHaskellのプログラム(デフォルトは 「site.hs」 )で作っていきます。</p>
+</p>
+<p>「どの記事と、どのテンプレートをあわせて、webサイトのどこに表示する」とか、「この記事にこの情報を埋め込む」とか、をHaskellのプログラム(デフォルトは 「site.hs」 )で作っていきます。</p>
 <p>たとえば、 「site.hs」 をのぞいてみると、以下の様なソースがあります。</p>
-<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell">match <span class="st">&quot;images/*&quot;</span> <span class="fu">$</span> <span class="kw">do</span>
-    route   idRoute
-    compile copyFileCompiler</code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb2-1" title="1">match <span class="st">&quot;images/*&quot;</span> <span class="fu">$</span> <span class="kw">do</span></a>
+<a class="sourceLine" id="cb2-2" title="2">    route   idRoute</a>
+<a class="sourceLine" id="cb2-3" title="3">    compile copyFileCompiler</a></code></pre></div>
 <p>これは、</p>
 <blockquote>
 <p>「images/*」 にマッチするファイルを、<br />
@@ -114,11 +115,11 @@ webサイトの同じパス 「http://user.github.io/images/*」 に (idRoute)<b
 </blockquote>
 <p>ということです。</p>
 <p>はたまた、以下の様なソースは、</p>
-<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell">match (fromList [<span class="st">&quot;about.rst&quot;</span>, <span class="st">&quot;contact.markdown&quot;</span>]) <span class="fu">$</span> <span class="kw">do</span>
-    route   <span class="fu">$</span> setExtension <span class="st">&quot;html&quot;</span>
-    compile <span class="fu">$</span> pandocCompiler
-        <span class="fu">&gt;&gt;=</span> loadAndApplyTemplate <span class="st">&quot;templates/default.html&quot;</span> defaultContext
-        <span class="fu">&gt;&gt;=</span> relativizeUrls</code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb3-1" title="1">match (fromList [<span class="st">&quot;about.rst&quot;</span>, <span class="st">&quot;contact.markdown&quot;</span>]) <span class="fu">$</span> <span class="kw">do</span></a>
+<a class="sourceLine" id="cb3-2" title="2">    route   <span class="fu">$</span> setExtension <span class="st">&quot;html&quot;</span></a>
+<a class="sourceLine" id="cb3-3" title="3">    compile <span class="fu">$</span> pandocCompiler</a>
+<a class="sourceLine" id="cb3-4" title="4">        <span class="fu">&gt;&gt;=</span> loadAndApplyTemplate <span class="st">&quot;templates/default.html&quot;</span> defaultContext</a>
+<a class="sourceLine" id="cb3-5" title="5">        <span class="fu">&gt;&gt;=</span> relativizeUrls</a></code></pre></div>
 <blockquote>
 <p>「abount.rst」 と 「contact.markdown」 を、<br />
 拡張子を 「html」 に変換して、 (setExtension &quot;html&quot;)<br />
@@ -132,24 +133,24 @@ webサイトの同じパス 「http://user.github.io/images/*」 に (idRoute)<b
 </blockquote>
 <p>追加で、情報を埋め込むときは、 Context に埋め込む情報をまとめて、テンプレートに合わせる、というやり方になります。</p>
 <p>例えば、以下は、 「defaultContext」 の情報に、「ブログ記事の日時」の情報を(ファイル名などから)抽出して、追加しています。すると、テンプレート内の 「$date$」 がブログ記事の日時の情報に変換されます。</p>
-<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="ot">postCtx ::</span> <span class="dt">Context</span> <span class="dt">String</span>
-postCtx <span class="fu">=</span>
-    dateField <span class="st">&quot;date&quot;</span> <span class="st">&quot;%B %e, %Y&quot;</span> <span class="ot">`mappend`</span>
-    defaultContext</code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb4-1" title="1"><span class="ot">postCtx ::</span> <span class="dt">Context</span> <span class="dt">String</span></a>
+<a class="sourceLine" id="cb4-2" title="2">postCtx <span class="fu">=</span></a>
+<a class="sourceLine" id="cb4-3" title="3">    dateField <span class="st">&quot;date&quot;</span> <span class="st">&quot;%B %e, %Y&quot;</span> <span class="ot">`mappend`</span></a>
+<a class="sourceLine" id="cb4-4" title="4">    defaultContext</a></code></pre></div>
 <p>他にも、複数の記事をまとめて、新たに一覧のページを作ることもできます。</p>
-<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell">create [<span class="st">&quot;archive.html&quot;</span>] <span class="fu">$</span> <span class="kw">do</span>
-    route idRoute
-    compile <span class="fu">$</span> <span class="kw">do</span>
-        posts <span class="ot">&lt;-</span> recentFirst <span class="fu">=&lt;&lt;</span> loadAll <span class="st">&quot;posts/*&quot;</span>
-        <span class="kw">let</span> archiveCtx <span class="fu">=</span>
-                listField <span class="st">&quot;posts&quot;</span> postCtx (return posts) <span class="ot">`mappend`</span>
-                constField <span class="st">&quot;title&quot;</span> <span class="st">&quot;Archives&quot;</span>            <span class="ot">`mappend`</span>
-                defaultContext
-
-        makeItem <span class="st">&quot;&quot;</span>
-            <span class="fu">&gt;&gt;=</span> loadAndApplyTemplate <span class="st">&quot;templates/archive.html&quot;</span> archiveCtx
-            <span class="fu">&gt;&gt;=</span> loadAndApplyTemplate <span class="st">&quot;templates/default.html&quot;</span> archiveCtx
-            <span class="fu">&gt;&gt;=</span> relativizeUrls</code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb5-1" title="1">create [<span class="st">&quot;archive.html&quot;</span>] <span class="fu">$</span> <span class="kw">do</span></a>
+<a class="sourceLine" id="cb5-2" title="2">    route idRoute</a>
+<a class="sourceLine" id="cb5-3" title="3">    compile <span class="fu">$</span> <span class="kw">do</span></a>
+<a class="sourceLine" id="cb5-4" title="4">        posts <span class="ot">&lt;-</span> recentFirst <span class="fu">=&lt;&lt;</span> loadAll <span class="st">&quot;posts/*&quot;</span></a>
+<a class="sourceLine" id="cb5-5" title="5">        <span class="kw">let</span> archiveCtx <span class="fu">=</span></a>
+<a class="sourceLine" id="cb5-6" title="6">                listField <span class="st">&quot;posts&quot;</span> postCtx (<span class="fu">return</span> posts) <span class="ot">`mappend`</span></a>
+<a class="sourceLine" id="cb5-7" title="7">                constField <span class="st">&quot;title&quot;</span> <span class="st">&quot;Archives&quot;</span>            <span class="ot">`mappend`</span></a>
+<a class="sourceLine" id="cb5-8" title="8">                defaultContext</a>
+<a class="sourceLine" id="cb5-9" title="9"></a>
+<a class="sourceLine" id="cb5-10" title="10">        makeItem <span class="st">&quot;&quot;</span></a>
+<a class="sourceLine" id="cb5-11" title="11">            <span class="fu">&gt;&gt;=</span> loadAndApplyTemplate <span class="st">&quot;templates/archive.html&quot;</span> archiveCtx</a>
+<a class="sourceLine" id="cb5-12" title="12">            <span class="fu">&gt;&gt;=</span> loadAndApplyTemplate <span class="st">&quot;templates/default.html&quot;</span> archiveCtx</a>
+<a class="sourceLine" id="cb5-13" title="13">            <span class="fu">&gt;&gt;=</span> relativizeUrls</a></code></pre></div>
 <p>こちらは、次のようになります。</p>
 <blockquote>
 <p>「archive.html」 というページを以下の通り作ります。(一部省略)<br />
@@ -159,11 +160,11 @@ postCtx <span class="fu">=</span>
 </blockquote>
 <p>テンプレートの方は、どうなっているかというと、 「archive.html」 では、 「<span class="math inline">$partial(&quot;templates/post-list.html&quot;)$</span>」 となっていて、これは、 「post-list.html」 の内容を埋め込むということなので、</p>
 <p>「post-list.html」 の方を見ると、以下のようになっていて、</p>
-<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="fu">$</span>for(posts)<span class="fu">$</span>
-    <span class="fu">&lt;</span>li<span class="fu">&gt;</span>
-        <span class="fu">&lt;</span>a href<span class="fu">=</span><span class="st">&quot;$url$&quot;</span><span class="fu">&gt;$</span>title<span class="fu">$&lt;/</span>a<span class="fu">&gt;</span> <span class="fu">-</span> <span class="fu">$</span>date<span class="fu">$</span>
-    <span class="fu">&lt;/</span>li<span class="fu">&gt;</span>
-<span class="fu">$</span>endfor<span class="fu">$</span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb6-1" title="1"><span class="fu">$</span>for(posts)<span class="fu">$</span></a>
+<a class="sourceLine" id="cb6-2" title="2">    <span class="fu">&lt;</span>li<span class="fu">&gt;</span></a>
+<a class="sourceLine" id="cb6-3" title="3">        <span class="fu">&lt;</span>a href<span class="fu">=</span><span class="st">&quot;$url$&quot;</span><span class="fu">&gt;$</span>title<span class="fu">$&lt;/</span>a<span class="fu">&gt;</span> <span class="fu">-</span> <span class="fu">$</span>date<span class="fu">$</span></a>
+<a class="sourceLine" id="cb6-4" title="4">    <span class="fu">&lt;/</span>li<span class="fu">&gt;</span></a>
+<a class="sourceLine" id="cb6-5" title="5"><span class="fu">$</span>endfor<span class="fu">$</span></a></code></pre></div>
 <blockquote>
 <p>「$posts$」 に埋め込まれた記事の情報分繰り返す。 ($for(posts)$)</p>
 </blockquote>

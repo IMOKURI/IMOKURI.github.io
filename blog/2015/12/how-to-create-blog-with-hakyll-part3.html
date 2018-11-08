@@ -77,29 +77,29 @@ if (window.location.host == host && window.location.protocol != "https:") {
 <p>まずは、ブログの記事に、「どこまで見せておくか」のしるしとして「&lt;!--more--&gt;」を入れておきます。</p>
 <p>ここまでのチュートリアルで、記事の本文は、「$body$」の情報で、埋め込まれていました。ティーザーでは、同じように「&lt;!--more--&gt; までの記事」を「$teaser$」として埋め込むことになります。</p>
 <p>このとき、記事の内容は、前回つかったスナップショットで保存した記事を使います。</p>
-<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="ot">postCtx ::</span> <span class="dt">Context</span> <span class="dt">String</span>
-postCtx <span class="fu">=</span>
-    dateField <span class="st">&quot;date&quot;</span> <span class="st">&quot;%B %e, %Y&quot;</span> <span class="ot">`mappend`</span>
-    teaserField <span class="st">&quot;teaser&quot;</span> <span class="st">&quot;content&quot;</span> <span class="ot">`mappend`</span>
-    defaultContext</code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb1-1" title="1"><span class="ot">postCtx ::</span> <span class="dt">Context</span> <span class="dt">String</span></a>
+<a class="sourceLine" id="cb1-2" title="2">postCtx <span class="fu">=</span></a>
+<a class="sourceLine" id="cb1-3" title="3">    dateField <span class="st">&quot;date&quot;</span> <span class="st">&quot;%B %e, %Y&quot;</span> <span class="ot">`mappend`</span></a>
+<a class="sourceLine" id="cb1-4" title="4">    teaserField <span class="st">&quot;teaser&quot;</span> <span class="st">&quot;content&quot;</span> <span class="ot">`mappend`</span></a>
+<a class="sourceLine" id="cb1-5" title="5">    defaultContext</a></code></pre></div>
 <p>埋め込まれた情報を使うには、「テンプレートに反映」ということで、「$teaser$」をテンプレートに埋め込めば、ちょいだし記事の完成です。</p>
-<div class="sourceCode"><pre class="sourceCode html"><code class="sourceCode html"><span class="kw">&lt;ul&gt;</span>
-    $for(posts)$
-        <span class="kw">&lt;li&gt;</span>
-            $title$ - $date$
-            $teaser$...<span class="kw">&lt;a</span><span class="ot"> href=</span><span class="st">&quot;$url$&quot;</span><span class="kw">&gt;</span>(続きを読む)<span class="kw">&lt;/a&gt;</span>
-        <span class="kw">&lt;/li&gt;</span>
-    $endfor$
-<span class="kw">&lt;/ul&gt;</span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode html"><code class="sourceCode html"><a class="sourceLine" id="cb2-1" title="1"><span class="kw">&lt;ul&gt;</span></a>
+<a class="sourceLine" id="cb2-2" title="2">    $for(posts)$</a>
+<a class="sourceLine" id="cb2-3" title="3">        <span class="kw">&lt;li&gt;</span></a>
+<a class="sourceLine" id="cb2-4" title="4">            $title$ - $date$</a>
+<a class="sourceLine" id="cb2-5" title="5">            $teaser$...<span class="kw">&lt;a</span><span class="ot"> href=</span><span class="st">&quot;$url$&quot;</span><span class="kw">&gt;</span>(続きを読む)<span class="kw">&lt;/a&gt;</span></a>
+<a class="sourceLine" id="cb2-6" title="6">        <span class="kw">&lt;/li&gt;</span></a>
+<a class="sourceLine" id="cb2-7" title="7">    $endfor$</a>
+<a class="sourceLine" id="cb2-8" title="8"><span class="kw">&lt;/ul&gt;</span></a></code></pre></div>
 <h2 id="タグ付け記事一覧">タグ付け記事一覧</h2>
 <p>記事にどんな情報が載っているか、をタグとしてつけておくのもよくあります。記事にタグをつけつつ、その一覧ページも作ってみましょう。</p>
 <p>付与するタグは、記事の冒頭に書いておきます。</p>
-<div class="sourceCode"><pre class="sourceCode markdown"><code class="sourceCode markdown">---
-title: example post
-tags: example, hakyll
----</code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode markdown"><code class="sourceCode markdown"><a class="sourceLine" id="cb3-1" title="1">---</a>
+<a class="sourceLine" id="cb3-2" title="2">title: example post</a>
+<a class="sourceLine" id="cb3-3" title="3">tags: example, hakyll</a>
+<a class="sourceLine" id="cb3-4" title="4">---</a></code></pre></div>
 <p>続いて、Haskellのソースの方で、タグのルールを設定します。</p>
-<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell">tags <span class="ot">&lt;-</span> buildTags <span class="st">&quot;posts/*&quot;</span> (fromCapture <span class="st">&quot;tags/*.html&quot;</span>)</code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb4-1" title="1">tags <span class="ot">&lt;-</span> buildTags <span class="st">&quot;posts/*&quot;</span> (fromCapture <span class="st">&quot;tags/*.html&quot;</span>)</a></code></pre></div>
 <blockquote>
 <p>「&quot;posts/*&quot;」にマッチする記事からタグ情報を収集して、<br />
 タグごとのURLは、「tag/*.html」の形にする。<br />
@@ -107,52 +107,52 @@ tags: example, hakyll
 </blockquote>
 <p>ルールが決まって、タグの情報を収集したので、まずは、記事の方にタグの情報を表示してみましょう。</p>
 <p>例によって、タグの情報を埋め込むことになります。</p>
-<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="ot">postCtx ::</span> <span class="dt">Tags</span> <span class="ot">-&gt;</span> <span class="dt">Context</span> <span class="dt">String</span>
-postCtx tags <span class="fu">=</span>
-    dateField <span class="st">&quot;date&quot;</span> <span class="st">&quot;%B %e, %Y&quot;</span>   <span class="ot">`mappend`</span>
-    teaserField <span class="st">&quot;teaser&quot;</span> <span class="st">&quot;content&quot;</span> <span class="ot">`mappend`</span>
-    tagsField <span class="st">&quot;tags&quot;</span> tags          <span class="ot">`mappend`</span>
-    defaultContext</code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb5-1" title="1"><span class="ot">postCtx ::</span> <span class="dt">Tags</span> <span class="ot">-&gt;</span> <span class="dt">Context</span> <span class="dt">String</span></a>
+<a class="sourceLine" id="cb5-2" title="2">postCtx tags <span class="fu">=</span></a>
+<a class="sourceLine" id="cb5-3" title="3">    dateField <span class="st">&quot;date&quot;</span> <span class="st">&quot;%B %e, %Y&quot;</span>   <span class="ot">`mappend`</span></a>
+<a class="sourceLine" id="cb5-4" title="4">    teaserField <span class="st">&quot;teaser&quot;</span> <span class="st">&quot;content&quot;</span> <span class="ot">`mappend`</span></a>
+<a class="sourceLine" id="cb5-5" title="5">    tagsField <span class="st">&quot;tags&quot;</span> tags          <span class="ot">`mappend`</span></a>
+<a class="sourceLine" id="cb5-6" title="6">    defaultContext</a></code></pre></div>
 <p>「tagsField」を使って埋め込みましょう。この時、タグの情報を「postCtx」の引数に指定する必要があるので、注意しましょう。</p>
 <p>埋め込んだ情報を使うためにテンプレートを更新します。</p>
-<div class="sourceCode"><pre class="sourceCode html"><code class="sourceCode html"><span class="kw">&lt;div</span><span class="ot"> class=</span><span class="st">&quot;info&quot;</span><span class="kw">&gt;</span>
-    $if(tags)$
-        Tags: $tags$
-    $endif$
-<span class="kw">&lt;/div&gt;</span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode html"><code class="sourceCode html"><a class="sourceLine" id="cb6-1" title="1"><span class="kw">&lt;div</span><span class="ot"> class=</span><span class="st">&quot;info&quot;</span><span class="kw">&gt;</span></a>
+<a class="sourceLine" id="cb6-2" title="2">    $if(tags)$</a>
+<a class="sourceLine" id="cb6-3" title="3">        Tags: $tags$</a>
+<a class="sourceLine" id="cb6-4" title="4">    $endif$</a>
+<a class="sourceLine" id="cb6-5" title="5"><span class="kw">&lt;/div&gt;</span></a></code></pre></div>
 <p>続いて、タグ一覧ページを作りましょう。</p>
-<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell">tagsRules tags <span class="fu">$</span> \tag pattern <span class="ot">-&gt;</span> <span class="kw">do</span>
-    route   idRoute
-    compile <span class="fu">$</span> <span class="kw">do</span>
-        posts <span class="ot">&lt;-</span> recentFirst <span class="fu">=&lt;&lt;</span> loadAll pattern
-        <span class="kw">let</span> tagCtx <span class="fu">=</span>
-                constField <span class="st">&quot;title&quot;</span> (<span class="st">&quot;Posts tagged &quot;</span> <span class="fu">++</span> tag)     <span class="ot">`mappend`</span>
-                listField <span class="st">&quot;posts&quot;</span> (postCtx tags) (return posts) <span class="ot">`mappend`</span>
-                defaultContext
-
-        makeItem <span class="st">&quot;&quot;</span>
-            <span class="fu">&gt;&gt;=</span> loadAndApplyTemplate <span class="st">&quot;templates/tag.html&quot;</span> tagCtx
-            <span class="fu">&gt;&gt;=</span> loadAndApplyTemplate <span class="st">&quot;templates/default.html&quot;</span> tagCtx
-            <span class="fu">&gt;&gt;=</span> relativizeUrls</code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb7-1" title="1">tagsRules tags <span class="fu">$</span> \tag <span class="kw">pattern</span> <span class="ot">-&gt;</span> <span class="kw">do</span></a>
+<a class="sourceLine" id="cb7-2" title="2">    route   idRoute</a>
+<a class="sourceLine" id="cb7-3" title="3">    compile <span class="fu">$</span> <span class="kw">do</span></a>
+<a class="sourceLine" id="cb7-4" title="4">        posts <span class="ot">&lt;-</span> recentFirst <span class="fu">=&lt;&lt;</span> loadAll <span class="kw">pattern</span></a>
+<a class="sourceLine" id="cb7-5" title="5">        <span class="kw">let</span> tagCtx <span class="fu">=</span></a>
+<a class="sourceLine" id="cb7-6" title="6">                constField <span class="st">&quot;title&quot;</span> (<span class="st">&quot;Posts tagged &quot;</span> <span class="fu">++</span> tag)     <span class="ot">`mappend`</span></a>
+<a class="sourceLine" id="cb7-7" title="7">                listField <span class="st">&quot;posts&quot;</span> (postCtx tags) (<span class="fu">return</span> posts) <span class="ot">`mappend`</span></a>
+<a class="sourceLine" id="cb7-8" title="8">                defaultContext</a>
+<a class="sourceLine" id="cb7-9" title="9"></a>
+<a class="sourceLine" id="cb7-10" title="10">        makeItem <span class="st">&quot;&quot;</span></a>
+<a class="sourceLine" id="cb7-11" title="11">            <span class="fu">&gt;&gt;=</span> loadAndApplyTemplate <span class="st">&quot;templates/tag.html&quot;</span> tagCtx</a>
+<a class="sourceLine" id="cb7-12" title="12">            <span class="fu">&gt;&gt;=</span> loadAndApplyTemplate <span class="st">&quot;templates/default.html&quot;</span> tagCtx</a>
+<a class="sourceLine" id="cb7-13" title="13">            <span class="fu">&gt;&gt;=</span> relativizeUrls</a></code></pre></div>
 <p>・・・ページネーションのにそっくりですね♪</p>
-<p>ということで、残りは、「tag.html」のテンプレートの準備です。対象となる記事をリストすればよいので、こんな感じで十分ですね。</p>
-<div class="sourceCode"><pre class="sourceCode html"><code class="sourceCode html">$partial(&quot;templates/post-list.html&quot;)$</code></pre></div>
+<p>ということで、残りは、「tag.html」のテンプレートの準備です。 対象となる記事をリストすればよいので、こんな感じで十分ですね。</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode html"><code class="sourceCode html"><a class="sourceLine" id="cb8-1" title="1">$partial(&quot;templates/post-list.html&quot;)$</a></code></pre></div>
 <p>おまけで、タグといえば、タグのリストや、タグクラウドも欲しくなります。作り方はほぼ同じなので、ここでは、タグクラウドを作って、トップページに貼り付けておきたいと思います。</p>
-<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell">match <span class="st">&quot;index.html&quot;</span> <span class="fu">$</span> <span class="kw">do</span>
-    route   idRoute
-    compile <span class="fu">$</span> <span class="kw">do</span>
-        posts <span class="ot">&lt;-</span> fmap (take <span class="dv">3</span>) <span class="fu">.</span> recentFirst <span class="fu">=&lt;&lt;</span> loadAll <span class="st">&quot;posts/*&quot;</span>
-        tagCloud <span class="ot">&lt;-</span> renderTagCloud <span class="fl">80.0</span> <span class="fl">120.0</span> tags
-        <span class="kw">let</span> indexCtx <span class="fu">=</span>
-                listField <span class="st">&quot;posts&quot;</span> (postCtx tags) (return posts) <span class="ot">`mappend`</span>
-                constField <span class="st">&quot;title&quot;</span> <span class="st">&quot;Home&quot;</span>                       <span class="ot">`mappend`</span>
-                constField <span class="st">&quot;tagcloud&quot;</span> tagCloud                  <span class="ot">`mappend`</span>
-                defaultContext
-
-        getResourceBody
-            <span class="fu">&gt;&gt;=</span> applyAsTemplate indexCtx
-            <span class="fu">&gt;&gt;=</span> loadAndApplyTemplate <span class="st">&quot;templates/default.html&quot;</span> indexCtx
-            <span class="fu">&gt;&gt;=</span> relativizeUrls</code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb9-1" title="1">match <span class="st">&quot;index.html&quot;</span> <span class="fu">$</span> <span class="kw">do</span></a>
+<a class="sourceLine" id="cb9-2" title="2">    route   idRoute</a>
+<a class="sourceLine" id="cb9-3" title="3">    compile <span class="fu">$</span> <span class="kw">do</span></a>
+<a class="sourceLine" id="cb9-4" title="4">        posts <span class="ot">&lt;-</span> <span class="fu">fmap</span> (<span class="fu">take</span> <span class="dv">3</span>) <span class="fu">.</span> recentFirst <span class="fu">=&lt;&lt;</span> loadAll <span class="st">&quot;posts/*&quot;</span></a>
+<a class="sourceLine" id="cb9-5" title="5">        tagCloud <span class="ot">&lt;-</span> renderTagCloud <span class="fl">80.0</span> <span class="fl">120.0</span> tags</a>
+<a class="sourceLine" id="cb9-6" title="6">        <span class="kw">let</span> indexCtx <span class="fu">=</span></a>
+<a class="sourceLine" id="cb9-7" title="7">                listField <span class="st">&quot;posts&quot;</span> (postCtx tags) (<span class="fu">return</span> posts) <span class="ot">`mappend`</span></a>
+<a class="sourceLine" id="cb9-8" title="8">                constField <span class="st">&quot;title&quot;</span> <span class="st">&quot;Home&quot;</span>                       <span class="ot">`mappend`</span></a>
+<a class="sourceLine" id="cb9-9" title="9">                constField <span class="st">&quot;tagcloud&quot;</span> tagCloud                  <span class="ot">`mappend`</span></a>
+<a class="sourceLine" id="cb9-10" title="10">                defaultContext</a>
+<a class="sourceLine" id="cb9-11" title="11"></a>
+<a class="sourceLine" id="cb9-12" title="12">        getResourceBody</a>
+<a class="sourceLine" id="cb9-13" title="13">            <span class="fu">&gt;&gt;=</span> applyAsTemplate indexCtx</a>
+<a class="sourceLine" id="cb9-14" title="14">            <span class="fu">&gt;&gt;=</span> loadAndApplyTemplate <span class="st">&quot;templates/default.html&quot;</span> indexCtx</a>
+<a class="sourceLine" id="cb9-15" title="15">            <span class="fu">&gt;&gt;=</span> relativizeUrls</a></code></pre></div>
 <blockquote>
 <p>タグの情報を読み込み、最小のフォントが80%、最大が120%で、タグクラウドの情報を生成します。 (tagCloud &lt;- renderTagCloud 80.0 120.0 tags)<br />
 生成したタグクラウドの情報を「tagcloud」の名前で埋め込んでおきます。 (constField &quot;tagcloud&quot; tagCloud)</p>

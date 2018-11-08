@@ -64,23 +64,23 @@ if (window.location.host == host && window.location.protocol != "https:") {
 <p>はじめに<a href="https://github.com/IMOKURI/dotfiles/blob/master/install">インストーラー</a>をキックします <code>bash -c &quot;$(curl -fsSL https://git.io/imokuri)&quot;</code> 。 この時、Proxyが必要な環境では、環境変数を設定しておきます。環境変数でProxyが設定されている場合は、AnsibleでもProxyを使用するようになっています。</p>
 <p>キックされたインストーラーでAnsibleをインストールして、<a href="https://github.com/IMOKURI/dotfiles/blob/master/setup.yaml">Playbook</a>をキックします。</p>
 <p>デプロイ対象のdotfilesはレポジトリにあるファイルのうち、「デプロイしないもの」を設定して、それ以外をデプロイ（シンボリックリンクを作る）するようにしています。これによって、デプロイ対象が増えても、Playbookを修正する手間がなくなります。</p>
-<div class="sourceCode"><pre class="sourceCode yaml"><code class="sourceCode yaml"><span class="kw">-</span> <span class="fu">name:</span><span class="at"> Find Dotfiles Path</span>
-  <span class="fu">find:</span>
-      <span class="fu">paths:</span><span class="at"> ~/.dotfiles</span>
-      <span class="fu">patterns:</span><span class="at"> </span><span class="st">&quot;^(?!(\\.|README.md|LICENSE|install|setup.yaml)).*$&quot;</span>
-      <span class="fu">use_regex:</span><span class="at"> true</span>
-  <span class="fu">register:</span><span class="at"> find</span>
-  <span class="fu">tags:</span><span class="at"> deploy</span></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode yaml"><code class="sourceCode yaml"><a class="sourceLine" id="cb1-1" title="1"><span class="kw">-</span> <span class="fu">name:</span><span class="at"> Find Dotfiles Path</span></a>
+<a class="sourceLine" id="cb1-2" title="2">  <span class="fu">find:</span></a>
+<a class="sourceLine" id="cb1-3" title="3">      <span class="fu">paths:</span><span class="at"> ~/.dotfiles</span></a>
+<a class="sourceLine" id="cb1-4" title="4">      <span class="fu">patterns:</span><span class="at"> </span><span class="st">&quot;^(?!(</span><span class="sc">\\</span><span class="st">.|README.md|LICENSE|install|setup.yaml)).*$&quot;</span></a>
+<a class="sourceLine" id="cb1-5" title="5">      <span class="fu">use_regex:</span><span class="at"> </span><span class="ch">true</span></a>
+<a class="sourceLine" id="cb1-6" title="6">  <span class="fu">register:</span><span class="at"> find</span></a>
+<a class="sourceLine" id="cb1-7" title="7">  <span class="fu">tags:</span><span class="at"> deploy</span></a></code></pre></div>
 <p>シンボリックリンクを作成する際は、正規表現を使って、走査したパスからファイル名を取得しています。</p>
-<div class="sourceCode"><pre class="sourceCode yaml"><code class="sourceCode yaml"><span class="kw">-</span> <span class="fu">name:</span><span class="at"> Create Symbolic Links To Dotfiles</span>
-  <span class="fu">file:</span>
-      <span class="fu">src:</span><span class="at"> </span><span class="st">&quot;~/.dotfiles/{{ item.path | regex_replace('^.*/([^/]+)$', '\\1') }}&quot;</span>
-      <span class="fu">dest:</span><span class="at"> </span><span class="st">&quot;~/.{{ item.path | regex_replace('^.*/([^/]+)$', '\\1') }}&quot;</span>
-      <span class="fu">state:</span><span class="at"> link</span>
-      <span class="fu">force:</span><span class="at"> true</span>
-  <span class="fu">with_items:</span>
-      <span class="kw">-</span> <span class="st">&quot;{{ find.files }}&quot;</span>
-  <span class="fu">tags:</span><span class="at"> deploy</span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode yaml"><code class="sourceCode yaml"><a class="sourceLine" id="cb2-1" title="1"><span class="kw">-</span> <span class="fu">name:</span><span class="at"> Create Symbolic Links To Dotfiles</span></a>
+<a class="sourceLine" id="cb2-2" title="2">  <span class="fu">file:</span></a>
+<a class="sourceLine" id="cb2-3" title="3">      <span class="fu">src:</span><span class="at"> </span><span class="st">&quot;~/.dotfiles/{{ item.path | regex_replace('^.*/([^/]+)$', '</span><span class="sc">\\</span><span class="st">1') }}&quot;</span></a>
+<a class="sourceLine" id="cb2-4" title="4">      <span class="fu">dest:</span><span class="at"> </span><span class="st">&quot;~/.{{ item.path | regex_replace('^.*/([^/]+)$', '</span><span class="sc">\\</span><span class="st">1') }}&quot;</span></a>
+<a class="sourceLine" id="cb2-5" title="5">      <span class="fu">state:</span><span class="at"> link</span></a>
+<a class="sourceLine" id="cb2-6" title="6">      <span class="fu">force:</span><span class="at"> </span><span class="ch">true</span></a>
+<a class="sourceLine" id="cb2-7" title="7">  <span class="fu">with_items:</span></a>
+<a class="sourceLine" id="cb2-8" title="8">      <span class="kw">-</span> <span class="st">&quot;{{ find.files }}&quot;</span></a>
+<a class="sourceLine" id="cb2-9" title="9">  <span class="fu">tags:</span><span class="at"> deploy</span></a></code></pre></div>
 <p>これで、インストール直後に、コマンド一発でいつもの環境になりました！</p>
 
 </article>

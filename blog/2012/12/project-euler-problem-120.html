@@ -68,16 +68,16 @@ if (window.location.host == host && window.location.protocol != "https:") {
 <p><span class="math inline"><em>a</em><sup>2</sup></span> を法とした2naの最大値が <span class="math inline"><em>r</em><sub><em>m</em><em>a</em><em>x</em></sub></span> となります。</p>
 <p>と言った感じで考えて行きまして。</p>
 <p>Haskellで書いてみたソースは以下のようになりました。</p>
-<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="ot">listA ::</span> [<span class="dt">Int</span>]
-listA <span class="fu">=</span> [<span class="dv">3</span><span class="fu">..</span><span class="dv">1000</span>]
-
-<span class="ot">make2N ::</span> <span class="dt">Int</span> <span class="ot">-&gt;</span> <span class="dt">Int</span>
-make2N a <span class="fu">=</span> <span class="kw">if</span> mod a <span class="dv">2</span> <span class="fu">==</span> <span class="dv">0</span> <span class="kw">then</span> a<span class="fu">-</span><span class="dv">2</span> <span class="kw">else</span> a<span class="fu">-</span><span class="dv">1</span>
-
-<span class="ot">makeResult ::</span> [<span class="dt">Int</span>] <span class="ot">-&gt;</span> <span class="dt">Int</span>
-makeResult <span class="fu">=</span> foldr (\a acc <span class="ot">-&gt;</span> (make2N a)<span class="fu">*</span>a <span class="fu">+</span> acc) <span class="dv">0</span>
-
-main <span class="fu">=</span> print <span class="fu">$</span> makeResult listA</code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb1-1" title="1"><span class="ot">listA ::</span> [<span class="dt">Int</span>]</a>
+<a class="sourceLine" id="cb1-2" title="2">listA <span class="fu">=</span> [<span class="dv">3</span><span class="fu">..</span><span class="dv">1000</span>]</a>
+<a class="sourceLine" id="cb1-3" title="3"></a>
+<a class="sourceLine" id="cb1-4" title="4"><span class="ot">make2N ::</span> <span class="dt">Int</span> <span class="ot">-&gt;</span> <span class="dt">Int</span></a>
+<a class="sourceLine" id="cb1-5" title="5">make2N a <span class="fu">=</span> <span class="kw">if</span> <span class="fu">mod</span> a <span class="dv">2</span> <span class="fu">==</span> <span class="dv">0</span> <span class="kw">then</span> a<span class="fu">-</span><span class="dv">2</span> <span class="kw">else</span> a<span class="fu">-</span><span class="dv">1</span></a>
+<a class="sourceLine" id="cb1-6" title="6"></a>
+<a class="sourceLine" id="cb1-7" title="7"><span class="ot">makeResult ::</span> [<span class="dt">Int</span>] <span class="ot">-&gt;</span> <span class="dt">Int</span></a>
+<a class="sourceLine" id="cb1-8" title="8">makeResult <span class="fu">=</span> <span class="fu">foldr</span> (\a acc <span class="ot">-&gt;</span> (make2N a)<span class="fu">*</span>a <span class="fu">+</span> acc) <span class="dv">0</span></a>
+<a class="sourceLine" id="cb1-9" title="9"></a>
+<a class="sourceLine" id="cb1-10" title="10">main <span class="fu">=</span> <span class="fu">print</span> <span class="fu">$</span> makeResult listA</a></code></pre></div>
 <p>プログラマではないので、イケてないかもですが、、そこはご容赦を。。</p>
 <p>とりあえず、数式もソースコードも書けました。</p>
 <p>ただ、書きながらちょっとイマイチなところもあったので、今後要改善ですね。</p>

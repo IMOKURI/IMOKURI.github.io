@@ -63,7 +63,7 @@ if (window.location.host == host && window.location.protocol != "https:") {
 <li><p>各行の「–」から行末まではコメント</p></li>
 <li><p>定義の開始は「<定義するMIBの名前> DEFINITIONS ::= BEGIN」</p></li>
 <li><p>定義の終わりは「END」</p></li>
-<li><p>1つのMIB定義ファイルに定義できるMIB(BEGIN～END)は1セット複数の場合はファイルを分割</p></li>
+<li><p>1つのMIB定義ファイルに定義できるMIB(BEGIN～END)は1セット 複数の場合はファイルを分割</p></li>
 </ul>
 <p>次にIPV6-MIBでは、IMPORTS句(～セミコロン(;)まで)があり、いくつかの外部宣言された定義(カンマ区切り)とそれらがどのMIB定義ファイルに定義されているか(FROM SNMPv2-SMIとか)、が書かれています。</p>
 <p>これらのMIB定義ファイルがIPV6-MIBをロードする前にロードしておく必要があるものになります。</p>
